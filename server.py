@@ -7,6 +7,10 @@ import tornado.httpserver
 from tornado.options import define, options
 
 from handlers.index import MainHandler
+from handlers.words import WordsHanlder
+from handlers.translate import TranslateHanlder
+from handlers.mock import MockWordsHandler
+from handlers.admin import AdminHandler
 
 define('port', default=11888, help='run on the given port', type=int)
 
@@ -14,7 +18,10 @@ define('port', default=11888, help='run on the given port', type=int)
 class Application(tornado.web.Application):
     def __init__(self):
         handlers = [
-            (r"/", MainHandler)
+            (r"/", MainHandler),
+            (r"/admin", AdminHandler),
+            (r"/words/", MockWordsHandler),
+            (r"/translate/", TranslateHanlder)
         ]
 
         settings = dict(
