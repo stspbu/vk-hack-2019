@@ -3,6 +3,9 @@
 venv/
 *.pyc
 
+static/css/bundle.css
+static/js/bundle.js
+
 _npm/node_modules/
 _npm/dist/
 _npm/package-lock.json
