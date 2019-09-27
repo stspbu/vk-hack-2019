@@ -3,5 +3,5 @@ import json
 
 
 class WordsHanlder(BaseHandler):
-    def get(self):
+    def get(self, user_id):
         self.write(json.dumps({'words': ['Slava', 'cool']}))

@@ -8,6 +8,7 @@ from tornado.options import define, options
 
 from handlers.index import MainHandler
 from handlers.words import WordsHanlder
+from handlers.translate import TranslateHanlder
 
 define('port', default=11888, help='run on the given port', type=int)
 
@@ -16,7 +17,8 @@ class Application(tornado.web.Application):
     def __init__(self):
         handlers = [
             (r"/", MainHandler),
-            (r"/words", WordsHanlder)
+            (r"/words/(?P<user_id>\d+)", WordsHanlder),
+            (r"/translate/(?P<word>\w+)", TranslateHanlder)
         ]
 
         settings = dict(
