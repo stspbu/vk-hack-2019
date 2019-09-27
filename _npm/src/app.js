@@ -11,7 +11,7 @@ require('./styles/styles.css');
 class App extends React.Component {
   render() {
       return (
-          <Root activeView="dict">
+          <Root activeView="dict_view">
               <Dict/>
           </Root>
       );
@@ -24,17 +24,17 @@ connect.subscribe(
 
         if (e['detail'] && e['detail']['type'] === 'VKWebAppGetUserInfoResult') {
             console.log(e['detail']['data']['first_name']);
-            // $.ajax({
-            //     type: 'POST',
-            //     url: 'https://vkhack19.com:11888/message',
-            //     data: {'name': e['detail']['data']['first_name']},
-            //     success: function (response) {
-            //         alert('Slava molodec!');
-            //     },
-            //     error: function (response) {
-            //         console.log(response.responseText);
-            //     }
-            // });
+            $.ajax({
+                type: 'POST',
+                url: 'https://vkhack19.com:11888/message',
+                data: {'name': e['detail']['data']['first_name'], 'sign': vkSign},
+                success: function (response) {
+                    alert('Slava molodec!');
+                },
+                error: function (response) {
+                    console.log(response.responseText);
+                }
+            });
         } else {
             console.log(e);
         }

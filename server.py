@@ -6,12 +6,9 @@ import tornado.web
 import tornado.httpserver
 from tornado.options import define, options
 
+from handlers.index import MainHandler
+
 define('port', default=11888, help='run on the given port', type=int)
-
-
-class MainHandler(tornado.web.RequestHandler):
-    def get(self):
-        self.render('index.html')
 
 
 class Application(tornado.web.Application):
