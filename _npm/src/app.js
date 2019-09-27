@@ -17,13 +17,19 @@ class App extends React.Component {
         }
     }
 
+    changeView(view) {
+        this.setState({
+            activeView: view
+        })
+    }
+
     render() {
         return (
             <Root activeView={this.state.activeView}>
 
                 <View id="dict_view" activePanel="dict_panel">
                     <Panel id="dict_panel">
-                        <Dict/>
+                        <Dict changeView={this.changeView.bind(this)} />
                     </Panel>
                 </View>
 
