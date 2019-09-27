@@ -19,10 +19,18 @@ class App extends React.Component {
 
     render() {
         return (
-            <Root activeView={this.state.activeView}>
+            <Root
+                onSwipeBack={this.goBack}
+                history={this.state.history}
+                activeView={this.state.activeView}>
+                <View id="search_view" activePanel="search_panel">
+                    <Panel id="search_panel">
+                        <Search/>
+                    </Panel>
+                </View>
                 <View id="dict_view" activePanel="dict_panel">
                     <Panel id="dict_panel">
-                        <Dict />
+                        <Dict/>
                     </Panel>
                 </View>
             </Root>
