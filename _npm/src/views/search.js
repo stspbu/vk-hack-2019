@@ -12,25 +12,15 @@ class SearchPage extends React.Component {
         search: ''
       }
       this.onChangeHandle = this.onChangeHandle.bind(this);
-      this.onClickHandle = this.onclickHandle.bind(this);
+      this.onClickHandle = this.onClickHandle.bind(this);
     }
 
     onChangeHandle (search) {
-        this.setState({ search });
+        this.setState({ search : search });
     }
 
     onClickHandle(){
-        $.ajax({
-            type: 'POST',
-            url: 'https://vkhack19.com:11888/message',
-            data: {'name': e['detail']['data']['first_name']},
-            success: function (response) {
-                alert('Slava molodec!');
-            },
-            error: function (response) {
-                    console.log(response.responseText);
-            }
-            });
+        console.log(this.state.search);
     }
 
 
@@ -48,9 +38,7 @@ class SearchPage extends React.Component {
                     onChange={this.onChangeHandle}
                 />
                 <div align="center">
-                    <Button
-                        onClick={this.onClickHandle()}
-                    >
+                    <Button onClick={this.onClickHandle}>
                         GO!
                     </Button>
                 </div>
