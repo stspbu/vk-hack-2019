@@ -1,0 +1,10 @@
+.DS_Store
+.idea/
+venv/
+*.pyc
+
+_npm/node_modules/
+_npm/dist/
+_npm/package-lock.json
+
+

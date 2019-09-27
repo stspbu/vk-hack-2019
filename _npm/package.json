@@ -1,0 +1,39 @@
+{
+  "name": "vkhack19",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "webpack": "export NODE_ENV=production && rm -rf dist && webpack",
+    "webpack-dev": "export NODE_ENV=development && rm -rf dist && webpack",
+    "build": "export NODE_ENV=development && rm -rf dist && webpack && sh build.sh",
+    "build+": "export NODE_ENV=development && rm -rf dist && webpack && sh build+.sh"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@babel/core": "^7.6.0",
+    "@babel/runtime": "^7.6.0",
+    "@vkontakte/icons": "^1.8.3",
+    "@vkontakte/vk-connect": "^1.5.6",
+    "@vkontakte/vkui": "^2.30.2",
+    "jquery": "^3.4.1",
+    "optimize-css-assets-webpack-plugin": "^5.0.3",
+    "react": "^16.9.0",
+    "react-dom": "^16.9.0",
+    "style-loader": "^1.0.0",
+    "terser-webpack-plugin": "^2.0.1",
+    "uglifyjs-webpack-plugin": "^2.2.0",
+    "webpack": "^4.40.0",
+    "webpack-cli": "^3.3.8",
+    "webpack-merge": "^4.2.2"
+  },
+  "devDependencies": {
+    "@babel/plugin-proposal-class-properties": "^7.5.5",
+    "@babel/preset-env": "^7.6.0",
+    "@babel/preset-react": "^7.0.0",
+    "babel-loader": "^8.0.6",
+    "css-loader": "^3.2.0",
+    "mini-css-extract-plugin": "^0.8.0"
+  }
+}
