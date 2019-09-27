@@ -7,21 +7,37 @@ import {BaseComponent, DataLoader} from "../../../base";
 
 
 class Words extends BaseComponent {
-    exploreWord(e) {
-        let id = e.target.dataset.id;
+    constructor(props) {
+        super(props);
 
+        this.state = {
+            words: this.props.data
+        };
+    }
+
+    onWordClick(e) {
+        let word = this.state.words[e.target.dataset.id];
+        console.log(word);
+
+        // this.log('Words component: clicked word=' + word.id);
+        //
+        // this.props.onWordClick(word);
     }
 
     render() {
-        let words = this.props.data;
-
         return (
             <Group title='Добавленные слова'>
                 <List>
-                    {words.map((word) =>
-                        <CellButton level='primary' key={word.id} data-id={word.id} onClick={this.exploreWord.bind(this)}>
-                            {word.word}
-                        </CellButton>
+                    {
+                        this.state.words.map((word, index) =>
+                            <CellButton
+                                level='primary'
+                                key={word.id}
+                                data-id={index}
+                                onClick={this.onWordClick.bind(this)}>
+
+                                {word.word}
+                            </CellButton>
                     )}
                 </List>
             </Group>
@@ -42,7 +58,12 @@ class DictPanel extends BaseComponent {
                     left={<HeaderButton key='add' onClick={this.onAdding.bind(this)}><Icon24Add/></HeaderButton>}>
                     Словарь
                 </PanelHeader>
-                <DataLoader endpoint='/words/' loaded={(data) => <Words data={data}/>} method="GET"/>
+                <DataLoader
+                    endpoint='/words/'
+                    loaded={
+                        (data) => <Words data={data} onWordClick={(word) => this.props.onWordClick(word)}/>
+                    }
+                    method="GET"/>
             </Panel>
         )
     }

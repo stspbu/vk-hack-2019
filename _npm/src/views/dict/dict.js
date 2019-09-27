@@ -1,13 +1,11 @@
 import * as React from "react";
-import {View, Panel, Cell, CellButton, PanelHeader, List, Group, Div, HeaderButton} from "@vkontakte/vkui";
+import {View} from "@vkontakte/vkui";
 
 
+import {BaseComponent} from "../../base"
 import DictPanel from "./panels/dict"
 import WordAddingPanel from "./panels/word-adding"
-import {BaseComponent, DataLoader} from "../../base"
-
-
-
+import WordPanel from "./panels/word"
 
 
 class DictView extends BaseComponent {
@@ -15,7 +13,8 @@ class DictView extends BaseComponent {
         super(props);
 
         this.state = {
-            activePanel: 'dict_panel'
+            activePanel: 'dict_panel',
+            selectedWord: null
         }
     }
 
@@ -29,11 +28,24 @@ class DictView extends BaseComponent {
         this.changePanel('word_adding_panel')
     }
 
+    onWordClick(word) {
+        this.log('Selected a word ' + word);
+
+        this.setState({
+            selectedWord: word
+        });
+        this.changePanel('word_panel')
+    }
+
     render() {
         return (
             <View id='dict_view' activePanel={this.state.activePanel}>
-                <DictPanel id='dict_panel' onWordAddingClick={this.onWordAddingClick.bind(this)}/>
+                <DictPanel
+                    id='dict_panel'
+                    onWordAddingClick={this.onWordAddingClick.bind(this)}
+                    onWordClick={(word) => this.onWordClick(word).bind(this)}/>
                 <WordAddingPanel id='word_adding_panel'/>
+                <WordPanel id='word_panel' data={this.state.selectedWord} />
 
                 {/*<Panel id='dict_panel'>*/}
                     {/*<Dict*/}

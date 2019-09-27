@@ -5,7 +5,9 @@ from translator.translator import Translator
 
 class TranslateHanlder(BaseHandler):
     def post(self):
-        word = self.get_body_argument('word')
+        data = json.loads(self.request.body)
+        word = data['word']
+
         self.write(json.dumps({
             'result': 'ok',
             'data': Translator().translate(word)

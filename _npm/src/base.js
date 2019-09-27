@@ -26,14 +26,23 @@ class DataLoader extends BaseComponent {
             error: null,
 
             endpoint: props.endpoint || '/',
-            method: props.method || 'GET'
+            method: props.method || 'GET',
+            requestData: props.data || null
         }
     }
 
     componentDidMount() {
         this.log('requesting url: ' + baseUrl + this.state.endpoint);
 
-        fetch(baseUrl + this.state.endpoint, {method: this.props.method})
+        fetch(baseUrl + this.state.endpoint, {
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'X-SDict-VkSign': window.vkSign
+            },
+            method: this.props.method,
+            body: this.state.requestData ? JSON.stringify(this.state.requestData) : null
+        })
             .then(res => res.json())
             .then(
                 (responseData) => {
