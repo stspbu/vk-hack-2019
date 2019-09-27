@@ -15,13 +15,11 @@ class Words extends BaseComponent {
         };
     }
 
-    onWordClick(e) {
-        let word = this.state.words[e.target.dataset.id];
-        console.log(word);
+    onWordClick(word) {
+        this.log('Words: on word click');
+        this.log(word);
 
-        // this.log('Words component: clicked word=' + word.id);
-        //
-        // this.props.onWordClick(word);
+        this.props.onWordClick(word);
     }
 
     render() {
@@ -30,12 +28,7 @@ class Words extends BaseComponent {
                 <List>
                     {
                         this.state.words.map((word, index) =>
-                            <CellButton
-                                level='primary'
-                                key={word.id}
-                                data-id={index}
-                                onClick={this.onWordClick.bind(this)}>
-
+                            <CellButton level='primary' onClick={() => this.onWordClick(this.state.words[index])}>
                                 {word.word}
                             </CellButton>
                     )}
