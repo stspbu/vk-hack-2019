@@ -23,14 +23,17 @@ class DataLoader extends BaseComponent {
         this.state = {
             isLoaded: false,
             data: null,
-            error: null
+            error: null,
+
+            endpoint: props.endpoint || '/',
+            method: props.method || 'GET'
         }
     }
 
     componentDidMount() {
-        this.log('requesting url: ' + baseUrl + this.props.endpoint);
+        this.log('requesting url: ' + baseUrl + this.state.endpoint);
 
-        fetch(baseUrl + this.props.endpoint)
+        fetch(baseUrl + this.state.endpoint)
             .then(res => res.json())
             .then(
                 (responseData) => {
@@ -67,9 +70,9 @@ class DataLoader extends BaseComponent {
 
     render() {
         if (this.state.isLoaded) {
-            return (<Div>Загружено</Div>);
+            return (<div>{this.props.loaded(this.state.data)}</div>);
         } else {
-            return (<Div>Загрузка...</Div>);
+            return (<div>Загрузка...</div>);
         }
     }
 
