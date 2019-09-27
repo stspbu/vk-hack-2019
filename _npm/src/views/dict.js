@@ -31,7 +31,7 @@ class Dict extends BaseComponent {
         return (
             <div>
                 <PanelHeader>Словарь</PanelHeader>
-                <DataLoader endpoint='/words/' loaded={(data) => <Words data={data} />}/>
+                <DataLoader endpoint='/words/' loaded={(data) => <Words data={data} />} method="POST"/>
             </div>
         )
     }

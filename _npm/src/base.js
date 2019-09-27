@@ -1,5 +1,5 @@
 import React from "react";
-import {Div} from "@vkontakte/vkui"
+import {Div, ScreenSpinner, Spinner} from "@vkontakte/vkui"
 
 const MODE = 'dev';
 const baseUrl = 'https://vkhack19.com:11888';
@@ -33,7 +33,7 @@ class DataLoader extends BaseComponent {
     componentDidMount() {
         this.log('requesting url: ' + baseUrl + this.state.endpoint);
 
-        fetch(baseUrl + this.state.endpoint)
+        fetch(baseUrl + this.state.endpoint, {method: this.props.method})
             .then(res => res.json())
             .then(
                 (responseData) => {
@@ -72,7 +72,7 @@ class DataLoader extends BaseComponent {
         if (this.state.isLoaded) {
             return (<div>{this.props.loaded(this.state.data)}</div>);
         } else {
-            return (<div>Загрузка...</div>);
+            return (<ScreenSpinner/>);
         }
     }
 
