@@ -39,3 +39,5 @@ class AdminHandler(tornado.web.RequestHandler):
         # print('hello2')
         # words_t.insert().values({'user_id': 'check my id in vk please i wont do this', 'word': 'hello'})
         conn.close()
+
+        self.write({'result': 'ok'})

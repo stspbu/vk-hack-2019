@@ -1,4 +1,5 @@
 import React from "react";
+import {Div, ScreenSpinner, Spinner} from "@vkontakte/vkui"
 
 const MODE = 'dev';
 const baseUrl = 'https://vkhack19.com:11888';
@@ -20,17 +21,19 @@ class DataLoader extends BaseComponent {
         super(props);
 
         this.state = {
-            endpoint: props.endpoint,
             isLoaded: false,
             data: null,
-            error: null
+            error: null,
+
+            endpoint: props.endpoint || '/',
+            method: props.method || 'GET'
         }
     }
 
     componentDidMount() {
         this.log('requesting url: ' + baseUrl + this.state.endpoint);
 
-        fetch(baseUrl + this.state.endpoint)
+        fetch(baseUrl + this.state.endpoint, {method: this.props.method})
             .then(res => res.json())
             .then(
                 (responseData) => {
@@ -67,14 +70,9 @@ class DataLoader extends BaseComponent {
 
     render() {
         if (this.state.isLoaded) {
-            return (
-                <ul>{
-                    this.state.data.map((word) => <li key={word.id}>{word.translates.nouns[0]}</li>)
-                }
-                </ul>
-            );
+            return (<div>{this.props.loaded(this.state.data)}</div>);
         } else {
-            return (<div>Загрузка...</div>)
+            return (<ScreenSpinner/>);
         }
     }
 

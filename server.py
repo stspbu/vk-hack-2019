@@ -19,8 +19,8 @@ class Application(tornado.web.Application):
     def __init__(self):
         handlers = [
             (r"/", MainHandler),
-            (r"/admin", AdminHandler),
-            (r"/words/", WordsHanlder),
+            (r"/admin/", AdminHandler),
+            (r"/words/", MockWordsHandler),
             (r"/translate/", TranslateHanlder)
         ]
 
