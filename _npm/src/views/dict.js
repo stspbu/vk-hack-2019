@@ -1,21 +1,34 @@
 import * as React from "react";
-import {View, Panel, Cell, PanelHeader} from "@vkontakte/vkui";
+import {View, Panel, Cell, PanelHeader, List, Group} from "@vkontakte/vkui";
 
 
 class Dict extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            isLoaded: false,
+            data: []
+        }
+    }
+
+    componentDidMount() {
+        fetch('https://yandex.ru')
+            .then(res => res.json())
+            .then()
+    }
+
     render() {
         return (
-            <View id="dict_view" activePanel="dict_panel">
-                <Panel id="dict_panel">
-                    <PanelHeader>Словарь</PanelHeader>
-                    <Group title="Items">
-                        <List>
-                            <Cell>Hello</Cell>
-                            <Cell>World</Cell>
-                        </List>
-                    </Group>
-                </Panel>
-            </View>
+            <div>
+                <PanelHeader>Словарь</PanelHeader>
+                <Group title="Items">
+                    <List>
+                        <Cell>Hello</Cell>
+                        <Cell>World</Cell>
+                    </List>
+                </Group>
+            </div>
         )
     }
 }
