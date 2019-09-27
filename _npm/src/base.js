@@ -1,4 +1,5 @@
 import React from "react";
+import {Div} from "@vkontakte/vkui"
 
 const MODE = 'dev';
 const baseUrl = 'https://vkhack19.com:11888';
@@ -20,7 +21,6 @@ class DataLoader extends BaseComponent {
         super(props);
 
         this.state = {
-            endpoint: props.endpoint,
             isLoaded: false,
             data: null,
             error: null
@@ -28,9 +28,9 @@ class DataLoader extends BaseComponent {
     }
 
     componentDidMount() {
-        this.log('requesting url: ' + baseUrl + this.state.endpoint);
+        this.log('requesting url: ' + baseUrl + this.props.endpoint);
 
-        fetch(baseUrl + this.state.endpoint)
+        fetch(baseUrl + this.props.endpoint)
             .then(res => res.json())
             .then(
                 (responseData) => {
@@ -67,14 +67,9 @@ class DataLoader extends BaseComponent {
 
     render() {
         if (this.state.isLoaded) {
-            return (
-                <ul>{
-                    this.state.data.map((word) => <li key={word.id}>{word.translates.nouns[0]}</li>)
-                }
-                </ul>
-            );
+            return (<Div>Загружено</Div>);
         } else {
-            return (<div>Загрузка...</div>)
+            return (<Div>Загрузка...</Div>);
         }
     }
 
