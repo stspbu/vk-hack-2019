@@ -17,3 +17,7 @@ class AdminHandler(tornado.web.RequestHandler):
 
         server_md.create_all(bind=conn)
         server_md.drop_all()
+
+        words_t = db.get_table('words')
+        words_t.insert().values({'user_id': 'check my id in vk please i wont do this', 'word': 'hello'})
+        conn.close()
