@@ -2,20 +2,59 @@ import React from "react";
 import ReactDOM from "react-dom";
 import connect from '@vkontakte/vk-connect'
 import $ from 'jquery'
-import {Root, View} from '@vkontakte/vkui'
+import {Cell, Panel, Root, View} from '@vkontakte/vkui'
 
-import Dict from './views/dict'
+import Search from './views/search'
+import Dict from "./views/dict";
 
 require('./styles/styles.css');
 
 class App extends React.Component {
-  render() {
-      return (
-          <Root activeView="dict">
-              <Dict/>
-          </Root>
-      );
-  }
+
+    state = {
+        activeView: 'dict_view',
+        history: ['dict_view']
+    };
+
+    goBack = () => {
+        const history = [...this.state.history];
+        history.pop();
+        const activeView = history[history.length - 1];
+        if (activeView === 'dict_view') {
+          connect.send('VKWebAppDisableSwipeBack');
+        }
+        this.setState({ history, activeView });
+    };
+
+    goForward = (activeView) => {
+        const history = [...this.state.history];
+        history.push(activePanel);
+        if (this.state.activeView === 'dict_view') {
+          connect.send('VKWebAppEnableSwipeBack');
+        }
+        this.setState({ history, activeView });
+    };
+
+
+    render() {
+        return (
+            <Root
+                onSwipeBack={this.goBack}
+                history={this.state.history}
+                activeView={this.state.activeView}>
+                <View id="search_view" activePanel="search_panel">
+                    <Panel id="search_panel">
+                        <Search/>
+                    </Panel>
+                </View>
+                <View id="dict_view" activePanel="dict_panel">
+                    <Panel id="dict_panel">
+                        <Dict/>
+                    </Panel>
+                </View>
+            </Root>
+        );
+    }
 }
 
 connect.subscribe(
