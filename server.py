@@ -17,8 +17,8 @@ class Application(tornado.web.Application):
     def __init__(self):
         handlers = [
             (r"/", MainHandler),
-            (r"/words/(?P<user_id>\d+)", WordsHanlder),
-            (r"/translate/(?P<word>\w+)", TranslateHanlder)
+            (r"/words/", WordsHanlder),
+            (r"/translate/", TranslateHanlder)
         ]
 
         settings = dict(
