@@ -2,9 +2,8 @@ import React from "react";
 import ReactDOM from "react-dom";
 import connect from '@vkontakte/vk-connect'
 import {Panel, PanelHeader, Group, CellButton, Root, View, List, Cell} from '@vkontakte/vkui'
-import $ from 'jquery'
 
-// import Dict from './views/dict'
+import Dict from './views/dict'
 
 require('./styles/styles.css');
 
