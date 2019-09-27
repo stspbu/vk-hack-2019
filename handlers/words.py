@@ -7,6 +7,21 @@ class WordsHanlder(BaseHandler):
         self.write(json.dumps(
             {
                 'result': 'ok',
-                'data': {'words': ['Slava', 'cool'], 'user_id': self.get_body_argument('user_id')}
+                'data': [
+                    {
+                        'id': 1,
+                        'word': 'hello',
+                        'translates': {
+                            'nouns': ['привет', 'ку-ку епты']
+                        }
+                    },
+                    {
+                        'id': 2,
+                        'word': 'word',
+                        'translates': {
+                            'nouns': ['слово']
+                        }
+                    }
+                ]
             }
         ))
