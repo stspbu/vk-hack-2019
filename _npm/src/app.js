@@ -1,29 +1,55 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import connect from '@vkontakte/vk-connect'
-import {Panel, PanelHeader, Group, CellButton, Root, View, List, Cell} from '@vkontakte/vkui'
 import $ from 'jquery'
+import {Cell, Panel, Root, View} from '@vkontakte/vkui'
 
-// import Dict from './views/dict'
+import Search from './views/search'
+import Dict from "./views/dict";
 
 require('./styles/styles.css');
 
-
 class App extends React.Component {
-    constructor(props) {
-        super(props);
 
-        this.state = {
-          activeView: 'dict_view'
+    state = {
+        activeView: 'dict_view',
+        history: ['dict_view']
+    };
+
+    goBack = () => {
+        const history = [...this.state.history];
+        history.pop();
+        const activeView = history[history.length - 1];
+        if (activeView === 'dict_view') {
+          connect.send('VKWebAppDisableSwipeBack');
         }
-    }
+        this.setState({ history, activeView });
+    };
+
+    goForward = (activeView) => {
+        const history = [...this.state.history];
+        history.push(activePanel);
+        if (this.state.activeView === 'dict_view') {
+          connect.send('VKWebAppEnableSwipeBack');
+        }
+        this.setState({ history, activeView });
+    };
+
 
     render() {
         return (
-            <Root activeView={this.state.activeView}>
+            <Root
+                onSwipeBack={this.goBack}
+                history={this.state.history}
+                activeView={this.state.activeView}>
+                <View id="search_view" activePanel="search_panel">
+                    <Panel id="search_panel">
+                        <Search/>
+                    </Panel>
+                </View>
                 <View id="dict_view" activePanel="dict_panel">
                     <Panel id="dict_panel">
-                        <Dict />
+                        <Dict/>
                     </Panel>
                 </View>
             </Root>
@@ -40,7 +66,7 @@ connect.subscribe(
             // $.ajax({
             //     type: 'POST',
             //     url: 'https://vkhack19.com:11888/message',
-            //     data: {'name': e['detail']['data']['first_name'], 'sign': vkSign},
+            //     data: {'name': e['detail']['data']['first_name']},
             //     success: function (response) {
             //         alert('Slava molodec!');
             //     },
@@ -48,6 +74,8 @@ connect.subscribe(
             //         console.log(response.responseText);
             //     }
             // });
+        } else {
+            console.log(e);
         }
     }
 );
