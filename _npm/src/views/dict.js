@@ -1,46 +1,30 @@
 import * as React from "react";
-import {View, Panel, Cell, PanelHeader, List, Group, Div} from "@vkontakte/vkui";
+import {View, Panel, Cell, CellButton, PanelHeader, List, Group, Div, HeaderButton} from "@vkontakte/vkui";
+
+import Icon24Add from '@vkontakte/icons/dist/24/add';
+
 import {BaseComponent, DataLoader} from "../base"
 
 
-class Word extends BaseComponent {
-    render() {
-        let word = this.props.word;
-
-        return (
-            this.props.word
-        )
-    }
-}
-
 class Words extends BaseComponent {
+    exploreWord() {
+
+    }
+
     render() {
+        let words = this.props.data;
+
         return (
-            <Div>Words</Div>
+            <Group title='Добавленные слова'>
+                <List>
+                    {words.map((word) =>
+                        <CellButton level='primary' key={word.id} onClick={this.exploreWord}>
+                            {word.word}
+                        </CellButton>
+                    )}
+                </List>
+            </Group>
         )
-    }
-}
-
-class WordsLoader extends DataLoader {
-    constructor(props) {
-        super(props)
-    }
-
-    render() {
-        if (this.state.isLoaded) {
-            return (
-                <ul>{
-                    this.state.data.map(
-                        (word) => <li key={word.id}>
-                            <Word word={word} />
-                        </li>
-                    )
-                }
-                </ul>
-            )
-        } else {
-            return (<Div>Загрузка...</Div>)
-        }
     }
 }
 
@@ -48,17 +32,21 @@ class WordsLoader extends DataLoader {
 class Dict extends BaseComponent {
     constructor(props) {
         super(props);
+
+    }
+
+    onAddClick() {
+        this.props.changeView('search_view')
     }
 
     render() {
-        return (
-            <div>
-                <PanelHeader>Словарь</PanelHeader>
-                <WordsLoader/>
-                <DataLoader endpoint='/words' />
-                <Word test={123}/>
-            </div>
-        )
+        return [
+            <PanelHeader
+                left={<HeaderButton key="add" onClick={this.onAddClick.bind(this)}><Icon24Add/></HeaderButton>}>
+                Словарь
+            </PanelHeader>,
+            <DataLoader endpoint='/words/' loaded={(data) => <Words data={data}/>} method="GET"/>
+        ]
     }
 }
 
