@@ -32,7 +32,12 @@ const config = {
             filename: '[name].css',
             chunkFilename: '[id].css'
         })
-    ]
+    ],
+    externals: [{
+      'react': 'React',
+      // 'prop-types': 'prop-types',
+      'react-dom': 'ReactDOM'
+    }]
 };
 
 const devConfig = {

@@ -1,40 +1,21 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import connect from '@vkontakte/vk-connect'
-import $ from 'jquery'
-import {Cell, Panel, Root, View} from '@vkontakte/vkui'
+import {Panel, PanelHeader, Group, CellButton, Root, View, List, Cell} from '@vkontakte/vkui'
 
-import Search from './views/search'
-import Dict from "./views/dict";
+import Dict from './views/dict'
 
 require('./styles/styles.css');
 
+
 class App extends React.Component {
+    constructor(props) {
+        super(props);
 
-    state = {
-        activeView: 'dict_view',
-        history: ['dict_view']
-    };
-
-    goBack = () => {
-        const history = [...this.state.history];
-        history.pop();
-        const activeView = history[history.length - 1];
-        if (activeView === 'dict_view') {
-          connect.send('VKWebAppDisableSwipeBack');
+        this.state = {
+          activeView: 'dict_view'
         }
-        this.setState({ history, activeView });
-    };
-
-    goForward = (activeView) => {
-        const history = [...this.state.history];
-        history.push(activePanel);
-        if (this.state.activeView === 'dict_view') {
-          connect.send('VKWebAppEnableSwipeBack');
-        }
-        this.setState({ history, activeView });
-    };
-
+    }
 
     render() {
         return (
@@ -66,7 +47,7 @@ connect.subscribe(
             // $.ajax({
             //     type: 'POST',
             //     url: 'https://vkhack19.com:11888/message',
-            //     data: {'name': e['detail']['data']['first_name']},
+            //     data: {'name': e['detail']['data']['first_name'], 'sign': vkSign},
             //     success: function (response) {
             //         alert('Slava molodec!');
             //     },
@@ -74,8 +55,6 @@ connect.subscribe(
             //         console.log(response.responseText);
             //     }
             // });
-        } else {
-            console.log(e);
         }
     }
 );
