@@ -18,7 +18,25 @@ class AdminHandler(tornado.web.RequestHandler):
         server_md.drop_all(bind=conn)
         server_md.create_all(bind=conn)
 
-        words_t = db.get_table('words')
+
+
+        # user_t = db.get_table('user')
+        # conn.execute(user_t.insert(), {'user_id': 2019})
+        # conn.execute(user_t.insert(), {'user_id': 2018})
+        # query = user_t.select(user_t.c.user_id==2019)#.where(user_t.c.user_id==2019)
+        # for t in conn.execute(query):
+        #     print('hery')
+        #     print(t)
+        # print('hello')
+        #
+        # words_t = db.get_table('words')
+        # conn.execute(words_t.insert(), {'user_id': 2019, 'word': 'admin', 'raw_data': 'admin'})
+        # conn.execute(words_t.insert(), {'user_id': 2019, 'word': 'wolf'})
+        # query = words_t.select(words_t.c.user_id==2019)#.where(words_t.c.user_id==2019)
+        # for t in conn.execute(query):
+        #     print('hery2')
+        #     print(t)
+        # print('hello2')
         # words_t.insert().values({'user_id': 'check my id in vk please i wont do this', 'word': 'hello'})
         conn.close()
 
