@@ -29,10 +29,14 @@ class MainHandler(BaseHandler):
         try:
             vk_sign = self.get_argument('sign')
         except MissingArgumentError:
+            logging.info(f"get request without sign: {self.request.arguments} | {self.request.headers} | "
+                         f"{self.request.body}")
             self.send_error(403)
             return
 
         if decoded_hash_code != vk_sign:
+            logging.info(f"get request with wrong sign: {self.request.arguments} | {self.request.headers} | "
+                         f"{self.request.body}")
             self.send_error(403)
 
     def _extract_signature(self):
@@ -51,4 +55,6 @@ class MainHandler(BaseHandler):
 
         token = token_issuer.get_token(user_id)
 
+        logging.debug(f"send index with paramtrs: token->{token}, user_id->{user_id}, "
+                      f"vk_param_sting->{self._get_vk_params_string()}, sign->{self.get_argument('sign')}")
         self.render('index.html', token=token, user_id=user_id, vk_param_string=self._get_vk_params_string(), sign=self.get_argument('sign'))

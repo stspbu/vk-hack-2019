@@ -13,7 +13,7 @@ class MockTranslateHandler(BaseHandler):
     def post(self):
         self.write(json.dumps({
             'result': 'ok',
-            'data': {
+            'word_packs': {
                 'word': 'test',
                 'translations': {
                     'nouns': ['стол'],
@@ -29,7 +29,7 @@ class MockWordsHandler(BaseHandler):
     def get(self):
         self.finish({
             'result': 'ok',
-            'data': [
+            'word_packs': [
                 {
                     'id': 1,
                     'word': 'hello',
@@ -58,8 +58,8 @@ class MockWordsHandler(BaseHandler):
         logging.warning(data['translations'])
 
         # expecting:
-        # data['word']
-        # data['translations']
+        # word_packs['word']
+        # word_packs['translations']
         # translations = {nouns: [], verbs:[], ...} как везде
 
         self.finish({
@@ -71,7 +71,7 @@ class MockGetPackagesHanlder(tornado.web.RequestHandler):
     def get(self):
         self.finish({
             'result': 'ok',
-            'data': {
+            'word_packs': {
                 'packs': [
                     {'package_id': 1, 'name': "Danila's package", 'avatar': 'https://sun9-11.userapi.com/c840625/v840625258/76dcb/S_OqYN_jWO8.jpg'},
                     {'package_id': 2, 'name': "Nature", 'avatar': 'https://pbs.twimg.com/profile_images/687354253371772928/v9LlvG5N_400x400.jpg'},
@@ -82,11 +82,11 @@ class MockGetPackagesHanlder(tornado.web.RequestHandler):
 
 
 class MockPackageHanlder(tornado.web.RequestHandler):
-    def get(self):
+    def get(self, pack_id):
         self.finish(json.dumps({
             'result': 'ok',
-            'data': {
-                'package': {
+            'word_packs': {
+                'pack': {
                     'id': 1,
                     'name': "Danila's package",
                     'avatar': 'https://sun9-11.userapi.com/c840625/v840625258/76dcb/S_OqYN_jWO8.jpg',
@@ -120,5 +120,5 @@ class MockTestsHandler(tornado.web.RequestHandler):
 
         self.finish({
             'result': 'ok',
-            'data': tests
+            'word_packs': tests
         })

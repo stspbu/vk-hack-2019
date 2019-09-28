@@ -11,4 +11,6 @@ _npm/dist/
 _npm/package-lock.json
 local_settings.py
 
+data_parser.py
+data/
 

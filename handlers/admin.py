@@ -43,6 +43,8 @@ class AdminHandler(tornado.web.RequestHandler):
             logging.debug('step2')
             conn.close()
 
+            logging.warning("correct update db")
             self.write({'result': 'ok'})
         else:
+            logging.warning("updating db is forbiden")
             self.write({'error': 'disabled'})

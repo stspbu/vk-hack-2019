@@ -4,6 +4,7 @@ import requests
 from settings import settings
 
 
+# todo add exception if yandex dictionary is inaccesable
 class Translator:
     @functools.lru_cache(None)
     def translate(self, word, language='en-ru'):
