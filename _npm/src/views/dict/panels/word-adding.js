@@ -24,6 +24,15 @@ class WordAddingPanel extends BaseComponent {
     }
 
     onClick() {
+        var data = {word: this.state.word};
+        console.log(data)
+
+        fetch('https://vkhack19.com:11888/translate/', {
+            method: 'POST',
+            body: data
+        }).then(res => res.json())
+        .then(response => console.log('Успех:', response.data))
+        .catch(error => console.error('Ошибка:', error));
         // см dict.js для примера перехода
     }
 
