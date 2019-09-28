@@ -22,7 +22,7 @@ class Application(tornado.web.Application):
         handlers = [
             (r"/", MainHandler),
             (r"/admin/", AdminHandler),
-            (r"/words/", MockWordsHandler),
+            (r"/words/", WordsHanlder),
             (r"/translate/", MockTranslateHandler),
             (r"/tests/", TestingHanlder)
         ]
