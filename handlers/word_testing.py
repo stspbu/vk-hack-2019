@@ -14,7 +14,7 @@ class TestingHanlder(BaseHandler):
         user_words = list()
         all_user_translations = list()
         with db.get_connection() as conn:
-            user_id = int(self.request.headers['X-SDict-User-Id'])
+            user_id = self._extract_user_id()
 
             words_t = db.get_table('words')
             query = words_t.select(words_t.c.user_id == user_id).order_by(func.random())

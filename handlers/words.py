@@ -6,13 +6,32 @@ import db
 
 
 class WordsHanlder(BaseHandler):
+    def get(self):
+        user_id = self._extract_user_id()
+        words_t = db.get_table('words')
+
+        with db.get_connection() as conn:
+
+            words = conn.execute(select([words_t.c.id, words_t.c.word, words_t.c.raw_data]).where(words_t.c.user_id == user_id))
+            data = [{
+                'id': word['id'],
+                'word': word['word'],
+                'translates': json.loads(word['raw_data'])['translations']
+            }for word in words]
+
+        self.write(json.dumps(
+            {
+                'result': 'ok',
+                'data': data
+            }
+        ))
+
     def post(self):
         data = json.loads(self.request.body)
-        user_id = data['user_id']
+        user_id = self._extract_user_id()
 
         conn = db.get_connection()
 
-        user_t = db.get_table('user')
         words_t = db.get_table('words')
 
         if 'word' in data:

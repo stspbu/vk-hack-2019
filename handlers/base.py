@@ -13,6 +13,7 @@ class BaseHandler(tornado.web.RequestHandler):
         return True
 
     def prepare(self):
+        self.set_header('Content-Type', 'application/json; charset=UTF-8')
         if self._requires_headers_validation():
             error = ''
             for header in required_headers:
