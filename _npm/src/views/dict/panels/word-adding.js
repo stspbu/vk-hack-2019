@@ -24,13 +24,11 @@ class WordAddingPanel extends BaseComponent {
     }
 
     onClick() {
-        // TODO for Vadim
-        var data = {'word': this.state.word};
-        console.log(data)
+        var data = {word: this.state.word};
 
         fetch('https://vkhack19.com:11888/translate/', {
             method: 'POST',
-            body: data
+            body: JSON.stringify(data)
         }).then(res => res.json())
         .then(response => console.log('Успех:', response.data))
         .catch(error => console.error('Ошибка:', error));

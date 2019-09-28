@@ -57,7 +57,9 @@ class DictPanel extends BaseComponent {
                         (data) => <Words data={data} onWordClick={(word) => this.props.onWordClick(word)}/>
                     }
                     method="GET"/>
-                <Bar/>
+                {/*<Bar */}
+                    {/*onTestTabClick = {this.onTestTabClick.bind(this)}*/}
+                {/*/>*/}
             </Panel>
         )
     }

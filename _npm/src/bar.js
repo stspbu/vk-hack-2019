@@ -12,6 +12,11 @@ class Bar extends React.Component{
         }
     }
 
+    onTestTabClick(){
+        this.props.onTestTabClick()
+    }
+
+
     render() {
         return (
             <FixedLayout vertical="bottom">
@@ -21,7 +26,7 @@ class Bar extends React.Component{
                         selected={this.state.activeTab === 'dict'}
                     >dict</TabsItem>
                     <TabsItem
-                        onClick={() => this.setState({ activeTab: 'test' })}
+                        onClick={this.onTestTabClick.bind(this)}//{() => this.setState({ activeTab: 'test' })}
                         selected={this.state.activeTab === 'test'}
                     >test</TabsItem>
                 </Tabs>
