@@ -43,5 +43,6 @@ Table(
     Column('id', INTEGER, nullable=False, autoincrement=True, primary_key=True),
     Column('name', TEXT, nullable=False, unique=True),
     Column('avatar', TEXT, nullable=False),
-    Column('words', TEXT, nullable=False)
+    Column('words', TEXT, nullable=False),
+    Column('description', TEXT, nullable=False),
 )

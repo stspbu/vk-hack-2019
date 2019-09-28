@@ -76,17 +76,20 @@ class MockGetPackagesHanlder(tornado.web.RequestHandler):
                     {
                         'id': 1,
                         'name': "Danila's package",
-                        'avatar': 'https://sun9-11.userapi.com/c840625/v840625258/76dcb/S_OqYN_jWO8.jpg'
+                        'avatar': 'https://sun9-11.userapi.com/c840625/v840625258/76dcb/S_OqYN_jWO8.jpg',
+                        'description': 'desc1'
                     },
                     {
                         'id': 2,
                         'name': "Nature",
-                        'avatar': 'https://pbs.twimg.com/profile_images/687354253371772928/v9LlvG5N_400x400.jpg'
+                        'avatar': 'https://pbs.twimg.com/profile_images/687354253371772928/v9LlvG5N_400x400.jpg',
+                        'description': 'awesome pacm'
                     },
                     {
                         'id': 3,
                         'name': "Space",
-                        'avatar': 'https://pi.tedcdn.com/r/pf.tedcdn.com/images/playlists/how_we_study_space_1957009059.jpg?quality=89&w=256'
+                        'avatar': 'https://pi.tedcdn.com/r/pf.tedcdn.com/images/playlists/how_we_study_space_1957009059.jpg?quality=89&w=256',
+                        'description': 'desc3'
                     },
                 ]
             }
@@ -100,6 +103,7 @@ class MockPackageHanlder(tornado.web.RequestHandler):
             'data': {
                 'pack': {
                     'id': 1,
+                    'description': "awesome pack",
                     'name': "Danila's package",
                     'avatar': 'https://sun9-11.userapi.com/c840625/v840625258/76dcb/S_OqYN_jWO8.jpg',
                     'words': [

@@ -13,7 +13,8 @@ class WordsHandler(BaseHandler):
 
         with db.get_connection() as conn:
 
-            words = conn.execute(select([words_t.c.id, words_t.c.word, words_t.c.raw_data]).where(words_t.c.user_id == user_id))
+            words = conn.execute(select([words_t.c.id, words_t.c.word, words_t.c.raw_data]).where(words_t.c.user_id == user_id).order_by(words_t.c.word))
+
             data = [{
                 'id': word['id'],
                 'word': word['word'],
@@ -45,7 +46,7 @@ class WordsHandler(BaseHandler):
 
         words_t = db.get_table('words')
 
-        new_word = data['word']
+        new_word = data['word'].lower()
         new_translations = data['translations']
         try:
             raw_data = conn.execute(select([words_t.c.raw_data]).where(words_t.c.user_id == user_id).where(words_t.c.word == new_word)).next()[0]
