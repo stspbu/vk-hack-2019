@@ -14,7 +14,7 @@ class App extends BaseComponent {
         super(props);
 
         this.state = {
-            activeView: 'dict_view'
+            activeView: 'test_view'
         }
     }
 
@@ -29,6 +29,6 @@ class App extends BaseComponent {
 }
 
 connect.send('VKWebAppInit', {});
-connect.send('VKWebAppGetUserInfo', {});
+// connect.send('VKWebAppGetUserInfo', {});
 
 ReactDOM.render(<App/>, document.getElementById('root'));

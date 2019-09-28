@@ -24,7 +24,7 @@ class Application(tornado.web.Application):
             (r"/admin/", AdminHandler),
             (r"/words/", MockWordsHandler),
             (r"/translate/", MockTranslateHandler),
-            (r"/tests/", TestingHanlder)
+            (r"/tests/", MockTestsHandler)
         ]
 
         settings = dict(
