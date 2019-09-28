@@ -1,12 +1,7 @@
 from handlers.base import BaseHandler
 import json
 import db
-from  sqlalchemy.sql.expression import func
-from utils.translator import Translator
-import random
-import requests
 import logging
-
 import sqlalchemy as sa
 
 
@@ -20,19 +15,18 @@ class UserHanlder(BaseHandler):
             query = sa.select([sa.func.count()]).select_from(words_t).where(words_t.c.user_id==user_id)
             logging.warning(query)
             word_sum = conn.execute(query).fetchone()[0]
-            logging.info(word_sum)
+            logging.debug(word_sum)
 
             query = query.where(words_t.c.correct_tested + words_t.c.wrong_tested > 0).\
                 where(words_t.c.correct_tested/(words_t.c.correct_tested + words_t.c.wrong_tested) > 0.8)
             known_word_sum = conn.execute(query).fetchone()[0]
-            logging.info(known_word_sum)
-
+            logging.debug(known_word_sum)
 
             users_t = db.get_table('user')
 
             query = sa.select([users_t.c.correct_tested, users_t.c.wrong_tested]).where(users_t.c.id==user_id)
             correct, wrong = conn.execute(query).fetchone()
-            logging.info(f"{correct}, {wrong}")
+            logging.debug(f"{correct}, {wrong}")
             if correct + wrong == 0:
                 percent = 0
             else:
