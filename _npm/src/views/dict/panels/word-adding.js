@@ -24,14 +24,18 @@ class WordAddingPanel extends BaseComponent {
     }
 
     onClick() {
-        var data = {word: this.state.word};
-
         fetch('https://vkhack19.com:11888/translate/', {
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'X-SDict-User-Id': window.sdUserId,
+                'X-SDict-Token': window.sdToken
+            },
             method: 'POST',
-            body: JSON.stringify(data)
+            body: JSON.stringify({word: this.state.word})
         }).then(res => res.json())
-        .then(response => console.log('Успех:', response.data))
-        .catch(error => console.error('Ошибка:', error));
+        .then(response => console.log('Ok:', response.data))
+        .catch(error => console.error('Error:', error));
         // см dict.js для примера перехода
     }
 
