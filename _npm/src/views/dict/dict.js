@@ -1,6 +1,12 @@
 import * as React from "react";
-import {View} from "@vkontakte/vkui";
+import {ModalPage, ModalRoot, View, ModalPageHeader, Cell, HeaderButton, Input} from "@vkontakte/vkui";
+import {Select, Div, Button} from "@vkontakte/vkui"
+
 import connect from "@vkontakte/vk-connect"
+
+import Icon24Cancel from "@vkontakte/icons/dist/24/cancel"
+import Icon24Dismiss from "@vkontakte/icons/dist/24/dismiss"
+import {IS_PLATFORM_ANDROID, IS_PLATFORM_IOS} from '@vkontakte/vkui/dist/lib/platform';
 
 import {BaseComponent} from "../../base"
 import DictPanel from "./panels/dict"
@@ -17,7 +23,9 @@ class DictView extends BaseComponent {
             activePanel: 'dict_panel',
             history: ['dict_panel'],
 
-            selectedWord: null
+            selectedWord: null,
+
+            modal: null
         }
     }
 
@@ -67,9 +75,17 @@ class DictView extends BaseComponent {
         this.props.onTabChanged(newTab);
     }
 
+    setupModal(modal) {
+        this.log('DictView: changing active modal');
+
+        this.setState({
+            modal: modal
+        })
+    }
+
     render() {
         return (
-            <View id='dict_view' activePanel={this.state.activePanel}>
+            <View id='dict_view' activePanel={this.state.activePanel} modal={this.state.modal}>
                 <DictPanel
                     id='dict_panel'
                     onWordChoosingClick={this.onWordChoosingClick.bind(this)}
@@ -91,6 +107,7 @@ class DictView extends BaseComponent {
                     id='word_adding_panel'
                     data={this.state.selectedWord}
                     goBack={this.goBack.bind(this)}
+                    setupModal={this.setupModal.bind(this)}
                 />
             </View>
         )
