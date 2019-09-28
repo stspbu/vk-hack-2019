@@ -4,8 +4,9 @@ import connect from "@vkontakte/vk-connect"
 
 import {BaseComponent} from "../../base"
 import DictPanel from "./panels/dict"
-import WordAddingPanel from "./panels/word-adding"
+import WordChoosingPanel from "./panels/word-choosing"
 import WordPanel from "./panels/word"
+import WordAddingPanel from "./panels/word-adding"
 
 
 class DictView extends BaseComponent {
@@ -39,16 +40,10 @@ class DictView extends BaseComponent {
         }
         this.setState({ history, activePanel });
     }
-
-    changePanel(panel) {
-        this.setState({
-            activePanel: panel
-        })
-    }
     /* nav ends */
 
-    onWordAddingClick() {
-        this.goForward('word_adding_panel')
+    onWordChoosingClick() {
+        this.goForward('word_choosing_panel')
     }
 
     onWordClick(word) {
@@ -60,17 +55,21 @@ class DictView extends BaseComponent {
         this.goForward('word_panel')
     }
 
+    onWordEnteredClick(word) {
+        this.log('Entered word = ' + JSON.stringify(word));
+        this.setState({
+            selectedWord: word
+        });
+        this.goForward('word_adding_panel');
+    }
+
     render() {
         return (
             <View id='dict_view' activePanel={this.state.activePanel}>
                 <DictPanel
                     id='dict_panel'
-                    onWordAddingClick={this.onWordAddingClick.bind(this)}
+                    onWordChoosingClick={this.onWordChoosingClick.bind(this)}
                     onWordClick={(word) => this.onWordClick(word)}
-                    goBack={this.goBack.bind(this)}
-                />
-                <WordAddingPanel
-                    id='word_adding_panel'
                     goBack={this.goBack.bind(this)}
                 />
                 <WordPanel
@@ -78,10 +77,20 @@ class DictView extends BaseComponent {
                     data={this.state.selectedWord}
                     goBack={this.goBack.bind(this)}
                 />
+                <WordChoosingPanel
+                    id='word_choosing_panel'
+                    goBack={this.goBack.bind(this)}
+                    onWordEnteredClick={this.onWordEnteredClick.bind(this)}
+                />
+                <WordAddingPanel
+                    id='word_adding_panel'
+                    data={this.state.selectedWord}
+                    goBack={this.goBack.bind(this)}
+                />
 
                 {/*<Panel id='dict_panel'>*/}
                     {/*<Dict*/}
-                        {/*onWordAddingClick={this.onWordAddingClick.bind(this)}*/}
+                        {/*onWordChoosingClick={this.onWordChoosingClick.bind(this)}*/}
                         {/*onWordViewClick={this.onWordViewClick.bind(this)}/>*/}
                 {/*</Panel>*/}
                 {/*<Panel id='word_panel'>*/}

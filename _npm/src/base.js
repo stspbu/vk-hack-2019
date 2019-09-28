@@ -5,6 +5,15 @@ const MODE = 'dev';
 const baseUrl = 'https://vkhack19.com:11888';
 
 
+const possibleSpeechParts = ['nouns', 'verbs', 'adjectives', 'adverbs'];
+const speechPartToTitle = {
+    nouns: 'Существительные',
+    verbs: 'Глаголы',
+    adjectives: 'Прилагательные',
+    adverbs: 'Наречия'
+};
+
+
 class BaseComponent extends React.Component {
     log(message, level='debug') {
         if (level === 'debug' && MODE !== 'dev') {
@@ -32,30 +41,43 @@ class DataLoader extends BaseComponent {
     }
 
     componentDidMount() {
-        this.log('requesting url: ' + baseUrl + this.state.endpoint);
+        this.makeRequest()
+    }
 
-        fetch(baseUrl + this.state.endpoint, {
+    makeRequest() {
+        DataLoader.doMakeRequest({
+            endpoint: this.state.endpoint,
+            method: this.state.method,
+            requestData: this.state.requestData
+        }, this.onRequestSuccess.bind(this), this.onRequestError.bind(this), this)
+    }
+
+    static doMakeRequest(params, onRequestSuccess, onRequestError, logger=null) {
+        logger && logger.log('requesting url: ' + baseUrl + params.endpoint);
+        logger && logger.log('data: ' + JSON.stringify(params.requestData));
+
+        fetch(baseUrl + params.endpoint, {
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
                 'X-SDict-User-Id': window.sdUserId,
                 'X-SDict-Token': window.sdToken
             },
-            method: this.props.method,
-            body: this.state.requestData ? JSON.stringify(this.state.requestData) : null
+            method: params.method,
+            body: params.requestData ? JSON.stringify(params.requestData) : null
         })
             .then(res => res.json())
             .then(
                 (responseData) => {
                     if (responseData && responseData.result === 'ok') {
-                        this.onRequestSuccess(responseData.data);
+                        onRequestSuccess && onRequestSuccess(responseData.data);
                     } else {
-                        this.onRequestError(responseData.error);
+                        onRequestError && onRequestError('unknown');
                     }
                 },
                 (error) => {
-                    this.log('not success = ' + error);
-                    this.onRequestError('unknown');
+                    logger && logger.log('not success = ' + error);
+                    onRequestError && onRequestError('unknown');
                 }
             )
     }
@@ -88,4 +110,4 @@ class DataLoader extends BaseComponent {
 
 }
 
-export {BaseComponent, DataLoader};
+export {BaseComponent, DataLoader, speechPartToTitle, possibleSpeechParts };

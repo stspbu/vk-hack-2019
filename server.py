@@ -6,11 +6,11 @@ import tornado.web
 import tornado.httpserver
 from tornado.options import define, options
 
-from handlers.mock import MockWordsHandler, MockTestsHandler
+from handlers.mock import MockWordsHandler, MockTestsHandler, MockTranslateHandler
 
 from handlers.index import MainHandler
 from handlers.words import WordsHanlder
-from handlers.translate import TranslateHanlder
+from handlers.translate import TranslateHandler
 from handlers.admin import AdminHandler
 from handlers.word_testing import TestingHanlder
 
@@ -23,7 +23,7 @@ class Application(tornado.web.Application):
             (r"/", MainHandler),
             (r"/admin/", AdminHandler),
             (r"/words/", MockWordsHandler),
-            (r"/translate/", TranslateHanlder),
+            (r"/translate/", MockTranslateHandler),
             (r"/tests/", TestingHanlder)
         ]
 
