@@ -1,8 +1,10 @@
 import * as React from "react";
 import {BaseComponent} from "../../../base";
+import Bar from "../../../bar";
 import {Panel, PanelHeader, HeaderButton, Input, Button, Div} from "@vkontakte/vkui";
 
 import Icon24Back from '@vkontakte/icons/dist/24/back';
+
 
 
 class WordAddingPanel extends BaseComponent {
@@ -40,6 +42,7 @@ class WordAddingPanel extends BaseComponent {
                         GO!
                     </Button>
                 </Div>
+                <Bar/>
             </Panel>
         )
     }
