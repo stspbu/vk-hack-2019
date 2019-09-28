@@ -1,7 +1,9 @@
 import tornado.web
 
+from handlers.base import BaseHandler
 
-class MockWordsHandler(tornado.web.RequestHandler):
+
+class MockWordsHandler(BaseHandler):
     def get(self):
         self.finish({
             'result': 'ok',
@@ -9,14 +11,17 @@ class MockWordsHandler(tornado.web.RequestHandler):
                 {
                     'id': 1,
                     'word': 'hello',
-                    'translates': {
-                        'nouns': ['привет', 'ку-ку епты']
+                    'translations': {
+                        'nouns': ['привет', 'ку-ку епты'],
+                        'verbs': ['поздароваться'],
+                        'adjectives': ['прилаг'],
+                        'adverbs': ['наречие1', 'наречие2']
                     }
                 },
                 {
                     'id': 2,
                     'word': 'word',
-                    'translates': {
+                    'translations': {
                         'nouns': ['слово']
                     }
                 }

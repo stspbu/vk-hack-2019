@@ -29,7 +29,7 @@ class DictView extends BaseComponent {
     }
 
     onWordClick(word) {
-        this.log('Selected a word ' + word);
+        this.log('Selected a word ' + JSON.stringify(word));
 
         this.setState({
             selectedWord: word

@@ -18,8 +18,6 @@ class AdminHandler(tornado.web.RequestHandler):
         server_md.drop_all(bind=conn)
         server_md.create_all(bind=conn)
 
-
-
         # user_t = db.get_table('user')
         # conn.execute(user_t.insert(), {'user_id': 2019})
         # conn.execute(user_t.insert(), {'user_id': 2018})
