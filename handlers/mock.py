@@ -72,7 +72,7 @@ class MockGetPackagesHanlder(tornado.web.RequestHandler):
         self.finish({
             'result': 'ok',
             'data': {
-                'packages': [
+                'packs': [
                     {'package_id': 1, 'name': "Danila's package", 'avatar': 'https://sun9-11.userapi.com/c840625/v840625258/76dcb/S_OqYN_jWO8.jpg'},
                     {'package_id': 2, 'name': "Nature", 'avatar': 'https://pbs.twimg.com/profile_images/687354253371772928/v9LlvG5N_400x400.jpg'},
                     {'package_id': 3, 'name': "Space", 'avatar': 'https://pi.tedcdn.com/r/pf.tedcdn.com/images/playlists/how_we_study_space_1957009059.jpg?quality=89&w=256'},
