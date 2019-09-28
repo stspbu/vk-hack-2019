@@ -1,5 +1,5 @@
 import tornado.web
-from sd_tokens import token_issuer
+from utils.sd_tokens import token_issuer
 from settings import settings
 
 required_headers = ['X-SDict-User-Id', 'X-SDict-Token']
@@ -13,8 +13,8 @@ class BaseHandler(tornado.web.RequestHandler):
         return True
 
     def prepare(self):
-        self.set_header('Content-Type', 'application/json; charset=UTF-8')
         if self._requires_headers_validation():
+            self.set_header('Content-Type', 'application/json; charset=UTF-8')
             error = ''
             for header in required_headers:
                 if header not in self.request.headers:

@@ -8,6 +8,9 @@ import tornado.web
 import tornado.httpserver
 from tornado.options import define, options
 
+import db
+from db.meta import server_md
+
 from handlers.mock import MockWordsHandler, MockTestsHandler, MockTranslateHandler
 
 from handlers.index import MainHandler
@@ -15,18 +18,22 @@ from handlers.words import WordsHanlder
 from handlers.translate import TranslateHandler
 from handlers.admin import AdminHandler
 from handlers.word_testing import TestingHanlder
-from settings import settings
+from settings import settings, logging_config_dict
 
 define('port', default=11888, help='run on the given port', type=int)
 
 
 class Application(tornado.web.Application):
     def __init__(self):
+        with db.get_connection() as conn:
+            server_md.create_all(bind=conn)
+            logging.info('update database tables')
+
         handlers = [
             (r"/", MainHandler),
             (r"/admin/", AdminHandler),
             (r"/words/", WordsHanlder),
-            (r"/translate/", MockTranslateHandler),
+            (r"/translate/", TranslateHandler),
             (r"/tests/", TestingHanlder)
         ]
 
@@ -39,8 +46,7 @@ class Application(tornado.web.Application):
 
 
 if __name__ == '__main__':
-    with open('logging_config.json') as f_in:
-        logging.config.DictConfigurator(json.load(f_in))
+    logging.config.DictConfigurator(logging_config_dict)
     logging.basicConfig(level=settings['LOG_LEVEL'])
 
     http_server = tornado.httpserver.HTTPServer(Application(), ssl_options={

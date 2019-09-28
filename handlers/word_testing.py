@@ -2,7 +2,7 @@ from handlers.base import BaseHandler
 import json
 import db
 from  sqlalchemy.sql.expression import func
-from translator.translator import Translator
+from utils.translator import Translator
 import random
 import requests
 import logging
@@ -24,7 +24,7 @@ class TestingHanlder(BaseHandler):
                     break
                 if 'raw_data' not in t or not t['raw_data']:
                     continue
-                for _, vals in json.loads(t['raw_data']).items():
+                for _, vals in json.loads(t['raw_data'])['translations'].items():
                     translates = list()
                     for elem in vals:
                         translates.append(elem)

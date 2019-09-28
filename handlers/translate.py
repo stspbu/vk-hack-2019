@@ -1,6 +1,6 @@
 from handlers.base import BaseHandler
 import json
-from translator.translator import Translator
+from utils.translator import Translator
 from tornado.web import MissingArgumentError
 
 
