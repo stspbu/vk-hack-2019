@@ -4,7 +4,7 @@ import {CellButton, Group, List, PanelHeader, HeaderButton, Panel} from "@vkonta
 import Icon24Add from '@vkontakte/icons/dist/24/add';
 
 import {BaseComponent, DataLoader} from "../../../base";
-import Bar from '../../../bar'
+import AppTabs from '../../../tabs'
 
 class Words extends BaseComponent {
     constructor(props) {
@@ -44,9 +44,13 @@ class DictPanel extends BaseComponent {
         this.props.onWordChoosingClick();
     }
 
+    onTabChanged(newTab) {
+        this.props.onTabChanged(newTab);
+    }
+
     render() {
         return (
-            <Panel id="dict_panel">
+            <Panel id='dict_panel'>
                 <PanelHeader
                     left={<HeaderButton key='add' onClick={this.onAdding.bind(this)}><Icon24Add/></HeaderButton>}>
                     Словарь
@@ -56,10 +60,8 @@ class DictPanel extends BaseComponent {
                     loaded={
                         (data) => <Words data={data} onWordClick={(word) => this.props.onWordClick(word)}/>
                     }
-                    method="GET"/>
-                {/*<Bar */}
-                    {/*onTestTabClick = {this.onTestTabClick.bind(this)}*/}
-                {/*/>*/}
+                    method='GET'/>
+                <AppTabs onTabChanged={this.onTabChanged.bind(this)} activeTab='dict'/>
             </Panel>
         )
     }

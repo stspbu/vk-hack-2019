@@ -14,15 +14,21 @@ class App extends BaseComponent {
         super(props);
 
         this.state = {
-            activeView: 'test_view'
+            activeView: 'dict_view'
         }
+    }
+
+    onTabChanged(newTab) {
+        this.setState({
+            'activeView': newTab.view
+        })
     }
 
     render() {
         return (
             <Root activeView={this.state.activeView}>
-                <DictView id="dict_view"/>
-                <TestView id="test_view"/>
+                <DictView id="dict_view" onTabChanged={this.onTabChanged.bind(this)}/>
+                <TestView id="test_view" onTabChanged={this.onTabChanged.bind(this)}/>
             </Root>
         );
     }

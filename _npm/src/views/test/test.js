@@ -36,12 +36,17 @@ class TestView extends BaseComponent {
         });
     }
 
+    onTabChanged(newTab) {
+        this.props.onTabChanged(newTab);
+    }
+
     render() {
         return (
             <View id='test_view' activePanel={this.state.activePanel}>
                 <TestListPanel
                     id='test_list_panel'
                     onTestSelected={this.onTestSelected.bind(this)}
+                    onTabChanged={this.onTabChanged.bind(this)}
                 />
                 <TestPanel
                     id='test_panel'
