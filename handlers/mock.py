@@ -31,7 +31,7 @@ class MockWordsHandler(BaseHandler):
 
 class MockTestsHandler(tornado.web.RequestHandler):
     def get(self):
-        tests = [{'answer': 0, 'words': ['привет', 'пока', 'здравствуй', 'да']} for _ in range(10)]
+        tests = [{'answer': 0, 'word': 'hi', 'variants': ['привет', 'пока', 'здравствуй', 'да']} for _ in range(10)]
 
         self.finish({
             'result': 'ok',

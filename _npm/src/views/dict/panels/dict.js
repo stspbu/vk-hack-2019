@@ -4,7 +4,7 @@ import {CellButton, Group, List, PanelHeader, HeaderButton, Panel} from "@vkonta
 import Icon24Add from '@vkontakte/icons/dist/24/add';
 
 import {BaseComponent, DataLoader} from "../../../base";
-
+import Bar from '../../../bar'
 
 class Words extends BaseComponent {
     constructor(props) {
@@ -57,6 +57,9 @@ class DictPanel extends BaseComponent {
                         (data) => <Words data={data} onWordClick={(word) => this.props.onWordClick(word)}/>
                     }
                     method="GET"/>
+                {/*<Bar */}
+                    {/*onTestTabClick = {this.onTestTabClick.bind(this)}*/}
+                {/*/>*/}
             </Panel>
         )
     }

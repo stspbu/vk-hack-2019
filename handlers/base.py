@@ -3,10 +3,21 @@ from sd_tokens import token_issuer
 
 client_secret = 'PqwFekrI1arHHZwXKk1w'  # TODO: move to settings
 
+required_headers = ['X-SDict-User-Id', 'X-SDict-Token']
+
 
 class BaseHandler(tornado.web.RequestHandler):
-    @staticmethod
-    def _requires_headers_validation():
+
+    def _requires_headers_validation(self):
+        error = ''
+        for header in required_headers:
+            if header not in self.request.headers:
+                if not error:
+                    error = 'required headers: '
+                error += header + ', '
+        if error:
+            self.send_error(400, reason=error)
+            return False
         return True
 
     def prepare(self):
