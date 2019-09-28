@@ -5,6 +5,8 @@ server_md = MetaData()
 Table(
     'user', server_md,
     Column('id', INTEGER, nullable=False, autoincrement=True, primary_key=True),
+    Column('correct_tested', INTEGER, default=0),
+    Column('wrong_tested', INTEGER, default=0),
 )
 # {'noun':
 #   ['заклинание', 'период', 'приступ', 'орфография', 'буквы', 'обаяние'],
@@ -17,6 +19,8 @@ Table(
     'words', server_md,
     Column('id', INTEGER, nullable=False, autoincrement=True, primary_key=True),
     Column('user_id', INTEGER, nullable=False),
+    Column('correct_tested', INTEGER, default=0),
+    Column('wrong_tested', INTEGER, default=0),
     Column('word', TEXT, nullable=False),
     Column('raw_data', TEXT, nullable=True),
 

@@ -7,6 +7,8 @@ import random
 import requests
 import logging
 
+import sqlalchemy as sa
+
 
 class TestingHanlder(BaseHandler):
 
@@ -98,3 +100,39 @@ class TestingHanlder(BaseHandler):
         res['result'] = 'ok'
         logging.info(f'send answer to test {res}')
         self.write(json.dumps(res))
+
+    def post(self):
+        with db.get_connection() as conn:
+            results = json.loads(self.request.body)['data']['test']
+            user_id = self._extract_user_id()
+            correct_sum = 0
+            wrong_sum = 0
+
+            words_t = db.get_table('words')
+
+            for res in results:
+                word = res['word']
+                correct = res['is_correct']
+                if correct:
+                    correct_sum += 1
+                    query = words_t.update().values({words_t.c.correct_tested:(words_t.c.correct_tested+1)}).\
+                        where(words_t.c.user_id == user_id).where(words_t.c.word == word)
+                else:
+                    wrong_sum += 1
+                    query = words_t.update().values({words_t.c.wrong_tested: (words_t.c.wrong_tested + 1)}). \
+                        where(words_t.c.user_id == user_id).where(words_t.c.word == word)
+
+                conn.execute(query)
+
+            users_t = db.get_table('user')
+
+            query = users_t.update().values({users_t.c.correct_tested: (users_t.c.correct_tested + correct_sum)}). \
+                where(users_t.c.id == user_id)
+            conn.execute(query)
+            query = users_t.update().values({users_t.c.wrong_tested: (users_t.c.wrong_tested + wrong_sum)}). \
+                where(users_t.c.id == user_id)
+            conn.execute(query)
+
+        self.write(json.dumps({
+            "result": "ok"
+        }))

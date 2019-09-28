@@ -19,6 +19,7 @@ from handlers.translate import TranslateHandler
 from handlers.admin import AdminHandler
 from handlers.word_testing import TestingHanlder
 from settings import settings, logging_config_dict
+from handlers.user_handler import UserHanlder
 
 define('port', default=11888, help='run on the given port', type=int)
 
@@ -36,7 +37,8 @@ class Application(tornado.web.Application):
             (r"/translate/", TranslateHandler),
             (r"/packages/", MockGetPackagesHanlder),
             (r"/package/", MockPackageHanlder),
-            (r"/tests/", TestingHanlder)
+            (r"/tests/", TestingHanlder),
+            (r"/user/", UserHanlder)
         ]
 
         settings = dict(
