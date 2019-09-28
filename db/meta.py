@@ -6,13 +6,21 @@ Table(
     'user', server_md,
     Column('id', INTEGER, nullable=False, autoincrement=True, primary_key=True),
 )
-
+# {'noun':
+#   ['заклинание', 'период', 'приступ', 'орфография', 'буквы', 'обаяние'],
+# 'verb':
+#   ['означать', 'писать', 'завораживать', 'сформулировать', 'писать по буквам', 'произнести по буквам'],
+# 'adverb':
+#   ['по буквам']
+# }
 Table(
     'words', server_md,
     Column('id', INTEGER, nullable=False, autoincrement=True, primary_key=True),
     Column('user_id', INTEGER, nullable=False),
+    Column('word', TEXT, nullable=False),
     Column('raw_data', TEXT, nullable=True),
 
+    UniqueConstraint('user_id', 'word', name='word_unique'),
     ForeignKeyConstraint(['user_id'], ['user.id'], onupdate="CASCADE", ondelete="CASCADE")
 )
 

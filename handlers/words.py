@@ -1,9 +1,18 @@
 from handlers.base import BaseHandler
 import json
 
+import db
+
 
 class WordsHanlder(BaseHandler):
     def post(self):
+        data = json.loads(self.request.body)
+        user_id = data['user_id']
+        word = data['word']
+        conn = db.get_connection()
+
+        conn.close()
+
         self.write(json.dumps(
             {
                 'result': 'ok',
