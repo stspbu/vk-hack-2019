@@ -23,7 +23,7 @@ class TestView extends BaseComponent {
     }
 
     onStartTestClick() {
-        this.changePanel('')
+        this.changePanel('test_panel')
     }
 
     render() {
@@ -32,6 +32,9 @@ class TestView extends BaseComponent {
                 <TestSettings
                     id='test_settings'
                     onStartTestClick={this.onStartTestClick.bind(this)}
+                />
+                <TestPanel
+                    id='test_panel'
                 />
             </View>
         )

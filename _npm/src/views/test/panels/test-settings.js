@@ -1,5 +1,5 @@
 import * as React from "react";
-import {CellButton, Group, List, PanelHeader, Button, Panel} from "@vkontakte/vkui";
+import {CellButton, Group, List, PanelHeader, Button, Panel, Div} from "@vkontakte/vkui";
 
 import {BaseComponent} from "../../../base";
 
@@ -15,13 +15,13 @@ class TestSettings extends BaseComponent {
                 <PanelHeader>
                     Настройка теста
                 </PanelHeader>
-                <div align="center">
+                <Div align="center">
                     <Button
                         onClick = {this.onStartTestClick.bind(this)}
                     >
                         Start
                     </Button>
-                </div>
+                </Div>
             </Panel>
         )
     }
