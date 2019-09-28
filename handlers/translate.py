@@ -3,7 +3,7 @@ import json
 from translator.translator import Translator
 
 
-class TranslateHanlder(BaseHandler):
+class TranslateHandler(BaseHandler):
     def post(self):
         data = json.loads(self.request.body)
         word = data['word']

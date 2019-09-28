@@ -41,7 +41,7 @@ class Words extends BaseComponent {
 
 class DictPanel extends BaseComponent {
     onAdding() {
-        this.props.onWordAddingClick();
+        this.props.onWordChoosingClick();
     }
 
     render() {

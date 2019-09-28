@@ -19,7 +19,7 @@ class Translator:
         for word in words:
             key = word[0]
             value = word[1]
-            if not key in result:
+            if key not in result:
                 result[key] = []
             result[key].append(value)
         return result

@@ -1,6 +1,28 @@
+import json
+import logging
+
 import tornado.web
 
 from handlers.base import BaseHandler
+
+
+class MockTranslateHandler(BaseHandler):
+    def get(self):
+        self.post()
+
+    def post(self):
+        self.write(json.dumps({
+            'result': 'ok',
+            'data': {
+                'word': 'test',
+                'translations': {
+                    'nouns': ['стол'],
+                    'verbs': ['писать'],
+                    'adjectives': ['красный'],
+                    'adverbs': ['громко']
+                }
+            }
+        }))
 
 
 class MockWordsHandler(BaseHandler):
@@ -26,6 +48,22 @@ class MockWordsHandler(BaseHandler):
                     }
                 }
             ]
+        })
+
+    def post(self):
+        user_id = self._extract_user_id()
+        data = json.loads(self.request.body)
+
+        logging.warning(data['word'])
+        logging.warning(data['translations'])
+
+        # expecting:
+        # data['word']
+        # data['translations']
+        # translations = {nouns: [], verbs:[], ...} как везде
+
+        self.finish({
+            'result': 'ok'
         })
 
 

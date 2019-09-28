@@ -14,7 +14,7 @@ class App extends BaseComponent {
         super(props);
 
         this.state = {
-            activeView: 'test_view'
+            activeView: 'dict_view'
         }
     }
 
