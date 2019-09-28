@@ -4,17 +4,24 @@ server_md = MetaData()
 
 Table(
     'user', server_md,
-    Column('user_id', INTEGER, nullable=False, autoincrement=True, primary_key=True),
-
-    # created_ts ?
-    # deleted_ts ?
+    Column('id', INTEGER, nullable=False, autoincrement=True, primary_key=True),
 )
 
 Table(
     'words', server_md,
-    Column('user_id', INTEGER, ForeignKey("user.user_id", onupdate="CASCADE", ondelete="CASCADE"), nullable=False),
-    Column('word', TEXT, nullable=False),
+    Column('id', INTEGER, nullable=False, autoincrement=True, primary_key=True),
+    Column('user_id', INTEGER, nullable=False),
     Column('raw_data', TEXT, nullable=True),
 
-    PrimaryKeyConstraint('user_id', 'word', name=f'pk_words_t_id')
+    ForeignKeyConstraint(['user_id'], ['user.id'], onupdate="CASCADE", ondelete="CASCADE")
+)
+
+Table(
+    'token', server_md,
+    Column('id', INTEGER, nullable=False, autoincrement=True, primary_key=True),
+    Column('user_id', INTEGER, nullable=False, unique=True),
+    Column('value', TEXT, nullable=False),
+    Column('expires_ts', TIMESTAMP, nullable=True),  # null = unexpired
+
+    ForeignKeyConstraint(['user_id'], ['user.id'], onupdate="CASCADE", ondelete="CASCADE")
 )

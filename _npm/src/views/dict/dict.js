@@ -29,7 +29,7 @@ class DictView extends BaseComponent {
     }
 
     onWordClick(word) {
-        this.log('Selected a word ' + word);
+        this.log('Selected a word ' + JSON.stringify(word));
 
         this.setState({
             selectedWord: word
@@ -43,7 +43,7 @@ class DictView extends BaseComponent {
                 <DictPanel
                     id='dict_panel'
                     onWordAddingClick={this.onWordAddingClick.bind(this)}
-                    onWordClick={(word) => this.onWordClick(word).bind(this)}/>
+                    onWordClick={(word) => this.onWordClick(word)}/>
                 <WordAddingPanel id='word_adding_panel'/>
                 <WordPanel id='word_panel' data={this.state.selectedWord} />
 

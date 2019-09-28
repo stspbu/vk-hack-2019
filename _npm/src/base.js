@@ -38,7 +38,8 @@ class DataLoader extends BaseComponent {
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
-                'X-SDict-VkSign': window.vkSign
+                'X-SDict-User-Id': window.sdUserId,
+                'X-SDict-Token': window.sdToken
             },
             method: this.props.method,
             body: this.state.requestData ? JSON.stringify(this.state.requestData) : null
@@ -60,7 +61,7 @@ class DataLoader extends BaseComponent {
     }
 
     onRequestSuccess(data) {
-        this.log('successful request with data = ' + data);
+        this.log('successful request with data = ' + JSON.stringify(data));
 
         this.setState({
             isLoaded: true,
@@ -69,7 +70,7 @@ class DataLoader extends BaseComponent {
     }
 
     onRequestError(error) {
-        this.log('error + ' + error);
+        this.log('error + ' + JSON.stringify(error));
 
         this.setState({
             isLoaded: true,
