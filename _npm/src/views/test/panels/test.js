@@ -1,14 +1,21 @@
 import * as React from "react";
-import {CellButton, Group, List, PanelHeader, HeaderButton, Panel} from "@vkontakte/vkui";
+import {CellButton, Group, List, PanelHeader, HeaderButton, Panel, Radio, Div, FormLayout} from "@vkontakte/vkui";
 
 import {BaseComponent, DataLoader} from "../../../base";
+
+const test_words = [
+    {'answer': 0, 'word': 'hi', 'variants': ['привет', 'пока', 'здравствуй', 'да']},
+    {'answer': 1, 'word': 'fuck', 'variants': ['привет', 'пока', 'здравствуй', 'да']}
+]
+
 
 class Tasks extends BaseComponent {
     constructor(props) {
         super(props);
 
         this.state = {
-            words: this.props.data
+            // words: this.props.data // words server
+            words: test_words
         };
     }
     render() {
@@ -17,9 +24,25 @@ class Tasks extends BaseComponent {
                 <List>
                     {
                         this.state.words.map((word) =>
-                            <CellButton level='primary'>
-                                {word.word}
-                            </CellButton>
+                            <FormLayout>
+                                <Div>
+                                    <Div>
+                                        {word.word}
+                                    </Div>
+                                    <Radio name="radio" value="1">
+                                        {word.variants[0]}
+                                    </Radio>
+                                    <Radio name="radio" value="1">
+                                        {word.variants[1]}
+                                    </Radio>
+                                    <Radio name="radio" value="1">
+                                        {word.variants[2]}
+                                    </Radio>
+                                    <Radio name="radio" value="1">
+                                        {word.variants[3]}
+                                    </Radio>
+                                </Div>
+                            </FormLayout>
                     )}
                 </List>
             </Group>
@@ -35,12 +58,14 @@ class TestPanel extends BaseComponent {
                 <PanelHeader>
                     Тест
                 </PanelHeader>
-                <DataLoader
-                    endpoint='/tests/'
-                    loaded={
-                        (data) => <Tasks data={data}/>
-                    }
-                    method="GET"/>
+                <Tasks/>
+                //words from server
+                {/*<DataLoader*/}
+                    {/*endpoint='/tests/'*/}
+                    {/*loaded={*/}
+                        {/*(data) => <Tasks data={data}/>*/}
+                    {/*}*/}
+                    {/*method="GET"/>*/}
             </Panel>
         )
     }
