@@ -1,11 +1,1 @@
-Dog
-Puppy
-Turtle
-Rabbit
-Parrot
-Cat
-Kitten
-Goldfish
-Mouse
-Tropical fish
-Hamster
+{"avatar": "", "description": "", "data": [{"word": "Dog", "translations": {"nouns": "\u0441\u043e\u0431\u0430\u043a\u0430"}}, {"word": "Puppy", "translations": {"nouns": "\u0449\u0435\u043d\u043e\u043a"}}, {"word": "Turtle", "translations": {"nouns": "\u0447\u0435\u0440\u0435\u043f\u0430\u0445\u0430"}}, {"word": "Rabbit", "translations": {"nouns": "\u043a\u0440\u043e\u043b\u0438\u043a"}}, {"word": "Parrot", "translations": {"nouns": "\u043f\u043e\u043f\u0443\u0433\u0430\u0439"}}, {"word": "Cat", "translations": {"nouns": "\u043a\u043e\u0448\u043a\u0430"}}, {"word": "Kitten", "translations": {"nouns": "\u043a\u043e\u0442\u0435\u043d\u043e\u043a"}}, {"word": "Goldfish", "translations": {"nouns": "\u0417\u043e\u043b\u043e\u0442\u0430\u044f \u0440\u044b\u0431\u043a\u0430"}}, {"word": "Mouse", "translations": {"nouns": "\u043c\u044b\u0448\u044c"}}, {"word": "Tropical fish", "translations": {"nouns": "\u0442\u0440\u043e\u043f\u0438\u0447\u0435\u0441\u043a\u0430\u044f \u0440\u044b\u0431\u0430"}}, {"word": "Hamster", "translations": {"nouns": "\u0445\u043e\u043c\u044f\u043a"}}]}
