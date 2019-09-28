@@ -14,7 +14,7 @@ class Translator:
         json = requests.get(url, params).json()
         words = []
         for from_meaning in json['def']:
-            words += [(meaning['pos'], meaning['text']) for meaning in from_meaning['tr']]
+            words += [(meaning['pos'], meaning['text']) for meaning in from_meaning['tr'] if 'pos' in meaning]
         result = {}
         for word in words:
             key = word[0]

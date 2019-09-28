@@ -12,6 +12,7 @@ from handlers.index import MainHandler
 from handlers.words import WordsHanlder
 from handlers.translate import TranslateHanlder
 from handlers.admin import AdminHandler
+from handlers.word_testing import TestingHanlder
 
 define('port', default=11888, help='run on the given port', type=int)
 
@@ -23,7 +24,7 @@ class Application(tornado.web.Application):
             (r"/admin/", AdminHandler),
             (r"/words/", MockWordsHandler),
             (r"/translate/", TranslateHanlder),
-            (r"/tests", MockTestsHandler)
+            (r"/tests/", TestingHanlder)
         ]
 
         settings = dict(

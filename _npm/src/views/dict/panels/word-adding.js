@@ -14,6 +14,10 @@ class WordAddingPanel extends BaseComponent {
         }
     }
 
+    goBack() {
+        this.props.goBack()
+    }
+
     onChange(e) {
         let word = e.target.value;
         this.log('On change a word: ' + word);
@@ -43,7 +47,7 @@ class WordAddingPanel extends BaseComponent {
         return (
             <Panel id="word_adding_panel">
                 <PanelHeader
-                    left={<HeaderButton><Icon24Back/></HeaderButton>}>
+                    left={<HeaderButton onClick={this.goBack.bind(this)}><Icon24Back/></HeaderButton>}>
                     Добавление слова
                 </PanelHeader>
                 <Input value={this.state.word} onChange={this.onChange.bind(this)}/>
