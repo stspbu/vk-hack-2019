@@ -24,7 +24,8 @@ class WordAddingPanel extends BaseComponent {
     }
 
     onClick() {
-        var data = {word: this.state.word};
+        // TODO for Vadim
+        var data = {'word': this.state.word};
         console.log(data)
 
         fetch('https://vkhack19.com:11888/translate/', {
