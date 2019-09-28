@@ -14,5 +14,4 @@ cp "$DIST_DIR/$CSS_BUNDLE" "$CSS_DIR/$CSS_BUNDLE";
 
 echo "npm build completed, starting python server"
 
-source "venv/bin/activate"
-python server.py
+./venv/bin/python server.py

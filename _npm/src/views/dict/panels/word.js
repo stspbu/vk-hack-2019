@@ -1,5 +1,7 @@
 import React from 'react'
-import {Panel, PanelHeader, Group, List, Cell} from "@vkontakte/vkui";
+import {Panel, PanelHeader, Group, List, Cell, HeaderButton} from "@vkontakte/vkui";
+
+import Icon24Back from '@vkontakte/icons/dist/24/back';
 
 import {BaseComponent} from "../../../base";
 
@@ -17,6 +19,10 @@ class WordPanel extends BaseComponent {
         this.state = {
             data: this.props.data
         }
+    }
+
+    goBack() {
+        this.props.goBack()
     }
 
     makeTranslationGroup(speechPart, arr) {
@@ -37,7 +43,8 @@ class WordPanel extends BaseComponent {
 
         return (
             <Panel id='word_panel'>
-                <PanelHeader>
+                <PanelHeader
+                    left={<HeaderButton onClick={this.goBack.bind(this)}><Icon24Back/></HeaderButton>}>
                     Слово {this.state.data.word}
                 </PanelHeader>
                 {
