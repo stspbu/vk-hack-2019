@@ -41,4 +41,4 @@ class AdminHandler(tornado.web.RequestHandler):
 
             self.write({'result': 'ok'})
         else:
-            self.send_error(400, reason='disable for not testing mod')
+            self.write({'error': 'disabled'})

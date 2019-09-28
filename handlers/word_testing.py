@@ -150,7 +150,7 @@ class TestingHanlder(BaseHandler):
 
         if len(user_words) < 10:
             res = {
-                'error': 'not enough words'
+                'error': 'not-enough-words'
             }
             self.write(json.dumps(res))
             return
@@ -189,7 +189,7 @@ class TestingHanlder(BaseHandler):
             if 'data' not in data or 'test' not in data['data']:
                 logging.warning('incorrect request body')
                 logging.debug(self.request.body)
-                self.send_error(200, reason=json.dumps({'result': 'incorrect format'}))
+                self.write(json.dumps({'error': 'incorrect-format'}))
                 return
             results = data['data']['test']
             user_id = self._extract_user_id()
@@ -200,7 +200,8 @@ class TestingHanlder(BaseHandler):
 
             for res in results:
                 if 'word' not in res or 'is_correct' not in res:
-                    self.send_error(400)
+                    self.write(json.dumps({'error': 'incorrect-format'}))
+                    return
 
             for res in results:
                 word = res['word']
