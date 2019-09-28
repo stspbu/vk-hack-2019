@@ -11,9 +11,7 @@ import db
 from db import get_table
 from handlers.base import BaseHandler
 from sd_tokens import token_issuer
-
-
-client_secret = 'PqwFekrI1arHHZwXKk1w'  # TODO: move to settings
+from settings import settings
 
 
 class MainHandler(BaseHandler):
@@ -23,7 +21,7 @@ class MainHandler(BaseHandler):
     def prepare(self):
         logging.warning(self.request.arguments)
         vk_subset = OrderedDict(sorted(x for x in self.request.arguments.items() if x[0][:3] == "vk_"))
-        hash_code = base64.b64encode(HMAC(client_secret.encode(), urlencode(vk_subset, doseq=True).encode(), sha256).digest())
+        hash_code = base64.b64encode(HMAC(settings['SECRET_KEY'].encode(), urlencode(vk_subset, doseq=True).encode(), sha256).digest())
         decoded_hash_code = hash_code.decode('utf-8')[:-1].replace('+', '-').replace('/', '_')
 
         vk_sign = self.get_argument('sign')

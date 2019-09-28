@@ -1,8 +1,6 @@
 import tornado.web
 from sd_tokens import token_issuer
 
-client_secret = 'PqwFekrI1arHHZwXKk1w'  # TODO: move to settings
-
 required_headers = ['X-SDict-User-Id', 'X-SDict-Token']
 
 
