@@ -1,5 +1,7 @@
 import logging
+import logging.config
 import os
+import json
 
 import tornado.ioloop
 import tornado.web
@@ -13,6 +15,7 @@ from handlers.words import WordsHanlder
 from handlers.translate import TranslateHandler
 from handlers.admin import AdminHandler
 from handlers.word_testing import TestingHanlder
+from settings import settings
 
 define('port', default=11888, help='run on the given port', type=int)
 
@@ -36,6 +39,10 @@ class Application(tornado.web.Application):
 
 
 if __name__ == '__main__':
+    with open('logging_config.json') as f_in:
+        logging.config.DictConfigurator(json.load(f_in))
+    logging.basicConfig(level=settings['LOG_LEVEL'])
+
     http_server = tornado.httpserver.HTTPServer(Application(), ssl_options={
         'certfile': os.path.join(os.path.realpath('.'), 'cert/server.crt'),
         'keyfile': os.path.join(os.path.realpath('.'), 'cert/server.key')

@@ -7,8 +7,6 @@ import random
 import requests
 import logging
 
-from db import get_table
-
 
 class TestingHanlder(BaseHandler):
 
@@ -58,7 +56,7 @@ class TestingHanlder(BaseHandler):
             }
             self.write(json.dumps(res))
             return
-        logging.warning(len(user_words))
+
         if len(user_words) < 10:
             res = {
                 'error': 'not enough words'
@@ -97,4 +95,5 @@ class TestingHanlder(BaseHandler):
             })
 
         res['result'] = 'ok'
+        logging.info(f'send answer to test {res}')
         self.write(json.dumps(res))

@@ -1,3 +1,6 @@
+import logging
+
+
 settings = {
     'DB_TYPE': 'postgresql',
     'DB_USER': 'postgres',
@@ -5,7 +8,9 @@ settings = {
     'DB_HOST': 'localhost',
     'DB_PORT': '5432',
     'DB_NAME': 'sdict',
-    'SECRET_KEY': 'PqwFekrI1arHHZwXKk1w'
+    'SECRET_KEY': 'PqwFekrI1arHHZwXKk1w',
+    'LOG_LEVEL': logging.INFO,
+    'TEST_MODE': True,
 }
 
 try:

@@ -1,9 +1,6 @@
 import tornado.web
 from sd_tokens import token_issuer
-
-TEST_MODE = True
-TEST_USER_ID = '513839253'
-TEST_TOKEN = '9395c31338764a3290e54be7422dc222'
+from settings import settings
 
 required_headers = ['X-SDict-User-Id', 'X-SDict-Token']
 
@@ -23,15 +20,14 @@ class BaseHandler(tornado.web.RequestHandler):
                     if not error:
                         error = 'required headers: '
                     error += header + ', '
-            if error and not TEST_MODE:
+            if error:
                 self.send_error(400, reason=error)
 
-            if not TEST_MODE:
-                user_id = int(self.request.headers['X-SDict-User-Id'])
-                token = self.request.headers['X-SDict-Token']
-            else:
-                user_id = int(TEST_USER_ID)
-                token = TEST_TOKEN
+            if settings['TEST_MODE']:
+                return
+
+            user_id = int(self.request.headers['X-SDict-User-Id'])
+            token = self.request.headers['X-SDict-Token']
 
             if token_issuer.get_token(user_id) != token:
                 self.send_error(403)
