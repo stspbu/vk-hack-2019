@@ -203,6 +203,8 @@ class TestingHanlder(BaseHandler):
                     self.write(json.dumps({'error': 'incorrect-format'}))
                     return
 
+            # todo add transaction
+
             for res in results:
                 word = res['word']
                 correct = res['is_correct']

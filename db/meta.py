@@ -37,3 +37,11 @@ Table(
 
     ForeignKeyConstraint(['user_id'], ['user.id'], onupdate="CASCADE", ondelete="CASCADE")
 )
+
+Table(
+    'word_package', server_md,
+    Column('id', INTEGER, nullable=False, autoincrement=True, primary_key=True),
+    Column('name', TEXT, nullable=False, unique=True),
+    Column('avatar', TEXT, nullable=False),
+    Column('words', TEXT, nullable=False)
+)
