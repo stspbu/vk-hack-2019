@@ -3,6 +3,8 @@ import {CellButton, Group, List, PanelHeader, HeaderButton, Panel, Radio, Div, F
 
 import {BaseComponent, DataLoader} from "../../../base";
 
+import Icon24Back from '@vkontakte/icons/dist/24/back';
+
 const test_words = [
     {'answer': 0, 'word': 'hi', 'variants': ['привет', 'пока', 'здравствуй', 'да']},
     {'answer': 1, 'word': 'fuck', 'variants': ['привет', 'пока', 'здравствуй', 'да']}
