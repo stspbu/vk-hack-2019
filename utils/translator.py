@@ -1,6 +1,9 @@
 import functools
 import requests
 
+from settings import settings
+
+
 class Translator:
     @functools.lru_cache(None)
     def translate(self, word, language='en-ru'):
@@ -8,7 +11,7 @@ class Translator:
             'lang': language,
             'text': word,
             'option': '0x0002',
-            'key': 'dict.1.1.20190707T212740Z.63c69eb98eae973c.d4e03018461eaac7cfb1187cb9f7fbdc5ac8d4f8'
+            'key': settings['YANDEX_DICTINARY_TOKEN']
         }
         url = 'https://dictionary.yandex.net/api/v1/dicservice.json/lookup'
         json = requests.get(url, params).json()

@@ -2,12 +2,10 @@ from handlers.base import BaseHandler
 import json
 import db
 from  sqlalchemy.sql.expression import func
-from translator.translator import Translator
+from utils.translator import Translator
 import random
 import requests
 import logging
-
-from db import get_table
 
 
 class TestingHanlder(BaseHandler):
@@ -16,7 +14,7 @@ class TestingHanlder(BaseHandler):
         user_words = list()
         all_user_translations = list()
         with db.get_connection() as conn:
-            user_id = int(self.request.headers['X-SDict-User-Id'])
+            user_id = self._extract_user_id()
 
             words_t = db.get_table('words')
             query = words_t.select(words_t.c.user_id == user_id).order_by(func.random())
@@ -26,7 +24,7 @@ class TestingHanlder(BaseHandler):
                     break
                 if 'raw_data' not in t or not t['raw_data']:
                     continue
-                for _, vals in json.loads(t['raw_data']).items():
+                for _, vals in json.loads(t['raw_data'])['translations'].items():
                     translates = list()
                     for elem in vals:
                         translates.append(elem)
@@ -58,7 +56,7 @@ class TestingHanlder(BaseHandler):
             }
             self.write(json.dumps(res))
             return
-        logging.warning(len(user_words))
+
         if len(user_words) < 10:
             res = {
                 'error': 'not enough words'
@@ -97,4 +95,5 @@ class TestingHanlder(BaseHandler):
             })
 
         res['result'] = 'ok'
+        logging.info(f'send answer to test {res}')
         self.write(json.dumps(res))
