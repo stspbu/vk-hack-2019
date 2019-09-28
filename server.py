@@ -11,7 +11,7 @@ from tornado.options import define, options
 import db
 from db.meta import server_md
 
-from handlers.mock import MockWordsHandler, MockTestsHandler, MockTranslateHandler
+from handlers.mock import MockWordsHandler, MockTestsHandler, MockTranslateHandler, MockPackageHanlder, MockGetPackagesHanlder
 
 from handlers.index import MainHandler
 from handlers.words import WordsHanlder
@@ -34,6 +34,8 @@ class Application(tornado.web.Application):
             (r"/admin/", AdminHandler),
             (r"/words/", WordsHanlder),
             (r"/translate/", TranslateHandler),
+            (r"/packages/", MockGetPackagesHanlder),
+            (r"/package/", MockPackageHanlder),
             (r"/tests/", TestingHanlder)
         ]
 
