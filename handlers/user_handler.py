@@ -42,6 +42,15 @@ class UserHanlder(BaseHandler):
             else:
                 percent = correct/(correct + wrong)
 
+        logging.debug({
+            'result': 'ok',
+            'data': {
+                'all_words': word_sum,
+                'known_words': known_words_cnt,
+                'rating': int(known_words_cnt*percent*100)
+            }
+        })
+
         self.write(json.dumps({
             'result': 'ok',
             'data': {
