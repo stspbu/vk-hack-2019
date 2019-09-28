@@ -49,7 +49,7 @@ class DataLoader extends BaseComponent {
 
             endpoint: props.endpoint || '/',
             method: props.method || 'GET',
-            requestData: props.data || null
+            requestData: props.requestData || null
         }
     }
 

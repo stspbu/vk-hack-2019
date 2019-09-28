@@ -14,7 +14,7 @@ from db.meta import server_md
 from handlers.mock import MockWordsHandler, MockTestsHandler, MockTranslateHandler, MockPackageHanlder, MockGetPackagesHanlder
 
 from handlers.index import MainHandler
-from handlers.words import WordsHanlder
+from handlers.words import WordsHandler
 from handlers.translate import TranslateHandler
 from handlers.admin import AdminHandler
 from handlers.word_testing import TestingHanlder
@@ -32,7 +32,7 @@ class Application(tornado.web.Application):
         handlers = [
             (r"/", MainHandler),
             (r"/admin/", AdminHandler),
-            (r"/words/", WordsHanlder),
+            (r"/words/", WordsHandler),
             (r"/translate/", TranslateHandler),
             (r"/packages/", MockGetPackagesHanlder),
             (r"/package/", MockPackageHanlder),
