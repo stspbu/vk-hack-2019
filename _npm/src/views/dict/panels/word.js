@@ -18,8 +18,12 @@ class WordPanel extends BaseComponent {
         this.props.goBack()
     }
 
-    makeTranslationGroup(speechPart, arr) {
+    showTranslationGroup(speechPart, arr) {
         this.log('Generating translation group for ' + speechPart + ' : ' + JSON.stringify(arr));
+
+        if (!arr.length) {
+            return null;
+        }
 
         return (
             <Group title={speechPartToTitle[speechPart]}>
@@ -41,7 +45,7 @@ class WordPanel extends BaseComponent {
                 </PanelHeader>
                 {
                     possibleSpeechParts.map((p) =>
-                        translations[p] ? this.makeTranslationGroup(p, translations[p]) : ''
+                        translations[p] ? this.showTranslationGroup(p, translations[p]) : ''
                     )
                 }
             </Panel>);
