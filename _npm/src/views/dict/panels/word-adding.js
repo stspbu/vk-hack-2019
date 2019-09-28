@@ -1,11 +1,9 @@
 import * as React from "react";
 import {BaseComponent} from "../../../base";
-import Bar from "../../../bar";
 import {Panel, PanelHeader, HeaderButton, Input, Button, Div} from "@vkontakte/vkui";
 
 import Icon24Back from '@vkontakte/icons/dist/24/back';
-
-
+import Bar from '../../../bar';
 
 class WordAddingPanel extends BaseComponent {
     constructor(props) {

@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import connect from '@vkontakte/vk-connect'
-import {Root} from '@vkontakte/vkui'
+import {Root, FixedLayout, Tabs, TabsItem, Panel, View} from '@vkontakte/vkui'
 
 import {BaseComponent} from "./base";
 import DictView from './views/dict/dict'
@@ -13,7 +13,8 @@ class App extends BaseComponent {
         super(props);
 
         this.state = {
-            activeView: 'dict_view'
+            activeView: 'dict_view',
+            activeTab: 'dict'
         }
     }
 

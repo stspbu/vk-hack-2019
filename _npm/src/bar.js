@@ -1,5 +1,5 @@
 import React from "react";
-import {Root, FixedLayout, Tabs, TabsItem, Panel, View} from '@vkontakte/vkui'
+import {FixedLayout, Tabs, TabsItem} from '@vkontakte/vkui'
 
 require('./styles/styles.css');
 
