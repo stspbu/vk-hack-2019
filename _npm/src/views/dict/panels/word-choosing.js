@@ -3,7 +3,6 @@ import {BaseComponent} from "../../../base";
 import {Panel, PanelHeader, HeaderButton, Input, Button, Div} from "@vkontakte/vkui";
 
 import Icon24Back from '@vkontakte/icons/dist/24/back';
-import Tabs from '../../../tabs';
 
 class WordChoosingPanel extends BaseComponent {
     constructor(props) {
@@ -46,7 +45,6 @@ class WordChoosingPanel extends BaseComponent {
                         Продолжить
                     </Button>
                 </Div>
-                <Tabs/>
             </Panel>
         )
     }

@@ -186,12 +186,13 @@ class TestingHanlder(BaseHandler):
     def post(self):
         with db.get_connection() as conn:
             data = json.loads(self.request.body)
-            if 'data' not in data or 'test' not in data['data']:
+            if 'test' not in data:
                 logging.warning('incorrect request body')
                 logging.debug(self.request.body)
                 self.write(json.dumps({'error': 'incorrect-format'}))
                 return
-            results = data['data']['test']
+
+            results = data['test']
             user_id = self._extract_user_id()
             correct_sum = 0
             wrong_sum = 0

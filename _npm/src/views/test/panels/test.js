@@ -116,7 +116,7 @@ class TestPanel extends BaseComponent {
     }
 
     goBack() {
-        // TODO
+        this.props.goBack();
     }
 
     render() {
@@ -132,6 +132,18 @@ class TestPanel extends BaseComponent {
                     endpoint='/tests/'
                     loaded={
                         (data) => <Test data={data} onTestFinished={this.onTestFinished.bind(this)} />
+                    }
+                    failed={
+                        (error) => (
+                            error === 'not-enough-words' ?
+                                <Div>
+                                    Необходимо добавить как минимум 10 слов
+                                    для возможности проходить данный тест!
+                                </Div>  :
+                                <Div>
+                                    Что-то пошло не так...
+                                </Div>
+                        )
                     }
                     method="GET"
                 />

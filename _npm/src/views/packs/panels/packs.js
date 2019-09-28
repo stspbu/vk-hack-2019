@@ -1,45 +1,43 @@
+import React from 'react'
 import {BaseComponent, DataLoader} from "../../../base";
-import {Cell, CellButton, Group, HeaderButton, List, Panel, PanelHeader, View} from "@vkontakte/vkui";
+import {Cell, PanelHeader, Group, List, Panel, View} from "@vkontakte/vkui";
 
 
-class Pack extends BaseComponent {
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            data: this.props.data
-        };
-    }
-
-    render() {
-        return (
-            <Group title=''>
-                <List>
-                    <Cell>{data.id}</Cell>
-                    <Cell>{data.name}</Cell>
-                    <Cell>{data.avatar}</Cell>
-                </List>
-            </Group>
-        )
-    }
-}
+// class Pack extends BaseComponent {
+//     constructor(props) {
+//         super(props);
+//
+//         this.state = {
+//             data: this.props.data
+//         };
+//     }
+//
+//     render() {
+//         return (
+//             <Group title=''>
+//                 <List>
+//                     <Cell>{data.id}</Cell>
+//                     <Cell>{data.name}</Cell>
+//                     <Cell>{data.avatar}</Cell>
+//                 </List>
+//             </Group>
+//         )
+//     }
+// }
 
 class PacksPanel extends BaseComponent {
     constructor(props) {
         super(props);
-
-        this.state = {
-        };
     }
 
     render() {
         return (
-            <Panel id="packs_panel">
+            <Panel id='packs_panel'>
                 <PanelHeader>
-                    Пакеты слов
+                    Наборы слов
                 </PanelHeader>
                 <DataLoader
-                    endpoint='/packages/'
+                    endpoint='/packs/'
                     loaded={
                         (data) => <Pack data={data} />
                     }

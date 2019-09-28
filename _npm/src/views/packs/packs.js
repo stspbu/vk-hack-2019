@@ -12,6 +12,7 @@ class PackView extends BaseComponent {
 
         this.state = {
             activePanel: 'packs_panel',
+            history: ['packs_panel']
         }
     }
 
@@ -36,10 +37,8 @@ class PackView extends BaseComponent {
 
     render() {
         return (
-            <View id='pack_view' activePanel={this.state.activePanel}>
-                <PacksPanel
-                    id='packs_panel'
-                />
+            <View id='packs_view' activePanel={this.state.activePanel}>
+                <PacksPanel id='packs_panel' />
             </View>
         )
     }

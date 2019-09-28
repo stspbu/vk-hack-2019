@@ -17,10 +17,20 @@ class UserHanlder(BaseHandler):
             word_sum = conn.execute(query).fetchone()[0]
             logging.debug(word_sum)
 
-            query = query.where(words_t.c.correct_tested + words_t.c.wrong_tested > 0).\
-                where(words_t.c.correct_tested/(words_t.c.correct_tested + words_t.c.wrong_tested) > 0.8)
-            known_word_sum = conn.execute(query).fetchone()[0]
-            logging.debug(known_word_sum)
+            query = sa.select([words_t]).select_from(words_t).where(
+                words_t.c.correct_tested + words_t.c.wrong_tested > 0
+            )
+            rows = conn.execute(query).fetchall()
+
+            known_words_cnt = 0
+            for row in rows:
+                right_cnt = row[words_t.c.correct_tested]
+                cnt = row[words_t.c.correct_tested] + row[words_t.c.wrong_tested]
+
+                if right_cnt / cnt > 0.8:
+                    known_words_cnt += 1
+
+            logging.debug(known_words_cnt)
 
             users_t = db.get_table('user')
 
@@ -33,9 +43,11 @@ class UserHanlder(BaseHandler):
                 percent = correct/(correct + wrong)
 
         self.write(json.dumps({
-            "result": "ok",
-            "all_words": word_sum,
-            "known_words": known_word_sum,
-            "rating": known_word_sum*percent
+            'result': 'ok',
+            'data': {
+                'all_words': word_sum,
+                'known_words': known_words_cnt,
+                'rating': int(known_words_cnt*percent*100)
+            }
         }))
 

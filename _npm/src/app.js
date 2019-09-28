@@ -16,7 +16,7 @@ class App extends BaseComponent {
         super(props);
 
         this.state = {
-            activeView: 'dict_view'
+            activeView: 'profile_view'
         }
     }
 
@@ -29,6 +29,7 @@ class App extends BaseComponent {
     render() {
         return (
             <Root activeView={this.state.activeView}>
+                <ProfileView id="profile_view" onTabChanged={this.onTabChanged.bind(this)}/>
                 <DictView id="dict_view" onTabChanged={this.onTabChanged.bind(this)}/>
                 <TestView id="test_view" onTabChanged={this.onTabChanged.bind(this)}/>
                 <PackView id="packs_view" onTabChanged={this.onTabChanged.bind(this)}/>
@@ -38,6 +39,4 @@ class App extends BaseComponent {
 }
 
 connect.send('VKWebAppInit', {});
-// connect.send('VKWebAppGetUserInfo', {});
-
 ReactDOM.render(<App/>, document.getElementById('root'));

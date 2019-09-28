@@ -85,7 +85,7 @@ class DataLoader extends BaseComponent {
                     if (responseData && responseData.result === 'ok') {
                         onRequestSuccess && onRequestSuccess(responseData.data);
                     } else {
-                        onRequestError && onRequestError('unknown');
+                        onRequestError && onRequestError(responseData.error || 'unknown');
                     }
                 },
                 (error) => {
@@ -115,7 +115,11 @@ class DataLoader extends BaseComponent {
 
     render() {
         if (this.state.isLoaded) {
-            return (<div>{this.props.loaded(this.state.data)}</div>);
+            if (!this.state.error) {
+                return this.props.loaded(this.state.data);
+            } else {
+                return this.props.failed(this.state.error);
+            }
         } else {
             return (<ScreenSpinner/>);
         }

@@ -5,6 +5,11 @@ require('./styles/styles.css');
 
 const availableTabs = [
     {
+        'id': 'profile',
+        'content': 'Профиль',
+        'view': 'profile_view'
+    },
+    {
         'id': 'dict',
         'content': 'Словарь',
         'view': 'dict_view'
@@ -13,6 +18,11 @@ const availableTabs = [
         'id': 'test',
         'content': 'Тесты',
         'view': 'test_view'
+    },
+    {
+        'id': 'packs',
+        'content': 'Наборы',
+        'view': 'packs_view'
     }
 ];
 

@@ -6,6 +6,9 @@ from db.meta import server_md
 from settings import settings
 
 
+TEST_ID = 513839253
+
+
 class AdminHandler(tornado.web.RequestHandler):
     def get(self):
         if settings['TEST_MODE']:
@@ -15,6 +18,7 @@ class AdminHandler(tornado.web.RequestHandler):
             server_md.create_all(bind=conn)
 
             user_t = db.get_table('user')
+            conn.execute(user_t.insert().values(id=TEST_ID))
             conn.execute(user_t.insert())
             conn.execute(user_t.insert())
             query = user_t.select()
@@ -23,17 +27,17 @@ class AdminHandler(tornado.web.RequestHandler):
             logging.debug('base users added')
 
             words_t = db.get_table('words')
-            conn.execute(words_t.insert(), {'user_id': 1, 'word': 'admin', 'raw_data': '{"translations":{"noun":["админ"]}}'})
-            conn.execute(words_t.insert(), {'user_id': 1, 'word': 'wolf', 'raw_data': '{"translations":{"noun":["волк"]}}'})
-            conn.execute(words_t.insert(), {'user_id': 1, 'word': 'nature', 'raw_data': '{"translations":{"noun":["природа"]}}'})
-            conn.execute(words_t.insert(), {'user_id': 1, 'word': 'internet', 'raw_data': '{"translations":{"noun":["интернет"]}}'})
-            conn.execute(words_t.insert(), {'user_id': 1, 'word': 'computer', 'raw_data': '{"translations":{"noun":["компьютер"]}}'})
-            conn.execute(words_t.insert(), {'user_id': 1, 'word': 'data', 'raw_data': '{"translations":{"noun":["данные"]}}'})
-            conn.execute(words_t.insert(), {'user_id': 1, 'word': 'logic', 'raw_data': '{"translations":{"noun":["логика"]}}'})
-            conn.execute(words_t.insert(), {'user_id': 1, 'word': 'differ', 'raw_data': '{"translations":{"noun":["разница"]}}'})
-            conn.execute(words_t.insert(), {'user_id': 1, 'word': 'clock', 'raw_data': '{"translations":{"noun":["часы"]}}'})
-            conn.execute(words_t.insert(), {'user_id': 1, 'word': 'hackaton', 'raw_data': '{"translations":{"noun":["хакатон"]}}'})
-            query = words_t.select(words_t.c.user_id==1)#.where(words_t.c.user_id==2019)
+            conn.execute(words_t.insert(), {'user_id': TEST_ID, 'word': 'admin', 'raw_data': '{"translations":{"nouns":["админ"]}}'})
+            conn.execute(words_t.insert(), {'user_id': TEST_ID, 'word': 'wolf', 'raw_data': '{"translations":{"nouns":["волк"]}}'})
+            conn.execute(words_t.insert(), {'user_id': TEST_ID, 'word': 'nature', 'raw_data': '{"translations":{"nouns":["природа"]}}'})
+            conn.execute(words_t.insert(), {'user_id': TEST_ID, 'word': 'internet', 'raw_data': '{"translations":{"nouns":["интернет"]}}'})
+            conn.execute(words_t.insert(), {'user_id': TEST_ID, 'word': 'computer', 'raw_data': '{"translations":{"nouns":["компьютер"]}}'})
+            conn.execute(words_t.insert(), {'user_id': TEST_ID, 'word': 'data', 'raw_data': '{"translations":{"nouns":["данные"]}}'})
+            conn.execute(words_t.insert(), {'user_id': TEST_ID, 'word': 'logic', 'raw_data': '{"translations":{"nouns":["логика"]}}'})
+            conn.execute(words_t.insert(), {'user_id': TEST_ID, 'word': 'differ', 'raw_data': '{"translations":{"nouns":["разница"]}}'})
+            conn.execute(words_t.insert(), {'user_id': TEST_ID, 'word': 'clock', 'raw_data': '{"translations":{"nouns":["часы"]}}'})
+            conn.execute(words_t.insert(), {'user_id': TEST_ID, 'word': 'hackaton', 'raw_data': '{"translations":{"nouns":["хакатон"]}}'})
+            query = words_t.select(words_t.c.user_id == TEST_ID)#.where(words_t.c.user_id==2019)
             for t in conn.execute(query):
                 logging.debug(t)
             logging.debug('step2')

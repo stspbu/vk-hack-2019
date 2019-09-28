@@ -1,7 +1,7 @@
 import * as React from "react";
 import {Group, List, PanelHeader, HeaderButton, Panel, Radio, Div, FormLayout, Button} from "@vkontakte/vkui";
 
-import {BaseComponent, getRussianPluralText} from "../../../base";
+import {BaseComponent, getRussianPluralText, DataLoader} from "../../../base";
 
 class TaskFinishedPanel extends BaseComponent {
     constructor(props) {
@@ -10,7 +10,27 @@ class TaskFinishedPanel extends BaseComponent {
         this.state = {
             tasks: props.tasks,
             taskIndexToAnswer: props.taskIndexToAnswer
-        }
+        };
+
+        this.sendResult();
+    }
+
+    sendResult() {
+        let test = [];
+        this.state.tasks.map((task, index) => {
+            test.push({
+                word: task.word,
+                is_correct: this.state.taskIndexToAnswer[index] == task.answer
+            })
+        });
+
+        DataLoader.doMakeRequest({
+            endpoint: '/tests/',
+            method: 'POST',
+            requestData: {
+                test: test
+            }
+        });
     }
 
     render() {
