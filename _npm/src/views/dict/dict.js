@@ -87,14 +87,6 @@ class DictView extends BaseComponent {
                     data={this.state.selectedWord}
                     goBack={this.goBack.bind(this)}
                 />
-
-                {/*<Panel id='dict_panel'>*/}
-                    {/*<Dict*/}
-                        {/*onWordChoosingClick={this.onWordChoosingClick.bind(this)}*/}
-                        {/*onWordViewClick={this.onWordViewClick.bind(this)}/>*/}
-                {/*</Panel>*/}
-                {/*<Panel id='word_panel'>*/}
-                {/*</Panel>*/}
             </View>
         )
     }
