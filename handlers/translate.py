@@ -25,7 +25,7 @@ class TranslateHandler(BaseHandler):
 
         self.write(json.dumps({
             'result': 'ok',
-            'word_packs': {
+            'data': {
                 'translations': translation
             }
         }))

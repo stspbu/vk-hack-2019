@@ -3,7 +3,7 @@ from utils.translator import Translator
 
 if __name__ == '__main__':
     data = dict()
-    with open('word_packs/nature.json') as f_in:
+    with open('data/nature.json') as f_in:
         data = json.load(f_in)
         print(data)
     tmp = list()
@@ -21,5 +21,5 @@ if __name__ == '__main__':
     #         'translations': tr.translate(elem)
     #     })
     data['data'] = tmp
-    with open('word_packs/nature2.json', 'w+') as f_out:
+    with open('data/nature2.json', 'w+') as f_out:
         f_out.write(json.dumps(data))

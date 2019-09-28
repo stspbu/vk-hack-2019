@@ -6,6 +6,17 @@ import Icon24Back from '@vkontakte/icons/dist/24/back';
 import {BaseComponent, speechPartToTitle, possibleSpeechParts} from "../../../base";
 
 class WordPanel extends BaseComponent {
+    /**
+     * props.data = {
+     *     word: _,
+     *     translations: {
+     *         nouns: [],
+     *         verbs: []
+     *     }
+     * }
+     *
+     * @param props
+     */
     constructor(props) {
         super(props);
 

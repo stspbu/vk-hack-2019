@@ -14,16 +14,11 @@ class TestView extends BaseComponent {
         }
     }
 
-    onTabChanged(newTab) {
-        this.props.onTabChanged(newTab);
-    }
-
     render() {
         return (
             <View id='profile_view' activePanel={this.state.activePanel}>
                 <ProfilePanel
                     id='profile_panel'
-                    onTabChanged={this.onTabChanged.bind(this)}
                 />
             </View>
         )

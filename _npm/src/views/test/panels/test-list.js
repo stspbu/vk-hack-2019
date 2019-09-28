@@ -2,7 +2,6 @@ import * as React from "react";
 import {CellButton, Group, List, PanelHeader, Button, Panel, Div} from "@vkontakte/vkui";
 
 import {BaseComponent, DataLoader} from "../../../base";
-import AppTabs from "../../../tabs";
 
 
 const AvailableTests = [{
@@ -18,10 +17,6 @@ class TestList extends BaseComponent {
     onTestSelected(e) {
         let kind = e.target.dataset.kind;
         this.props.onTestSelected(kind);
-    }
-
-    onTabChanged(newTab) {
-        this.props.onTabChanged(newTab);
     }
 
     render() {
@@ -42,7 +37,6 @@ class TestList extends BaseComponent {
                         )}
                     </List>
                 </Group>
-                <AppTabs onTabChanged={this.onTabChanged.bind(this)} activeTab='test'/>
             </Panel>
         )
     }

@@ -4,7 +4,6 @@ import connect from "@vkontakte/vk-connect"
 import {ScreenSpinner, PanelHeader, Cell, Avatar, Div, Panel} from "@vkontakte/vkui";
 
 import {BaseComponent, DataLoader} from "../../../base";
-import AppTabs from '../../../tabs'
 
 class ProfilePanel extends BaseComponent {
     constructor(props) {
@@ -84,10 +83,6 @@ class ProfilePanel extends BaseComponent {
         this.props.onWordChoosingClick();
     }
 
-    onTabChanged(newTab) {
-        this.props.onTabChanged(newTab);
-    }
-
     render() {
         let content;
         if (this.state.isLoaded) {
@@ -110,7 +105,6 @@ class ProfilePanel extends BaseComponent {
             <Panel id='profile_panel'>
                 <PanelHeader>Профиль</PanelHeader>
                 {content}
-                <AppTabs onTabChanged={this.onTabChanged.bind(this)} activeTab='profile'/>
             </Panel>
         )
     }

@@ -13,7 +13,7 @@ class MockTranslateHandler(BaseHandler):
     def post(self):
         self.write(json.dumps({
             'result': 'ok',
-            'word_packs': {
+            'data': {
                 'word': 'test',
                 'translations': {
                     'nouns': ['стол'],
@@ -29,7 +29,7 @@ class MockWordsHandler(BaseHandler):
     def get(self):
         self.finish({
             'result': 'ok',
-            'word_packs': [
+            'data': [
                 {
                     'id': 1,
                     'word': 'hello',
@@ -58,8 +58,8 @@ class MockWordsHandler(BaseHandler):
         logging.warning(data['translations'])
 
         # expecting:
-        # word_packs['word']
-        # word_packs['translations']
+        # data['word']
+        # data['translations']
         # translations = {nouns: [], verbs:[], ...} как везде
 
         self.finish({
@@ -71,11 +71,23 @@ class MockGetPackagesHanlder(tornado.web.RequestHandler):
     def get(self):
         self.finish({
             'result': 'ok',
-            'word_packs': {
+            'data': {
                 'packs': [
-                    {'package_id': 1, 'name': "Danila's package", 'avatar': 'https://sun9-11.userapi.com/c840625/v840625258/76dcb/S_OqYN_jWO8.jpg'},
-                    {'package_id': 2, 'name': "Nature", 'avatar': 'https://pbs.twimg.com/profile_images/687354253371772928/v9LlvG5N_400x400.jpg'},
-                    {'package_id': 3, 'name': "Space", 'avatar': 'https://pi.tedcdn.com/r/pf.tedcdn.com/images/playlists/how_we_study_space_1957009059.jpg?quality=89&w=256'},
+                    {
+                        'id': 1,
+                        'name': "Danila's package",
+                        'avatar': 'https://sun9-11.userapi.com/c840625/v840625258/76dcb/S_OqYN_jWO8.jpg'
+                    },
+                    {
+                        'id': 2,
+                        'name': "Nature",
+                        'avatar': 'https://pbs.twimg.com/profile_images/687354253371772928/v9LlvG5N_400x400.jpg'
+                    },
+                    {
+                        'id': 3,
+                        'name': "Space",
+                        'avatar': 'https://pi.tedcdn.com/r/pf.tedcdn.com/images/playlists/how_we_study_space_1957009059.jpg?quality=89&w=256'
+                    },
                 ]
             }
         })
@@ -85,7 +97,7 @@ class MockPackageHanlder(tornado.web.RequestHandler):
     def get(self, pack_id):
         self.finish(json.dumps({
             'result': 'ok',
-            'word_packs': {
+            'data': {
                 'pack': {
                     'id': 1,
                     'name': "Danila's package",
@@ -120,5 +132,5 @@ class MockTestsHandler(tornado.web.RequestHandler):
 
         self.finish({
             'result': 'ok',
-            'word_packs': tests
+            'data': tests
         })
