@@ -35,8 +35,8 @@ class Application(tornado.web.Application):
             (r"/admin/", AdminHandler),
             (r"/words/", WordsHandler),
             (r"/translate/", TranslateHandler),
-            (r"/packages/", MockGetPackagesHanlder),
-            (r"/package/", MockPackageHanlder),
+            (r"/packs/", MockGetPackagesHanlder),
+            (r"/packs/(?P<pack_id>[^/])", MockPackageHanlder),
             (r"/tests/", TestingHanlder),
             (r"/user/", UserHanlder)
         ]

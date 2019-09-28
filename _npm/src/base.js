@@ -67,7 +67,7 @@ class DataLoader extends BaseComponent {
 
     static doMakeRequest(params, onRequestSuccess, onRequestError, logger=null) {
         logger && logger.log('requesting url: ' + baseUrl + params.endpoint);
-        logger && logger.log('data: ' + JSON.stringify(params.requestData));
+        logger && logger.log('word_packs: ' + JSON.stringify(params.requestData));
 
         fetch(baseUrl + params.endpoint, {
             headers: {
@@ -96,7 +96,7 @@ class DataLoader extends BaseComponent {
     }
 
     onRequestSuccess(data) {
-        this.log('successful request with data = ' + JSON.stringify(data));
+        this.log('successful request with word_packs = ' + JSON.stringify(data));
 
         this.setState({
             isLoaded: true,

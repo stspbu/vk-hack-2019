@@ -21,11 +21,11 @@ class RubbishTranslations:
     def _load_words(self):
         logging.info(f"get words from {url_with_words}")
         tmp = requests.get(url_with_words).json()
-        if 'data' not in tmp:
+        if 'word_packs' not in tmp:
             logging.error(f"got incorrect format from {url_with_words}")
             raise RuntimeError
         self._cashed_words = list()
-        for key in tmp['data']:
+        for key in tmp['word_packs']:
             self._cashed_words.append((key, None))
 
     def _translate_word(self, id: int) -> bool:
@@ -139,7 +139,7 @@ class TestingHanlder(BaseHandler):
         user_words = self._get_random_user_words(max_count=10)
         all_user_translations = self._get_random_user_translations(need_concatinate_words=20)
         res = {
-            'data': []
+            'word_packs': []
         }
 
         def get_random_translation():
@@ -173,7 +173,7 @@ class TestingHanlder(BaseHandler):
             correct = random.choice(translates)
             variants.append(correct)
             random.shuffle(variants)
-            res['data'].append({
+            res['word_packs'].append({
                 'answer': variants.index(correct),
                 'variants': variants,
                 'word': word
@@ -186,12 +186,12 @@ class TestingHanlder(BaseHandler):
     def post(self):
         with db.get_connection() as conn:
             data = json.loads(self.request.body)
-            if 'data' not in data or 'test' not in data['data']:
+            if 'word_packs' not in data or 'test' not in data['word_packs']:
                 logging.warning('incorrect request body')
                 logging.debug(self.request.body)
                 self.write(json.dumps({'error': 'incorrect-format'}))
                 return
-            results = data['data']['test']
+            results = data['word_packs']['test']
             user_id = self._extract_user_id()
             correct_sum = 0
             wrong_sum = 0

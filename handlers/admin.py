@@ -28,7 +28,7 @@ class AdminHandler(tornado.web.RequestHandler):
             conn.execute(words_t.insert(), {'user_id': 1, 'word': 'nature', 'raw_data': '{"translations":{"noun":["природа"]}}'})
             conn.execute(words_t.insert(), {'user_id': 1, 'word': 'internet', 'raw_data': '{"translations":{"noun":["интернет"]}}'})
             conn.execute(words_t.insert(), {'user_id': 1, 'word': 'computer', 'raw_data': '{"translations":{"noun":["компьютер"]}}'})
-            conn.execute(words_t.insert(), {'user_id': 1, 'word': 'data', 'raw_data': '{"translations":{"noun":["данные"]}}'})
+            conn.execute(words_t.insert(), {'user_id': 1, 'word': 'word_packs', 'raw_data': '{"translations":{"noun":["данные"]}}'})
             conn.execute(words_t.insert(), {'user_id': 1, 'word': 'logic', 'raw_data': '{"translations":{"noun":["логика"]}}'})
             conn.execute(words_t.insert(), {'user_id': 1, 'word': 'differ', 'raw_data': '{"translations":{"noun":["разница"]}}'})
             conn.execute(words_t.insert(), {'user_id': 1, 'word': 'clock', 'raw_data': '{"translations":{"noun":["часы"]}}'})
@@ -39,8 +39,8 @@ class AdminHandler(tornado.web.RequestHandler):
             logging.debug('step2')
             conn.close()
 
-            logging.warning("correct update data base")
+            logging.warning("correct update word_packs base")
             self.write({'result': 'ok'})
         else:
-            logging.warning("updating data base is forbiden")
+            logging.warning("updating word_packs base is forbiden")
             self.write({'error': 'disabled'})
