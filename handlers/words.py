@@ -23,7 +23,7 @@ class WordsHandler(BaseHandler):
         self.write(json.dumps(
             {
                 'result': 'ok',
-                'word_packs': data
+                'data': data
             }
         ))
 
