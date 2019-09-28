@@ -1,17 +1,17 @@
-from handlers.base import BaseHandler
 import json
+
+from handlers.base import BaseHandler
 from utils.translator import Translator
-from tornado.web import MissingArgumentError
 
 
 class TranslateHandler(BaseHandler):
-    def get(self):
-        try:
-            word = self.request.get_argument('word')
-        except MissingArgumentError:
-            self.send_error(400, reason='required word param')
-            return
+    def post(self):
+        data = json.loads(self.request.body)
+        word = data['word']
+
         self.write(json.dumps({
             'result': 'ok',
-            'data': Translator().translate(word)
+            'data': {
+                'translations': Translator().translate(word)
+            }
         }))

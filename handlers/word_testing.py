@@ -18,18 +18,19 @@ class TestingHanlder(BaseHandler):
 
             words_t = db.get_table('words')
             query = words_t.select(words_t.c.user_id == user_id).order_by(func.random())
+            rows = conn.execute(query).fetchall()
 
-            for t in conn.execute(query):
+            for row in rows:
                 if len(user_words) >= 10:
                     break
-                if 'raw_data' not in t or not t['raw_data']:
+                if 'raw_data' not in row or not row['raw_data']:
                     continue
-                for _, vals in json.loads(t['raw_data'])['translations'].items():
-                    translates = list()
+                translates = list()
+                for _, vals in json.loads(row['raw_data'])['translations'].items():
                     for elem in vals:
                         translates.append(elem)
                         all_user_translations.append(elem)
-                user_words.append((t['word'], translates))
+                user_words.append((row['word'], translates))
         res = {
             'data': []
         }

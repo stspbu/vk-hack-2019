@@ -11,13 +11,17 @@ class WordLoadedResult extends BaseComponent {
         super(props);
 
         this.state = {
-            data: props.data,
+            word: props.word,
+            translations: props.translations,
             wordSpeechPartToIndexToChecked: {}
         };
 
         for (let i = 0; i < possibleSpeechParts.length; i++) {
             this.state.wordSpeechPartToIndexToChecked[possibleSpeechParts[i]] = {};
         }
+
+        this.log('WordLoadedResult: constructor with word = ' + props.word
+            + ' ts = ' + JSON.stringify(props.translations));
     }
 
     buildTranslations() {
@@ -28,7 +32,7 @@ class WordLoadedResult extends BaseComponent {
 
             Object.keys(this.state.wordIndexToCheckedState[currentSpeechPart]).map((key) => {
                 if (this.state.wordIndexToCheckedState[currentSpeechPart][key]) {
-                    let word = this.state.data.translations[currentSpeechPart][key];
+                    let word = this.state.translations[currentSpeechPart][key];
                     result[currentSpeechPart].push(word);
                 }
             });
@@ -62,7 +66,7 @@ class WordLoadedResult extends BaseComponent {
             endpoint: '/words/',
             method: 'POST',
             requestData: {
-                word: this.state.data.word,
+                word: this.state.word,
                 translations: translations
             }
         };
@@ -101,7 +105,7 @@ class WordLoadedResult extends BaseComponent {
     }
 
     render() {
-        let translations = this.state.data.translations;
+        let translations = this.state.translations;
         return [
             possibleSpeechParts.map((p) =>
                 translations[p] ? this.showTranslationGroup(p, translations[p]) : ''),
@@ -117,27 +121,23 @@ class WordAddingPanel extends BaseComponent {
         super(props);
 
         this.state = {
-            word: props.word
-        }
+            word: props.data
+        };
+
+        this.log('WordAddingPanel: constructor with word = ' + this.state.word);
     }
 
     goBack() {
         this.props.goBack()
     }
 
-    onChange(e) {
-        let word = e.target.value;
-        this.log('On change a word: ' + word);
-
-        this.setState({
-            word: word
-        })
-    }
-
     render() {
         let requestData = {
             word: this.state.word
         };
+
+        this.log('WordAddingPanel: render for word = ' + this.state.word);
+        this.log('WordAddingPanel: render with requestData = ' + JSON.stringify(requestData));
 
         return (
             <Panel id="word_adding_panel">
@@ -149,9 +149,9 @@ class WordAddingPanel extends BaseComponent {
                 <DataLoader
                     endpoint='/translate/'
                     loaded={
-                        (data) => <WordLoadedResult data={data} />
+                        (data) => <WordLoadedResult translations={data.translations} word={this.state.word} />
                     }
-                    method="GET"
+                    method="POST"
                     requestData={requestData} />
             </Panel>
         )

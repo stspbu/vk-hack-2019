@@ -5,7 +5,7 @@ from sqlalchemy.sql import select
 import db
 
 
-class WordsHanlder(BaseHandler):
+class WordsHandler(BaseHandler):
     def get(self):
         user_id = self._extract_user_id()
         words_t = db.get_table('words')
@@ -16,7 +16,7 @@ class WordsHanlder(BaseHandler):
             data = [{
                 'id': word['id'],
                 'word': word['word'],
-                'translates': json.loads(word['raw_data'])['translations']
+                'translations': json.loads(word['raw_data'])['translations']
             }for word in words]
 
         self.write(json.dumps(

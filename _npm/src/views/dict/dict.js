@@ -63,6 +63,10 @@ class DictView extends BaseComponent {
         this.goForward('word_adding_panel');
     }
 
+    onTabChanged(newTab) {
+        this.props.onTabChanged(newTab);
+    }
+
     render() {
         return (
             <View id='dict_view' activePanel={this.state.activePanel}>
@@ -71,6 +75,7 @@ class DictView extends BaseComponent {
                     onWordChoosingClick={this.onWordChoosingClick.bind(this)}
                     onWordClick={(word) => this.onWordClick(word)}
                     goBack={this.goBack.bind(this)}
+                    onTabChanged={this.onTabChanged.bind(this)}
                 />
                 <WordPanel
                     id='word_panel'
@@ -87,14 +92,6 @@ class DictView extends BaseComponent {
                     data={this.state.selectedWord}
                     goBack={this.goBack.bind(this)}
                 />
-
-                {/*<Panel id='dict_panel'>*/}
-                    {/*<Dict*/}
-                        {/*onWordChoosingClick={this.onWordChoosingClick.bind(this)}*/}
-                        {/*onWordViewClick={this.onWordViewClick.bind(this)}/>*/}
-                {/*</Panel>*/}
-                {/*<Panel id='word_panel'>*/}
-                {/*</Panel>*/}
             </View>
         )
     }

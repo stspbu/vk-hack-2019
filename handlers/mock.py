@@ -108,7 +108,15 @@ class MockPackageHanlder(tornado.web.RequestHandler):
 
 class MockTestsHandler(tornado.web.RequestHandler):
     def get(self):
-        tests = [{'answer': 0, 'word': 'hi', 'variants': ['привет', 'пока', 'здравствуй', 'да']} for _ in range(10)]
+        tests = [{
+            'answer': 0,
+            'word': 'hi',
+            'variants': ['привет', 'пока', 'здравствуй', 'да']
+        }, {
+            'answer': 0,
+            'word': 'word2',
+            'variants': ['1', '2', '3', '4']
+        }]
 
         self.finish({
             'result': 'ok',

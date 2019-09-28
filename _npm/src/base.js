@@ -14,6 +14,19 @@ const speechPartToTitle = {
 };
 
 
+function getRussianPluralText(root, number) {
+    let lastNumber = number % 10;
+
+    if (lastNumber == 0 || lastNumber >= 5) {
+        return root + 'ов';
+    } else if (lastNumber == 1) {
+        return root;
+    } else {
+        return root + 'а';
+    }
+}
+
+
 class BaseComponent extends React.Component {
     log(message, level='debug') {
         if (level === 'debug' && MODE !== 'dev') {
@@ -36,7 +49,7 @@ class DataLoader extends BaseComponent {
 
             endpoint: props.endpoint || '/',
             method: props.method || 'GET',
-            requestData: props.data || null
+            requestData: props.requestData || null
         }
     }
 
@@ -110,4 +123,4 @@ class DataLoader extends BaseComponent {
 
 }
 
-export {BaseComponent, DataLoader, speechPartToTitle, possibleSpeechParts };
+export {BaseComponent, DataLoader, speechPartToTitle, possibleSpeechParts, getRussianPluralText};

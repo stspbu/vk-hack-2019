@@ -1,81 +1,109 @@
 import * as React from "react";
-import {CellButton, Group, List, PanelHeader, HeaderButton, Panel, Radio, Div, FormLayout, Button} from "@vkontakte/vkui";
-
-import {BaseComponent, DataLoader} from "../../../base";
+import {Group, List, PanelHeader, HeaderButton, Panel, Radio, Div, FormLayout, Button} from "@vkontakte/vkui";
 
 import Icon24Back from '@vkontakte/icons/dist/24/back';
 
-const test_words = [
-    {'answer': 0, 'word': 'hi', 'variants': ['привет', 'пока', 'здравствуй', 'да']},
-    {'answer': 1, 'word': 'fuck', 'variants': ['привет', 'пока', 'здравствуй', 'да']}
-];
+import {BaseComponent, DataLoader} from "../../../base";
 
-class TaskItem extends BaseComponent{
+class Task extends BaseComponent{
     constructor(props) {
         super(props);
 
         this.state = {
-            task: this.props.task
+            chosen_variant: 0
         };
     }
-    //
-    // getScore(){
-    //
-    // }
+
+    onVariantChosen(e) {
+        let val = e.target.value;
+        this.log('We chosen: ' + val);
+
+        this.setState({
+            chosen_variant: val
+        })
+    }
+
+    onAnswered() {
+        this.log('Task: we answered');
+
+        this.props.onTaskAnswered(this.state.chosen_variant);
+        this.setState({
+            chosen_variant: 0
+        })
+    }
 
     render(){
+        let taskIndex = this.props.index;
+        let variants = this.props.data.variants;
+        let word = this.props.data.word;
+
+        let chosenVariant = this.state.chosen_variant;
+
+        this.log('Rendering task with index = ' + taskIndex);
+        this.log('Rendering task with chosen_variant = ' + chosenVariant);
+
         return (
-            <Group>
+            <Group title={'Вопрос #' + (taskIndex+1)}>
+                <Div>Выберите перевод слова {word}:</Div>
                 <List>
                     {
-                        this.state.task.map((task) =>
-                            <FormLayout>
-                                <Div>
-                                    <Div>
-                                        {task.word}
-                                    </Div>
-                                    <Radio name="radio" value="1">
-                                        {task.variants[0]}
-                                    </Radio>
-                                    <Radio name="radio" value="1">
-                                        {task.variants[1]}
-                                    </Radio>
-                                    <Radio name="radio" value="1">
-                                        {task.variants[2]}
-                                    </Radio>
-                                    <Radio name="radio" value="1">
-                                        {task.variants[3]}
-                                    </Radio>
-                                </Div>
-                            </FormLayout>
-                        )}
+                        variants.map(
+                            (variant, index) =>
+                                <Radio
+                                    checked={index == chosenVariant}
+                                    name='variants'
+                                    value={index}
+                                    onChange={this.onVariantChosen.bind(this)}>{variant}</Radio>
+                        )
+                    }
+                    <Button onClick={this.onAnswered.bind(this)}>Далее</Button>
                 </List>
             </Group>
         )
     }
-
 }
 
-class Tasks extends BaseComponent {
+class Test extends BaseComponent {
     constructor(props) {
         super(props);
 
         this.state = {
-            // words: this.props.data // words server
-            words: test_words
+            tasks: this.props.data,
+            currentTaskIndex: 0,
+            lastTaskIndex: this.props.data.length-1,
+
+            taskIndexToAnswer: {}
         };
     }
+
+    onTaskAnswered(variant) {
+        this.log('Test: we answered with ' + variant);
+
+        this.state.taskIndexToAnswer[this.state.currentTaskIndex] = variant;
+        if (this.state.currentTaskIndex != this.state.lastTaskIndex) {
+            this.log('Current task index++');
+
+            this.setState((state) => ({
+                currentTaskIndex: state.currentTaskIndex + 1
+            }));
+        } else {
+            this.log('Test is finished');
+            this.log('Finished for ' + JSON.stringify(this.state.tasks)
+                + ' with ' + JSON.stringify(this.state.taskIndexToAnswer));
+
+            this.props.onTestFinished(this.state.tasks, this.state.taskIndexToAnswer);
+        }
+    }
+
     render() {
+        this.log('Rendering test with current task index = ' + this.state.currentTaskIndex);
+
         return (
             <Div>
-                <TaskItem
-                    task = {this.state.words}
-                />
-                <Div align="center">
-                    <Button>
-                        Finish!
-                    </Button>
-                </Div>
+                <Task
+                    index={this.state.currentTaskIndex}
+                    data={this.state.tasks[this.state.currentTaskIndex]}
+                    onTaskAnswered={this.onTaskAnswered.bind(this)} />
             </Div>
         )
     }
@@ -83,6 +111,14 @@ class Tasks extends BaseComponent {
 
 
 class TestPanel extends BaseComponent {
+    onTestFinished(tasks, taskIndexToAnswer) {
+        this.props.onTestFinished(tasks, taskIndexToAnswer);
+    }
+
+    goBack() {
+        // TODO
+    }
+
     render() {
         return (
             <Panel id="test_panel">
@@ -91,15 +127,14 @@ class TestPanel extends BaseComponent {
                 >
                     Тест
                 </PanelHeader>
-                <Tasks/>
 
-                {/*words from server*/}
-                {/*<DataLoader*/}
-                    {/*endpoint='/tests/'*/}
-                    {/*loaded={*/}
-                        {/*(data) => <Tasks data={data}/>*/}
-                    {/*}*/}
-                    {/*method="GET"/>*/}
+                <DataLoader
+                    endpoint='/tests/'
+                    loaded={
+                        (data) => <Test data={data} onTestFinished={this.onTestFinished.bind(this)} />
+                    }
+                    method="GET"
+                />
             </Panel>
         )
     }
