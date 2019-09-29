@@ -43,9 +43,9 @@ def main4(input_file, output_file):
         if ' ' in elem['word']:
             continue
         key = list(elem['translations'].keys())[0]
-        val = elem['translations'][key]
+        val = elem['translations'][key][0]
         tmp.append({
-            'word':elem['word'],
+            'word':elem['word'].lower(),
             'translations': {key:[val]}
         })
     data['data'] = tmp
@@ -60,25 +60,28 @@ def main3(input_file):
 
 
 if __name__ == '__main__':
-    # main1('word_packs/wild_animals3.json', 'word_packs/wild_animals2.json')
-    # main2('word_packs/wild_animals2.json', 'word_packs/wild_animals.json')
-    # main3('word_packs/wild_animals.json')
-    # main4('word_packs/birds.json', 'word_packs/birds.json')
-    with open('dirty_words/all_words.json') as f_in:
-        data = json.load(f_in)
-    data = data['data']
-    random.shuffle(data)
-    tmp = list()
-    tr = Translator()
-    for word in data[:300]:
-        trans = tr.translate(word)
-        if not list(trans.items()):
-            continue
-        tmp.append({
-            'word': word,
-            'translation': tr.translate(word)
-        })
-    with open('dirty_words/translated_words.json', 'w+') as f_out:
-        json.dump(tmp, f_out)
+    names_list = ['birds', 'farm_animals', 'insects', 'jobs', 'mammals', 'nature', 'pets', 'sea_animals', 'wild_animals']
+    # names_list = ['birds']
+    for name in names_list:
+        # main1('word_packs/wild_animals3.json', 'word_packs/wild_animals2.json')
+        # main2('word_packs/wild_animals2.json', 'word_packs/wild_animals.json')
+        # main3('word_packs/wild_animals.json')
+        main4(f'word_packs/{name}.json', f'word_packs/{name}.json')
+    # with open('dirty_words/all_words.json') as f_in:
+    #     data = json.load(f_in)
+    # data = data['data']
+    # random.shuffle(data)
+    # tmp = list()
+    # tr = Translator()
+    # for word in data[:300]:
+    #     trans = tr.translate(word)
+    #     if not list(trans.items()):
+    #         continue
+    #     tmp.append({
+    #         'word': word,
+    #         'translation': tr.translate(word)
+    #     })
+    # with open('dirty_words/translated_words.json', 'w+') as f_out:
+    #     json.dump(tmp, f_out)
 
 # todo lower case words
