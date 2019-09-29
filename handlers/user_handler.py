@@ -16,9 +16,9 @@ class UserHanlder(BaseHandler):
             # logging.warning(query)
             # word_sum = conn.execute(query).fetchone()[0]
 
-            query = sa.select([words_t]).select_from(words_t).where(
-                words_t.c.correct_tested + words_t.c.wrong_tested > 0
-            )
+            query = sa.select([words_t]).select_from(words_t).where(words_t.c.user_id==user_id)#.where(
+#                words_t.c.correct_tested + words_t.c.wrong_tested > 0
+ #           )
             rows = conn.execute(query).fetchall()
 
             word_sum = 0
