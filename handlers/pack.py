@@ -70,7 +70,7 @@ class PackHandler(BaseHandler):
             new_words = json.loads(pack['words'])
 
             for struct in new_words:
-                new_word = struct['word']
+                new_word = struct['word'].lower().strip()
                 new_translations = struct['translations']
 
                 try:

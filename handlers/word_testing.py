@@ -15,64 +15,25 @@ url_with_words = 'https://www.randomlists.com/data/words.json'
 
 class RubbishTranslations:
     def __init__(self):
-        self._cashed_words = None
-        self._translator = Translator()
-
-    def _load_words(self):
-        logging.info(f"get words from {url_with_words}")
-        tmp = requests.get(url_with_words).json()
-        if 'data' not in tmp:
-            logging.error(f"got incorrect format from {url_with_words}")
-            raise RuntimeError
         self._cashed_words = list()
-        for key in tmp['data']:
-            self._cashed_words.append((key, None))
+        words_t = db.get_table('words')
+        with db.get_connection() as conn:
 
-    def _translate_word(self, id: int) -> bool:
-        if self._cashed_words[id][1]:
-            return True
-        logging.info(f"search translation for word {self._cashed_words[id][0]}")
-        tmp = list(self._translator.translate(self._cashed_words[id][0]).values())
-        if not tmp or not tmp[0]:
-            logging.warning(f"incorrect format from translator for word {self._cashed_words[id][0]}")
-            return False
-        for line in tmp:
-            for elem in line:
-                if ' ' in elem:
+            rows = conn.execute(sa.select([words_t.c.word, words_t.c.raw_data]).where(
+                words_t.c.user_id == None))
+
+            for row in rows:
+                if 'raw_data' not in row or not row['raw_data']:
                     continue
-                self._cashed_words[id] = (self._cashed_words[id][0], elem)
-                logging.debug(f"found translation {elem} for word {self._cashed_words[id][0]}")
-                return True
-        logging.warning(f"found no translation for word {self._cashed_words[id][0]}")
-        return False
-
-    def get_random_words(self, max_counts=15):
-        if not self._cashed_words:
-            self._load_words()
-        random.shuffle(self._cashed_words)
-        id_to_delete = list()
-        res = list()
-        for i, _ in enumerate(self._cashed_words):
-            if len(res) > max_counts:
-                break
-            if self._translate_word(i):
-                res.append(self._cashed_words[i])
-            else:
-                id_to_delete.append(i)
-
-        for id in id_to_delete[::-1]:
-            self._cashed_words.pop(id)
-        logging.debug(f"get rubbish words {res}")
-        return res
+                translations = list()
+                for vals in json.loads(row['raw_data']).values():
+                    for elem in vals:
+                        translations.append(elem)
+                self._cashed_words.append((row['word'], translations))
 
     def get_random_word(self):
-        if not self._cashed_words:
-            self._load_words()
-        while self._cashed_words:
-            id = random.randint(0, len(self._cashed_words))
-            if self._translate_word(id):
-                return self._cashed_words[id]
-            self._cashed_words.pop(id)
+        word, translate = random.choice(self._cashed_words)
+        return word, random.choice(translate)
 
 
 rubbish_words = RubbishTranslations()

@@ -17,7 +17,7 @@ class TranslateHandler(BaseHandler):
             logging.warning(f"get incorrect body {self.request.body}")
             self.write(json.dumps({'error': 'incorrect-format'}))
             return
-        word = data['word']
+        word = data['word'].lower().strip()
 
         translation = Translator().translate(word)
 
