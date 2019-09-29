@@ -1,5 +1,5 @@
 import * as React from "react";
-import {CellButton, Group, List, PanelHeader, Cell, Panel, Search, HeaderButton} from "@vkontakte/vkui";
+import {CellButton, Group, List, PanelHeader, Div, Panel, Search, HeaderButton} from "@vkontakte/vkui";
 
 import Icon24Add from '@vkontakte/icons/dist/24/add';
 
@@ -79,6 +79,10 @@ class DictPanel extends BaseComponent {
                                 data={data}
                                 onWordClick={(word) => this.props.onWordClick(word)}
                                 search={this.state.search}/>
+                    }
+                    failed={
+                        (error) =>
+                            <Div>Что-то пошло не так...</Div>
                     }
                     method='GET'
                 />
