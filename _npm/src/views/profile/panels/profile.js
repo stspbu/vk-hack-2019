@@ -1,7 +1,7 @@
 import * as React from "react";
 import connect from "@vkontakte/vk-connect"
 
-import {ScreenSpinner, PanelHeader, Cell, Avatar, Div, Panel} from "@vkontakte/vkui";
+import {ScreenSpinner, PanelHeader, Cell, Avatar, Div, Panel, FixedLayout, Link} from "@vkontakte/vkui";
 
 import {BaseComponent, DataLoader} from "../../../base";
 

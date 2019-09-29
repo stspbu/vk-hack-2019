@@ -20,7 +20,7 @@ import Icon24Cancel from "@vkontakte/icons/dist/24/cancel"
 import Icon24Dismiss from "@vkontakte/icons/dist/24/dismiss"
 import {IS_PLATFORM_ANDROID, IS_PLATFORM_IOS} from '@vkontakte/vkui/dist/lib/platform';
 
-import {BaseComponent, DataLoader, possibleSpeechParts, speechPartToTitle} from "../../../base";
+import {BaseComponent, DataLoader, possibleSpeechParts, getSpeechPartTitle, YandexSign} from "../../../base";
 
 
 class TranslationAddingModal extends BaseComponent {
@@ -28,7 +28,7 @@ class TranslationAddingModal extends BaseComponent {
         super(props);
 
         this.state = {
-            speechPart: 'noun',
+            speechPart: 'nouns',
             translation: null
         }
     }
@@ -49,7 +49,11 @@ class TranslationAddingModal extends BaseComponent {
 
     onAddTranslation() {
         let tr = this.state.translation;
-        this.props.onAddTranslation(tr.toLowerCase().trim(), this.state.speechPart);
+        let sp = this.state.speechPart;
+
+        if (tr && sp) {
+            this.props.onAddTranslation(tr, sp);
+        }
     }
 
     onCloseModal() {
@@ -90,9 +94,13 @@ class TranslationAddingModal extends BaseComponent {
                                 onChange={this.onChangeSpeechPart.bind(this)}
                             >
                                 {possibleSpeechParts.map((sp, i) =>
-                                    <option value={sp} selected={i === 0}>{speechPartToTitle[sp]}</option>)}
+                                    <option value={sp} selected={i === 0}>
+                                        {getSpeechPartTitle(sp, false, true)}
+                                    </option>)}
                             </Select>
-                            <Button onClick={this.onAddTranslation.bind(this)}>Добавить</Button>
+                            <Button size='xl' onClick={this.onAddTranslation.bind(this)}>
+                                Добавить перевод
+                            </Button>
                         </FormLayout>
                     </Div>
                 </ModalPage>
@@ -206,7 +214,7 @@ class Word extends BaseComponent {
         }
 
         return (
-            <Group id="group_id" title={speechPartToTitle[speechPart]}>
+            <Group id="group_id" title={getSpeechPartTitle(speechPart)}>
                 <List>
                     {arr.map((el, index) =>
                         <Checkbox
@@ -225,6 +233,8 @@ class Word extends BaseComponent {
 
     /* own translations */
     onAddTranslation(translation, speechPart) {
+        translation = translation.toLowerCase().trim();
+
         this.setState(function(state) {
             let valid = true;
             let trs = state.translations[speechPart].slice();
@@ -274,10 +284,25 @@ class Word extends BaseComponent {
         return [
             possibleSpeechParts.map((p) =>
                 translations[p] ? this.showTranslationGroup(p, translations[p], ownTranslations[p]) : ''),
-            <div align='center'>
-                <Button onClick={this.onSaveClick.bind(this)}>Сохранить</Button>
-                <Button onClick={this.onCallAddTranslation.bind(this)}>Добавить перевод</Button>
-            </div>
+            <Div style={{display: 'flex'}}>
+                <Button
+                    size='l'
+                    level="commerce"
+                    onClick={this.onCallAddTranslation.bind(this)}
+                    style={{marginRight: 8}}
+                    stretched
+                >
+                    Добавить перевод
+                </Button>
+                <Button
+                    size='l'
+                    onClick={this.onSaveClick.bind(this)}
+                    style={{marginLeft: 8}}
+                    stretched
+                >
+                    Сохранить
+                </Button>
+            </Div>
         ]
     }
 }
@@ -328,7 +353,10 @@ class WordAddingPanel extends BaseComponent {
                         (error) => <Div>Что-то пошло не так...</Div>
                     }
                     method="POST"
-                    requestData={requestData} />
+                    requestData={requestData}
+                />
+
+                <YandexSign/>
             </Panel>
         )
     }

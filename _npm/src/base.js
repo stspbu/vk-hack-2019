@@ -1,18 +1,25 @@
 import React from "react";
-import {Div, ScreenSpinner, Spinner} from "@vkontakte/vkui"
+import {Div, ScreenSpinner, FixedLayout, Link} from "@vkontakte/vkui"
 
 const MODE = 'dev';
 const baseUrl = 'https://vkhack19.com:11888';
 
 
 const possibleSpeechParts = ['nouns', 'verbs', 'adjectives', 'adverbs'];
-const speechPartToTitle = {
-    nouns: 'Существительные',
-    verbs: 'Глаголы',
-    adjectives: 'Прилагательные',
-    adverbs: 'Наречия'
-};
+function getSpeechPartTitle(speechPart, plural=true, capitalized=false) {
+    let res = {
+        nouns: plural ? 'существительные' : 'существительное',
+        verbs: plural ? 'глаголы' : 'глагол',
+        adjectives: plural ? 'прилагательные' : 'прилагательное',
+        adverbs: plural ? 'наречия' : 'наречие'
+    }[speechPart];
 
+    if (capitalized) {
+        res = capitalizeFirstLetter(res);
+    }
+
+    return res;
+}
 
 function getRussianPluralText(root, number) {
     let lastNumber = number % 10;
@@ -24,6 +31,10 @@ function getRussianPluralText(root, number) {
     } else {
         return root + 'а';
     }
+}
+
+function capitalizeFirstLetter(word) {
+    return word.toUpperCase()[0] + word.slice(1);
 }
 
 
@@ -127,4 +138,16 @@ class DataLoader extends BaseComponent {
 
 }
 
-export {BaseComponent, DataLoader, speechPartToTitle, possibleSpeechParts, getRussianPluralText};
+class YandexSign extends React.Component {
+    render() {
+        return (
+            <Div align='left'>
+                <Link href='https://tech.yandex.ru/dictionary' target='_blank' style={{color: '#000'}}>
+                    Реализовано с помощью сервиса «Яндекс.Словарь»
+                </Link>
+            </Div>
+        )
+    }
+}
+
+export {BaseComponent, DataLoader, getSpeechPartTitle, possibleSpeechParts, getRussianPluralText, YandexSign};

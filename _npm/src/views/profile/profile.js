@@ -1,5 +1,5 @@
 import * as React from "react";
-import {View} from "@vkontakte/vkui";
+import {FixedLayout, View} from "@vkontakte/vkui";
 
 
 import {BaseComponent} from "../../base"

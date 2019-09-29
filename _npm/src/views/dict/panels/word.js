@@ -3,7 +3,7 @@ import {Panel, PanelHeader, Group, List, Cell, HeaderButton} from "@vkontakte/vk
 
 import Icon24Back from '@vkontakte/icons/dist/24/back';
 
-import {BaseComponent, speechPartToTitle, possibleSpeechParts} from "../../../base";
+import {BaseComponent, getSpeechPartTitle, possibleSpeechParts, YandexSign} from "../../../base";
 
 class WordPanel extends BaseComponent {
     /**
@@ -37,7 +37,7 @@ class WordPanel extends BaseComponent {
         }
 
         return (
-            <Group title={speechPartToTitle[speechPart]}>
+            <Group title={getSpeechPartTitle(speechPart)}>
                 <List>
                     {arr.map((el) => <Cell>{el}</Cell>)}
                 </List>
@@ -59,6 +59,7 @@ class WordPanel extends BaseComponent {
                         translations[p] ? this.showTranslationGroup(p, translations[p]) : ''
                     )
                 }
+                <YandexSign/>
             </Panel>);
     }
 }
