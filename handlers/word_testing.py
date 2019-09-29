@@ -10,6 +10,9 @@ import sqlalchemy as sa
 
 class RubbishTranslations:
     def __init__(self):
+        self._cashed_words = None
+
+    def _read_data(self):
         self._cashed_words = list()
         words_t = db.get_table('words')
         with db.get_connection() as conn:
@@ -27,6 +30,8 @@ class RubbishTranslations:
                 self._cashed_words.append((row['word'], translations))
 
     def get_random_word(self):
+        if not self._cashed_words:
+            self._read_data()
         word, translate = random.choice(self._cashed_words)
         return word, random.choice(translate)
 
@@ -53,6 +58,7 @@ class TestingHanlder(BaseHandler):
                     logging.warning(f"got incorrect row from database {row}")
                     continue
                 translations = list()
+                logging.warning(json.loads(row['raw_data']))
                 for _, vals in json.loads(row['raw_data'])['translations'].items():
                     for elem in vals:
                         translations.append(elem)
@@ -62,45 +68,23 @@ class TestingHanlder(BaseHandler):
         logging.debug(f"extract words: {user_words}")
         return user_words
 
-    def _get_random_user_translations(self, max_count=200, need_concatinate_words=20):
-        user_id = self._extract_user_id()
-        logging.info(f"get {max_count} random translations from user {user_id}")
-        user_translations = list()
-        is_enough = False
-        with db.get_connection() as conn:
-            words_t = db.get_table('words')
-            query = words_t.select(words_t.c.user_id == user_id).order_by(func.random())
-
-            iterations = 0
-            for row in conn.execute(query):
-                if len(user_translations) >= max_count or iterations > need_concatinate_words:
-                    is_enough = True
-                    break
-                if 'raw_data' not in row or not row['raw_data']:
-                    logging.warning(f"got incorrect row {row} from database")
-                    continue
-                for _, vals in json.loads(row['raw_data'])['translations'].items():
-                    for elem in vals:
-                        user_translations.append(elem)
-                iterations += 1
-        if not is_enough:
-            logging.warning(f"got not enough translations(need {max_count}, got {len(user_translations)})")
-        random.shuffle(user_translations)
-        logging.debug(f"extract words: {user_translations}")
-        return user_translations
-
-    def get(self):
+    def get(self, kind=None):
+        if kind not in [None, 'en-ru', 'ru-en']:
+            logging.warning(f'incorrect kind: {kind}')
+            self.write(json.dumps({'error': 'incorrect-format'}))
+            return
         # todo add reverse tests
         logging.info(f"get test request for user {self._extract_user_id()}")
         used_words = list()
+        another_user_words = self._get_random_user_words(max_count=20)
         user_words = self._get_random_user_words(max_count=10)
-        all_user_translations = self._get_random_user_translations(need_concatinate_words=20)
         res = {
             'data': []
         }
 
         def get_random_translation():
-            for word_iter in all_user_translations:
+
+            for word_iter in another_user_words:
                 yield word_iter
 
         rand_trans = get_random_translation()
@@ -119,28 +103,41 @@ class TestingHanlder(BaseHandler):
                     try:
                         wrong_trans = next(rand_trans)
                     except StopIteration:
-                        random.shuffle(all_user_translations)
+                        random.shuffle(another_user_words)
                         rand_trans = get_random_translation()
                         wrong_trans = next(rand_trans)
+                    wrong_trans = (wrong_trans[0], random.choice(wrong_trans[1]))
                 else:
-                    wrong_trans = rubbish_words.get_random_word()[1]
-                if wrong_trans not in translates and wrong_trans not in variants and wrong_trans not in used_words:
+                    wrong_trans = rubbish_words.get_random_word()
+                if wrong_trans[0] != word and wrong_trans not in variants and wrong_trans not in used_words:
                     variants.append(wrong_trans)
                     used_words.append(wrong_trans)
-            correct = random.choice(translates)
+            correct = (word, random.choice(translates))
             variants.append(correct)
             random.shuffle(variants)
-            res['data'].append({
-                'answer': variants.index(correct),
-                'variants': variants,
-                'word': word
-            })
+            answer_id = variants.index(correct)
+            if (kind == 'en-ru') or (kind is None and random.uniform(0,1) < 0.5):
+                res['data'].append({
+                    'answer': answer_id,
+                    'variants': [variant[1] for variant in variants],
+                    'word': correct[0]
+                })
+            else:
+                res['data'].append({
+                    'answer': answer_id,
+                    'variants': [variant[0] for variant in variants],
+                    'word': correct[0]
+                })
 
         res['result'] = 'ok'
         logging.debug(f'send answer to test {res}')
         self.write(json.dumps(res))
 
-    def post(self):
+    def post(self, kind=None):
+        if kind not in [None, 'en-ru', 'ru-en']:
+            logging.warning(f'incorrect kind: {kind}')
+            self.write(json.dumps({'error': 'incorrect-format'}))
+            return
         with db.get_connection() as conn:
             try:
                 data = json.loads(self.request.body)
