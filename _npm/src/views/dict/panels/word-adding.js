@@ -1,5 +1,5 @@
 import * as React from "react";
-import {Panel, PanelHeader, HeaderButton, Button, List, Group, Checkbox, Div, Snackbar} from "@vkontakte/vkui";
+import {Panel, PanelHeader, HeaderButton, Button, List, Group, Checkbox, Div, Cell} from "@vkontakte/vkui";
 
 import Icon24Back from '@vkontakte/icons/dist/24/back';
 
@@ -18,7 +18,6 @@ class Word extends BaseComponent {
             translations: props.translations,
             wordSpeechPartToIndexToChecked: {},
             ownTranslations: {},
-            editMode: props.editMode || false,
             hasTranslations: false
         };
 
@@ -34,7 +33,7 @@ class Word extends BaseComponent {
                 this.state.hasTranslations = true;
             }
 
-            if (this.state.editMode) {
+            if (this.props.editMode) {
                 this.state.translations[sp].map((el, index) => {
                     this.state.wordSpeechPartToIndexToChecked[sp][index] = true;
                 });
@@ -192,7 +191,12 @@ class Word extends BaseComponent {
             content = possibleSpeechParts.map((p) =>
                 translations[p] ? this.showTranslationGroup(p, translations[p], ownTranslations[p]) : '')
         } else {
-            content = <Div>Нет доступных переводов, вы можете добавить свой перевод</Div>
+            content =
+                <Group>
+                    <List>
+                        <Cell align='center'>Нет доступных переводов, вы можете добавить свой перевод</Cell>
+                    </List>
+                </Group>
         }
 
         return [
@@ -249,6 +253,7 @@ class WordAddingPanel extends BaseComponent {
 
         this.log('WordAddingPanel: render for word = ' + this.state.word);
         this.log('WordAddingPanel: render with requestData = ' + JSON.stringify(requestData));
+        this.log('WordAddingPanel: editMode = ' + this.props.editMode);
 
         return (
             <Panel id="word_adding_panel">
@@ -258,7 +263,7 @@ class WordAddingPanel extends BaseComponent {
                 </PanelHeader>
 
                 {
-                    this.state.editMode
+                    this.props.editMode
                         ? <Word
                             editMode={true}
                             translations={this.state.editData.translations}

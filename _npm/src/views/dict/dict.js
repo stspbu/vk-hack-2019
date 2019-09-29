@@ -38,7 +38,11 @@ class DictView extends BaseComponent {
         const history = [...this.state.history];
         history.pop();
         const activePanel = history[history.length - 1];
-        this.setState({ history, activePanel });
+        if (activePanel === 'dict_panel') {
+            this.navReset();
+        } else {
+            this.setState({history, activePanel});
+        }
     }
 
     goForward(activePanel) {
@@ -51,7 +55,9 @@ class DictView extends BaseComponent {
         this.setState({
             history: ['dict_panel'],
             activePanel: 'dict_panel',
-            snackbar: withSnackbar || null
+            snackbar: withSnackbar || null,
+            editMode: false,
+            editData: null
         });
     }
     /* nav ends */

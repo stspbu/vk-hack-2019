@@ -34,13 +34,14 @@ class Packs extends BaseComponent {
                 <List>
                     {packs.map((pack) =>
                         <Cell
+                            onClick={() => this.onPackClick(pack)}
                             before={<Avatar type="image" src={pack.avatar}/>}
                             description={pack.description}
-                            asideContent={
-                                <Icon24Fullscreen
-                                    onClick={() => this.onPackClick(pack)}
-                                /> // fill='var(--accent)' fill='var(--accent)'
-                            }
+                            // asideContent={
+                            //     <Icon24Fullscreen
+                            //         onClick={() => this.onPackClick(pack)}
+                            //     /> // fill='var(--accent)' fill='var(--accent)'
+                            // }
                         >
                             {pack.name}
                         </Cell>
