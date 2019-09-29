@@ -28,6 +28,10 @@ class WordChoosingPanel extends BaseComponent {
 
     onWordEnteredClick() {
         let word = this.state.word;
+        if (!word) {
+            return;
+        }
+
         this.props.onWordEnteredClick(word.toLowerCase());
     }
 

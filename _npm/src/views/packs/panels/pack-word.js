@@ -1,5 +1,5 @@
-import React from 'react'
-import {Panel, PanelHeader, Group, List, Cell, HeaderButton, Button, Div} from "@vkontakte/vkui";
+import React from "react"
+import {Panel, PanelHeader, HeaderButton, List, Cell, Group} from "@vkontakte/vkui"
 
 import Icon24Back from '@vkontakte/icons/dist/24/back';
 
@@ -22,7 +22,7 @@ class WordPanel extends BaseComponent {
 
         this.state = {
             data: this.props.data
-        };
+        }
     }
 
     goBack() {
@@ -39,23 +39,17 @@ class WordPanel extends BaseComponent {
         return (
             <Group title={getSpeechPartTitle(speechPart)}>
                 <List>
-                    {arr.map((el) =>
-                        <Cell>{el}</Cell>
-                    )}
+                    {arr.map((el) => <Cell>{el}</Cell>)}
                 </List>
             </Group>
         );
-    }
-
-    onEditingStart() {
-        this.props.onWordEditingStart(this.state.data);
     }
 
     render() {
         let translations = this.state.data.translations;
 
         return (
-            <Panel id='word_panel'>
+            <Panel id='pack_word_panel'>
                 <PanelHeader
                     left={<HeaderButton onClick={this.goBack.bind(this)}><Icon24Back/></HeaderButton>}>
                     Слово {this.state.data.word}
@@ -65,18 +59,6 @@ class WordPanel extends BaseComponent {
                         translations[p] ? this.showTranslationGroup(p, translations[p]) : ''
                     )
                 }
-
-                <Div>
-                    <Button
-                        size='xl'
-                        level="commerce"
-                        onClick={this.onEditingStart.bind(this)}
-                    >
-                        Редактировать
-                    </Button>
-                </Div>
-
-                <YandexSign/>
             </Panel>);
     }
 }
