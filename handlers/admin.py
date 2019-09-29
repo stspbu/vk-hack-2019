@@ -1,5 +1,7 @@
 import tornado.web
 import logging
+import glob
+import json
 
 import db
 from db.meta import server_md
@@ -41,8 +43,17 @@ class AdminHandler(tornado.web.RequestHandler):
             for t in conn.execute(query):
                 logging.debug(t)
             logging.debug('step2')
-            conn.close()
 
+            packs_t = db.get_table('word_package')
+            for file_name in glob.glob('word_packs/*.json'):
+                logging.warning(file_name)
+                with open(file_name) as f_in:
+                    data = json.load(f_in)
+                conn.execute(packs_t.insert(),
+                             {'name': file_name[11:-5], 'avatar': data['avatar'], 'description': data['description'],
+                              'words': json.dumps(data['data'])})
+
+            conn.close()
             logging.warning("correct update db")
             self.write({'result': 'ok'})
         else:

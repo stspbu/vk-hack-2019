@@ -18,6 +18,7 @@ from handlers.words import WordsHandler
 from handlers.translate import TranslateHandler
 from handlers.admin import AdminHandler
 from handlers.word_testing import TestingHanlder
+from handlers.pack import PackHandler
 from settings import settings, logging_config_dict
 from handlers.user_handler import UserHanlder
 
@@ -35,8 +36,8 @@ class Application(tornado.web.Application):
             (r"/admin/", AdminHandler),
             (r"/words/", WordsHandler),
             (r"/translate/", TranslateHandler),
-            (r"/packs/", MockGetPackagesHanlder),
-            (r"/packs/(?P<pack_id>[^/]+)", MockPackageHanlder),
+            (r"/packs/", PackHandler),
+            (r"/packs/(?P<pack_id>[^/]+)/", PackHandler),
             (r"/tests/", TestingHanlder),
             (r"/user/", UserHanlder)
         ]
