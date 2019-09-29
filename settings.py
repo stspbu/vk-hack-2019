@@ -36,7 +36,7 @@ settings = {
     'DB_NAME': 'sdict',
     'SECRET_KEY': 'PqwFekrI1arHHZwXKk1w',
     'LOG_LEVEL': logging.INFO,
-    'TEST_MODE': True,
+    'TEST_MODE': False,
     'YANDEX_DICTINARY_TOKEN': 'dict.1.1.20190707T212740Z.63c69eb98eae973c.d4e03018461eaac7cfb1187cb9f7fbdc5ac8d4f8'
 }
 
