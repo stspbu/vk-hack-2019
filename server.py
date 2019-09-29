@@ -55,10 +55,12 @@ if __name__ == '__main__':
     logging.config.DictConfigurator(logging_config_dict)
     logging.basicConfig(level=settings['LOG_LEVEL'])
 
-    http_server = tornado.httpserver.HTTPServer(Application(), ssl_options={
-        'certfile': os.path.join(os.path.realpath('.'), 'cert/server.crt'),
-        'keyfile': os.path.join(os.path.realpath('.'), 'cert/server.key')
-    })
+    http_server = tornado.httpserver.HTTPServer(Application()
+    #                                             , ssl_options={
+    #     'certfile': os.path.join(os.path.realpath('.'), 'cert/server.crt'),
+    #     'keyfile': os.path.join(os.path.realpath('.'), 'cert/server.key')
+    # }
+                                                )
     http_server.listen(options.port)
 
     logging.warning('tornado started')

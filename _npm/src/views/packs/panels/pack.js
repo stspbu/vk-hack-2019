@@ -68,7 +68,9 @@ class PackPanel extends BaseComponent {
         this.state = {
             pack: props.pack,
             snackbar: null
-        }
+        };
+
+        this.props.setPopout(true);
     }
 
     onPackClick() {
@@ -99,7 +101,7 @@ class PackPanel extends BaseComponent {
                 <PanelHeader
                     left={<HeaderButton onClick={this.goBack.bind(this)}><Icon24Back/></HeaderButton>}
                 >
-                    Набор {this.state.pack.name}
+                    {this.state.pack.name}
                 </PanelHeader>
                 <DataLoader
                     endpoint={'/packs/' + this.state.pack.id + '/'}
@@ -114,6 +116,9 @@ class PackPanel extends BaseComponent {
                     }
                     failed={
                         (error) => <Div>Что-то пошло не так...</Div>
+                    }
+                    done={
+                        () => this.props.setPopout(false)
                     }
                     method='GET'
                 />

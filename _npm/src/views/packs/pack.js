@@ -1,5 +1,5 @@
 import * as React from "react";
-import {Cell, View} from "@vkontakte/vkui";
+import {Cell, ScreenSpinner, View} from "@vkontakte/vkui";
 
 import {BaseComponent} from "../../base"
 import PacksListPanel from "./panels/pack-list";
@@ -16,7 +16,9 @@ class PackView extends BaseComponent {
             history: ['pack_list_panel'],
 
             chosenPack: null,
-            chosenWord: null
+            chosenWord: null,
+
+            popout: null
         }
     }
 
@@ -53,15 +55,28 @@ class PackView extends BaseComponent {
         this.goForward('pack_word_panel');
     }
 
+    setPopout(flag) {
+        this.log('PackView: showing');
+
+        this.setState({
+            popout: flag ? <ScreenSpinner/> : null
+        });
+    }
+
     render() {
         return (
-            <View id='pack_view' activePanel={this.state.activePanel}>
-                <PacksListPanel id='pack_list_panel' onPackClick={this.onPackClick.bind(this)} />
+            <View id='pack_view' activePanel={this.state.activePanel} popout={this.state.popout}>
+                <PacksListPanel
+                    id='pack_list_panel'
+                    onPackClick={this.onPackClick.bind(this)}
+                    setPopout={this.setPopout.bind(this)}
+                />
                 <PackPanel
                     id='pack_panel'
                     onWordClicked={this.onWordClicked.bind(this)}
                     goBack={this.goBack.bind(this)}
                     pack={this.state.chosenPack}
+                    setPopout={this.setPopout.bind(this)}
                 />
                 <WordPanel
                     id='pack_word_panel'

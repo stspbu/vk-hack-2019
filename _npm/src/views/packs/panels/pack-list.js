@@ -55,6 +55,8 @@ class Packs extends BaseComponent {
 class PacksListPanel extends BaseComponent {
     constructor(props) {
         super(props);
+
+        this.props.setPopout(true);
     }
 
     onPackClick(pack) {
@@ -74,6 +76,9 @@ class PacksListPanel extends BaseComponent {
                     }
                     failed={
                         (error) => <Div>Что-то пошло не так...</Div>
+                    }
+                    done={
+                        () => this.props.setPopout(false)
                     }
                     method='GET'/>
             </Panel>

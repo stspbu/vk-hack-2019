@@ -1,5 +1,5 @@
 import * as React from "react";
-import {CellButton, Group, List, PanelHeader, Div, Panel, Search, HeaderButton} from "@vkontakte/vkui";
+import {CellButton, Group, List, PanelHeader, Div, Panel, Search, HeaderButton, Cell} from "@vkontakte/vkui";
 
 import Icon24Add from '@vkontakte/icons/dist/24/add';
 
@@ -29,15 +29,20 @@ class Words extends BaseComponent {
         this.log('Search: ' + search);
         this.log('Words: ' + JSON.stringify(words));
 
+        let content;
+        if (words.length) {
+            content = words.map((word) =>
+                <CellButton level='primary' onClick={() => this.onWordClick(word)}>
+                    {word.word}
+                </CellButton>)
+        } else {
+            content = <Cell>В словарь пока не добавлено слов</Cell>
+        }
+
         return [
             <Group title='Добавленные слова'>
                 <List>
-                    {
-                        words.map((word) =>
-                            <CellButton level='primary' onClick={() => this.onWordClick(word)}>
-                                {word.word}
-                            </CellButton>
-                    )}
+                    {content}
                 </List>
             </Group>
         ]
@@ -51,7 +56,9 @@ class DictPanel extends BaseComponent {
 
         this.state = {
             search: ''
-        }
+        };
+
+        this.props.setPopout(true);
     }
 
     onAdding() {
@@ -83,6 +90,9 @@ class DictPanel extends BaseComponent {
                     failed={
                         (error) =>
                             <Div>Что-то пошло не так...</Div>
+                    }
+                    done={
+                        () => this.props.setPopout(false)
                     }
                     method='GET'
                 />

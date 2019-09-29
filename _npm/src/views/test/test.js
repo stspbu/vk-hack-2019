@@ -1,5 +1,5 @@
 import * as React from "react";
-import {View} from "@vkontakte/vkui";
+import {ScreenSpinner, View} from "@vkontakte/vkui";
 
 
 import {BaseComponent} from "../../base"
@@ -17,7 +17,9 @@ class TestView extends BaseComponent {
             history: ['test_list_panel'],
 
             tasks: null,
-            taskIndexToAnswer: null
+            taskIndexToAnswer: null,
+
+            popout: null
         }
     }
 
@@ -51,9 +53,15 @@ class TestView extends BaseComponent {
         });
     }
 
+    setPopout(flag) {
+        this.setState({
+            popout: flag ? <ScreenSpinner/> : null
+        });
+    }
+
     render() {
         return (
-            <View id='test_view' activePanel={this.state.activePanel}>
+            <View id='test_view' activePanel={this.state.activePanel} popout={this.state.popout}>
                 <TestListPanel
                     id='test_list_panel'
                     onTestSelected={this.onTestSelected.bind(this)}
@@ -62,6 +70,7 @@ class TestView extends BaseComponent {
                     id='test_panel'
                     onTestFinished={this.onTestFinished.bind(this)}
                     goBack={this.goBack.bind(this)}
+                    setPopout={this.setPopout.bind(this)}
                 />
                 <TestFinishedPanel
                     id='test_finished_panel'

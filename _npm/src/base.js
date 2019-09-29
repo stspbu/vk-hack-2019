@@ -5,7 +5,7 @@ import {Div, ScreenSpinner, Avatar, Link, Snackbar} from "@vkontakte/vkui"
 import Icon16Done from "@vkontakte/icons/dist/16/done";
 
 const MODE = 'dev';
-const baseUrl = 'https://demo138.bravo.vkhackathon.com:11888';
+const baseUrl = 'https://8f86adc5.ngrok.io';
 
 
 const possibleSpeechParts = ['nouns', 'verbs', 'adjectives', 'adverbs'];
@@ -116,7 +116,9 @@ class DataLoader extends BaseComponent {
         this.setState({
             isLoaded: true,
             data: data
-        })
+        });
+
+        this.props.done && this.props.done();
     }
 
     onRequestError(error) {
@@ -125,7 +127,9 @@ class DataLoader extends BaseComponent {
         this.setState({
             isLoaded: true,
             error: error
-        })
+        });
+
+        this.props.done && this.props.done();
     }
 
     render() {
@@ -136,7 +140,7 @@ class DataLoader extends BaseComponent {
                 return this.props.failed(this.state.error);
             }
         } else {
-            return (<ScreenSpinner/>);
+            return null;
         }
     }
 
