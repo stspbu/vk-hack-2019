@@ -116,7 +116,7 @@ class TestingHanlder(BaseHandler):
             variants.append(correct)
             random.shuffle(variants)
             answer_id = variants.index(correct)
-            if (kind == 'en-ru') or (kind is None and random.uniform(0,1) < 0.5):
+            if (kind == 'en-ru') or (kind is None and random.uniform(0,1) < 0.5) or True:
                 res['data'].append({
                     'answer': answer_id,
                     'variants': [variant[1] for variant in variants],
