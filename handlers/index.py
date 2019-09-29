@@ -43,7 +43,16 @@ class MainHandler(BaseHandler):
         return self.get_argument('sign', None)
 
     def get(self):
-        user_id = int(self.get_argument('vk_user_id'))
+        try:
+            user_id = int(self.get_argument('vk_user_id'))
+        except ValueError:
+            logging.warning(f"incorrect user_id: {self.get_argument('vk_user_id')}")
+            self.send_error(403)
+            return
+        except MissingArgumentError:
+            logging.warning(f"no user_id")
+            self.send_error(403)
+            return
 
         user_t = get_table('user')
         with db.get_connection() as conn:  # TODO: separate thread

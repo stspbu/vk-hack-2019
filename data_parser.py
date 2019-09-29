@@ -84,4 +84,4 @@ if __name__ == '__main__':
     # with open('dirty_words/translated_words.json', 'w+') as f_out:
     #     json.dump(tmp, f_out)
 
-# todo lower case words
+# todo delete all invalid values

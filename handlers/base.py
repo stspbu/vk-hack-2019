@@ -28,7 +28,11 @@ class BaseHandler(tornado.web.RequestHandler):
             if settings['TEST_MODE']:
                 return
 
-            user_id = int(self.request.headers['X-SDict-User-Id'])
+            try:
+                user_id = self._extract_user_id()
+            except ValueError:
+                self.send_error(403)
+                return
             token = self.request.headers['X-SDict-Token']
 
             if token_issuer.get_token(user_id) != token:
