@@ -5,7 +5,7 @@ import {Div, ScreenSpinner, Avatar, Link, Snackbar} from "@vkontakte/vkui"
 import Icon16Done from "@vkontakte/icons/dist/16/done";
 
 const MODE = 'dev';
-const baseUrl = 'https://vkhack19.com:11888';
+const baseUrl = 'https://demo138.bravo.vkhackathon.com:11888';
 
 
 const possibleSpeechParts = ['nouns', 'verbs', 'adjectives', 'adverbs'];
