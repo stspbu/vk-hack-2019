@@ -119,6 +119,12 @@ class Test extends BaseComponent {
 
 
 class TestPanel extends BaseComponent {
+    constructor(props) {
+        super(props);
+
+        this.props.setPopout(true);
+    }
+
     onTestFinished(tasks, taskIndexToAnswer) {
         this.props.onTestFinished(tasks, taskIndexToAnswer);
     }
@@ -152,6 +158,9 @@ class TestPanel extends BaseComponent {
                                     Что-то пошло не так...
                                 </Div>
                         )
+                    }
+                    done={
+                        () => this.props.setPopout(false)
                     }
                     method="GET"
                 />

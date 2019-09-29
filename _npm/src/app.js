@@ -48,7 +48,7 @@ class App extends BaseComponent {
         super(props);
 
         this.state = {
-            activeStory: 'profile_view'
+            activeStory: 'dict_view'
         }
     }
 

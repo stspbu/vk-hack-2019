@@ -68,7 +68,9 @@ class PackPanel extends BaseComponent {
         this.state = {
             pack: props.pack,
             snackbar: null
-        }
+        };
+
+        this.props.setPopout(true);
     }
 
     onPackClick() {
@@ -114,6 +116,9 @@ class PackPanel extends BaseComponent {
                     }
                     failed={
                         (error) => <Div>Что-то пошло не так...</Div>
+                    }
+                    done={
+                        () => this.props.setPopout(false)
                     }
                     method='GET'
                 />

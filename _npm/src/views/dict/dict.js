@@ -1,5 +1,5 @@
 import * as React from "react";
-import {ModalPage, ModalRoot, View, ModalPageHeader, Cell, HeaderButton, Input} from "@vkontakte/vkui";
+import {ModalPage, ModalRoot, View, ModalPageHeader, Cell, HeaderButton, Input, ScreenSpinner} from "@vkontakte/vkui";
 import {Select, Div, Button} from "@vkontakte/vkui"
 
 import connect from "@vkontakte/vk-connect"
@@ -29,7 +29,9 @@ class DictView extends BaseComponent {
             editData: null,
 
             snackbar: null,
-            modal: null
+            modal: null,
+
+            popout: null
         }
     }
 
@@ -103,15 +105,22 @@ class DictView extends BaseComponent {
         })
     }
 
+    setPopout(flag) {
+        this.setState({
+            popout: flag ? <ScreenSpinner/> : null
+        });
+    }
+
     render() {
         return (
-            <View id='dict_view' activePanel={this.state.activePanel} modal={this.state.modal}>
+            <View id='dict_view' activePanel={this.state.activePanel} modal={this.state.modal} popout={this.state.popout}>
                 <DictPanel
                     id='dict_panel'
                     onWordChoosingClick={this.onWordChoosingClick.bind(this)}
                     onWordClick={(word) => this.onWordClick(word)}
                     goBack={this.goBack.bind(this)}
                     snackbar={this.state.snackbar}
+                    setPopout={this.setPopout.bind(this)}
                 />
                 <WordPanel
                     id='word_panel'
@@ -132,6 +141,7 @@ class DictView extends BaseComponent {
                     goBack={this.goBack.bind(this)}
                     navReset={this.navReset.bind(this)}
                     setupModal={this.setupModal.bind(this)}
+                    setPopout={this.setPopout.bind(this)}
                 />
             </View>
         )

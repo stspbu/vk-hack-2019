@@ -236,6 +236,10 @@ class WordAddingPanel extends BaseComponent {
         };
 
         this.log('WordAddingPanel: constructor with word = ' + this.state.word);
+
+        if (!this.state.editMode) {
+            this.props.setPopout(true);
+        }
     }
 
     goBack() {
@@ -285,11 +289,13 @@ class WordAddingPanel extends BaseComponent {
                             failed={
                                 (error) => <Div>Что-то пошло не так...</Div>
                             }
+                            done={
+                                () => this.props.setPopout(false)
+                            }
                             method="POST"
                             requestData={requestData}
                         />
                 }
-
                 <YandexSign/>
             </Panel>
         )

@@ -116,7 +116,9 @@ class DataLoader extends BaseComponent {
         this.setState({
             isLoaded: true,
             data: data
-        })
+        });
+
+        this.props.done && this.props.done();
     }
 
     onRequestError(error) {
@@ -125,7 +127,9 @@ class DataLoader extends BaseComponent {
         this.setState({
             isLoaded: true,
             error: error
-        })
+        });
+
+        this.props.done && this.props.done();
     }
 
     render() {
@@ -136,7 +140,7 @@ class DataLoader extends BaseComponent {
                 return this.props.failed(this.state.error);
             }
         } else {
-            return (<ScreenSpinner/>);
+            return null;
         }
     }
 

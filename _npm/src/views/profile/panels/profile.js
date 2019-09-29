@@ -21,6 +21,8 @@ class ProfilePanel extends BaseComponent {
             error: null
         };
 
+        this.setPopout(true);
+
         this.loadVKData();
         setTimeout(function(){
             if (!this.state.isLoaded) {
@@ -29,9 +31,14 @@ class ProfilePanel extends BaseComponent {
                 this.setState({
                     isLoaded: true,
                     error: 'timeout'
-                })
+                });
+                this.setPopout(false);
             }
         }.bind(this), 5000);
+    }
+
+    setPopout(flag) {
+        this.props.setPopout(flag);
     }
 
     loadVKData() {
@@ -54,7 +61,8 @@ class ProfilePanel extends BaseComponent {
                     this.setState({
                         isLoaded: true,
                         error: 'unknown'
-                    })
+                    });
+                    this.setPopout(false);
                 }
             }
         }.bind(this));
@@ -74,11 +82,13 @@ class ProfilePanel extends BaseComponent {
                 stats: data,
                 isLoaded: true
             });
+            this.setPopout(false);
         }.bind(this), function(error) {
             this.setState({
                 isLoaded: false,
                 error: error
             });
+            this.setPopout(false);
         }.bind(this));
     }
 
