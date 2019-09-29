@@ -1,5 +1,5 @@
 import * as React from "react";
-import {Group, List, PanelHeader, HeaderButton, Panel, Radio, Div, FormLayout, Button} from "@vkontakte/vkui";
+import {Group, List, PanelHeader, HeaderButton, Panel, Radio, Div, Button} from "@vkontakte/vkui";
 
 import Icon24Back from '@vkontakte/icons/dist/24/back';
 

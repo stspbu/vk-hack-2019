@@ -1,113 +1,12 @@
 import * as React from "react";
-import {
-    Panel,
-    PanelHeader,
-    HeaderButton,
-    Button,
-    List,
-    Group,
-    Checkbox,
-    Div,
-    Cell,
-    Input,
-    Select,
-    FormLayout
-} from "@vkontakte/vkui";
-import {ModalRoot, ModalPage, ModalPageHeader} from "@vkontakte/vkui"
+import {Panel, PanelHeader, HeaderButton, Button, List, Group, Checkbox, Div, Snackbar} from "@vkontakte/vkui";
 
 import Icon24Back from '@vkontakte/icons/dist/24/back';
-import Icon24Cancel from "@vkontakte/icons/dist/24/cancel"
-import Icon24Dismiss from "@vkontakte/icons/dist/24/dismiss"
-import {IS_PLATFORM_ANDROID, IS_PLATFORM_IOS} from '@vkontakte/vkui/dist/lib/platform';
 
 import {BaseComponent, DataLoader, possibleSpeechParts, getSpeechPartTitle, YandexSign} from "../../../base";
+import {TranslationAddingModal} from './base'
 
-
-class TranslationAddingModal extends BaseComponent {
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            speechPart: 'nouns',
-            translation: null
-        }
-    }
-
-    onInputChange(e) {
-        let inputWord = e.target.value;
-        this.setState({
-            translation: inputWord
-        })
-    }
-
-    onChangeSpeechPart(e) {
-        let speechPart = e.target.value;
-        this.setState({
-            speechPart: speechPart
-        })
-    }
-
-    onAddTranslation() {
-        let tr = this.state.translation;
-        let sp = this.state.speechPart;
-
-        if (tr && sp) {
-            this.props.onAddTranslation(tr, sp);
-        }
-    }
-
-    onCloseModal() {
-        this.props.onCloseModal();
-    }
-
-    render() {
-        return (
-            <ModalRoot activeModal={'translation_adding_modal'}>
-                <ModalPage
-                    id='translation_adding_modal'
-                    header={
-                        <ModalPageHeader
-                            left={
-                                IS_PLATFORM_ANDROID &&
-                                <HeaderButton onClick={this.onCloseModal.bind(this)}>
-                                    <Icon24Cancel/>
-                                </HeaderButton>
-                            }
-                            right={
-                                IS_PLATFORM_IOS &&
-                                <HeaderButton onClick={this.onCloseModal.bind(this)}>
-                                    <Icon24Dismiss/>
-                                </HeaderButton>
-                            }>
-                        </ModalPageHeader>
-                    }
-                    settlingHeight='100'
-                    onClose={this.onCloseModal.bind(this)}
-                >
-                    <Div>
-                        <Cell>Укажите перевод</Cell>
-                        <FormLayout>
-                            <Input value={this.state.translation} onChange={this.onInputChange.bind(this)}/>
-                            <Select
-                                placeholder='Выберите часть речи'
-                                value={this.state.speechPart}
-                                onChange={this.onChangeSpeechPart.bind(this)}
-                            >
-                                {possibleSpeechParts.map((sp, i) =>
-                                    <option value={sp} selected={i === 0}>
-                                        {getSpeechPartTitle(sp, false, true)}
-                                    </option>)}
-                            </Select>
-                            <Button size='xl' onClick={this.onAddTranslation.bind(this)}>
-                                Добавить перевод
-                            </Button>
-                        </FormLayout>
-                    </Div>
-                </ModalPage>
-            </ModalRoot>
-        );
-    }
-}
+import {InfoSnackbar} from "../../../base"
 
 
 class Word extends BaseComponent {
@@ -118,7 +17,9 @@ class Word extends BaseComponent {
             word: props.word,
             translations: props.translations,
             wordSpeechPartToIndexToChecked: {},
-            ownTranslations: {}
+            ownTranslations: {},
+            editMode: props.editMode || false,
+            hasTranslations: false
         };
 
         for (let i = 0; i < possibleSpeechParts.length; i++) {
@@ -127,9 +28,16 @@ class Word extends BaseComponent {
             this.state.wordSpeechPartToIndexToChecked[sp] = {};
             this.state.ownTranslations[sp] = [];
 
-            // extends basic translations if server responded poor
             if (!this.state.translations[sp]) {
                 this.state.translations[sp] = [];
+            } else {
+                this.state.hasTranslations = true;
+            }
+
+            if (this.state.editMode) {
+                this.state.translations[sp].map((el, index) => {
+                    this.state.wordSpeechPartToIndexToChecked[sp][index] = true;
+                });
             }
         }
 
@@ -190,16 +98,12 @@ class Word extends BaseComponent {
         };
 
         let successCallback = function(data) {
-            alert('ok!');  // TODO: get back to dict view
-        };
-
-        let errorCallback = function(error) {
-            alert('error!');  // TODO: make it more user friendly
-        };
+            this.props.navReset(<InfoSnackbar message='Изменения сохранены'/>);
+        }.bind(this);
 
         this.log('Pre requesting server: data = ' + JSON.stringify(params));
 
-        DataLoader.doMakeRequest(params, successCallback, errorCallback, this);
+        DataLoader.doMakeRequest(params, successCallback, this);
     }
 
     showTranslationGroup(speechPart, trs, ownTrs) {
@@ -255,7 +159,8 @@ class Word extends BaseComponent {
 
             return {
                 ownTranslations: newOwnTrs,
-                wordSpeechPartToIndexToChecked: newWordSpeechPartToIndexToChecked
+                wordSpeechPartToIndexToChecked: newWordSpeechPartToIndexToChecked,
+                hasTranslations: state.hasTranslations || valid
             }
         });
         this.props.setupModal(null);
@@ -281,9 +186,17 @@ class Word extends BaseComponent {
         this.log('Word: rendering with ts = ' + JSON.stringify(translations)
             + ' and ownTs = ' + JSON.stringify(ownTranslations));
 
+
+        let content;
+        if (this.state.hasTranslations) {
+            content = possibleSpeechParts.map((p) =>
+                translations[p] ? this.showTranslationGroup(p, translations[p], ownTranslations[p]) : '')
+        } else {
+            content = <Div>Нет доступных переводов, вы можете добавить свой перевод</Div>
+        }
+
         return [
-            possibleSpeechParts.map((p) =>
-                translations[p] ? this.showTranslationGroup(p, translations[p], ownTranslations[p]) : ''),
+            content,
             <Div style={{display: 'flex'}}>
                 <Button
                     size='l'
@@ -312,7 +225,10 @@ class WordAddingPanel extends BaseComponent {
         super(props);
 
         this.state = {
-            word: props.data
+            word: props.data,
+
+            editMode: props.editMode,
+            editData: props.editData
         };
 
         this.log('WordAddingPanel: constructor with word = ' + this.state.word);
@@ -341,20 +257,33 @@ class WordAddingPanel extends BaseComponent {
                     Слово {this.state.word}
                 </PanelHeader>
 
-                <DataLoader
-                    endpoint='/translate/'
-                    loaded={
-                        (data) => <Word
-                                translations={data.translations}
-                                word={this.state.word}
-                                setupModal={this.setupModal.bind(this)} />
-                    }
-                    failed={
-                        (error) => <Div>Что-то пошло не так...</Div>
-                    }
-                    method="POST"
-                    requestData={requestData}
-                />
+                {
+                    this.state.editMode
+                        ? <Word
+                            editMode={true}
+                            translations={this.state.editData.translations}
+                            word={this.state.editData.word}
+                            setupModal={this.setupModal.bind(this)}
+                            navReset={this.props.navReset.bind(this)}
+                        />
+                        : <DataLoader
+                            endpoint='/translate/'
+                            loaded={
+                                (data) =>
+                                    <Word
+                                        translations={data.translations}
+                                        word={this.state.word}
+                                        setupModal={this.setupModal.bind(this)}
+                                        navReset={this.props.navReset.bind(this)}
+                                    />
+                            }
+                            failed={
+                                (error) => <Div>Что-то пошло не так...</Div>
+                            }
+                            method="POST"
+                            requestData={requestData}
+                        />
+                }
 
                 <YandexSign/>
             </Panel>

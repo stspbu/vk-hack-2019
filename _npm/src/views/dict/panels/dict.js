@@ -55,7 +55,9 @@ class DictPanel extends BaseComponent {
                     loaded={
                         (data) => <Words data={data} onWordClick={(word) => this.props.onWordClick(word)}/>
                     }
-                    method='GET'/>
+                    method='GET'
+                />
+                {this.props.snackbar}
                 <YandexSign/>
             </Panel>
         )

@@ -6,7 +6,6 @@ import {BaseComponent} from "../../base"
 import TestListPanel from "./panels/test-list"
 import TestPanel from "./panels/test"
 import TestFinishedPanel from "./panels/test-finished"
-import connect from "@vkontakte/vk-connect";
 
 
 class TestView extends BaseComponent {
@@ -27,18 +26,12 @@ class TestView extends BaseComponent {
         const history = [...this.state.history];
         history.pop();
         const activePanel = history[history.length - 1];
-        if (activePanel === 'test_list_panel') {
-            connect.send('VKWebAppDisableSwipeBack');
-        }
         this.setState({ history, activePanel });
     }
 
     goForward(activePanel) {
         const history = [...this.state.history];
         history.push(activePanel);
-        if (this.state.activePanel === 'test_list_panel') {
-            connect.send('VKWebAppEnableSwipeBack');
-        }
         this.setState({ history, activePanel });
     }
     /* nav ends */
@@ -74,6 +67,7 @@ class TestView extends BaseComponent {
                     id='test_finished_panel'
                     tasks={this.state.tasks}
                     taskIndexToAnswer={this.state.taskIndexToAnswer}
+                    goBack={this.goBack.bind(this)}
                 />
             </View>
         )
