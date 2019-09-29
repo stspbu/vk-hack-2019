@@ -27,10 +27,10 @@ class TestList extends BaseComponent {
                 </PanelHeader>
                 <Group title="Выберите тест">
                     <List>
-                        {AvailableTests.map((test) =>
+                        {AvailableTests.map((test, index) =>
                             <CellButton
                                 data-kind={test.kind}
-                                onClick = {this.onTestSelected.bind(this)}>
+                                onClick = {index === 0 ? this.onTestSelected.bind(this) : null}>
 
                                 {test.name}
                             </CellButton>

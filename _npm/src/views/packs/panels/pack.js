@@ -99,7 +99,7 @@ class PackPanel extends BaseComponent {
                 <PanelHeader
                     left={<HeaderButton onClick={this.goBack.bind(this)}><Icon24Back/></HeaderButton>}
                 >
-                    Набор {this.state.pack.name}
+                    {this.state.pack.name}
                 </PanelHeader>
                 <DataLoader
                     endpoint={'/packs/' + this.state.pack.id + '/'}
