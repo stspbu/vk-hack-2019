@@ -1,11 +1,13 @@
 import sqlalchemy as sa
 import db
 import json
+import logging
 from utils.validators import check_english_word, check_russian_word
 
 
 def merge_translations(user_id: int, new_word: str, new_translations: dict, conn) -> bool:
     words_t = db.get_table('words')
+    logging.info(f"{user_id} {new_word} {new_translations}")
 
     try:
         raw_data = conn.execute(sa.select([words_t.c.raw_data]).where(words_t.c.user_id == user_id).
@@ -32,9 +34,16 @@ def merge_translations(user_id: int, new_word: str, new_translations: dict, conn
         set_updated = set_before.union(set_new)
         if len(set_updated) > old_len:
             flag = True
-        translations[key] = list(set_updated).sort()
+        translations[key] = list(set_updated)
+        translations[key].sort()
+        if not translations[key]:
+            translations.pop(key, None)
 
-    conn.execute(words_t.update(words_t.c.user_id == user_id).where(words_t.c.word == new_word),
-                 {'raw_data': json.dumps(raw_data)})
+    logging.debug(raw_data)
+    if raw_data['translations']:
+        conn.execute(words_t.update(words_t.c.user_id == user_id).where(words_t.c.word == new_word),
+                     {'raw_data': json.dumps(raw_data)})
+    else:
+        conn.execute(words_t.delete().where(words_t.c.user_id == user_id).where(words_t.c.word == new_word))
     return flag
 
