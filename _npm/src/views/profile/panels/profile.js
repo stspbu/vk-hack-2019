@@ -1,11 +1,12 @@
 import * as React from "react";
 import connect from "@vkontakte/vk-connect"
 
-import {ScreenSpinner, PanelHeader, Cell, Avatar, Div, Panel, FixedLayout, Link, Button} from "@vkontakte/vkui";
+import {ScreenSpinner, PanelHeader, Cell, Avatar, Div, Panel, Footer, Group, List} from "@vkontakte/vkui";
 
 import {BaseComponent, DataLoader} from "../../../base";
 
 import Icon24Favorite from '@vkontakte/icons/dist/24/favorite';
+import Icon24Info from '@vkontakte/icons/dist/24/info';
 
 class ProfilePanel extends BaseComponent {
     constructor(props) {
@@ -91,25 +92,30 @@ class ProfilePanel extends BaseComponent {
             if (!this.state.error) {
                 content = [
                     <Cell>
-                        <div align="center">
+                        <Div align="center">
                             <Avatar align="center" src={this.state.userData.avatar} size={80}/>
-                        </div>
+                        </Div>
                     </Cell>,
                     <Cell >
                         <div align="center">
                             {this.state.userData.name}
                         </div>
                     </Cell>,
-                    <Cell
-                        before={<Icon24Favorite/>}
-                        asideContent={this.state.stats.rating}>
-                        Рейтинг
-                    </Cell>,
-                    <Cell
-                        before={<Icon24Favorite/>}
-                        asideContent={<div> {this.state.stats.known_words} / {this.state.stats.all_words}</div>}>
-                        Слова
-                    </Cell>
+                    <Group>
+                        <List>
+                            <Cell
+                                before={<Icon24Favorite/>}
+                                asideContent={this.state.stats.rating}>
+                                Рейтинг
+                            </Cell>
+                            <Cell
+                                before={<Icon24Info/>}
+                                asideContent={<div> {this.state.stats.known_words} / {this.state.stats.all_words}</div>}>
+                                Слова
+                            </Cell>
+                            </List>
+                    </Group>,
+                    <Footer>Тренируйтесь больше, чтобы повысить свой рейтинг</Footer>
                 ]
             } else {
                 content = <Div>Что-то пошло не так...</Div>

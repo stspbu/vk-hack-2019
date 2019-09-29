@@ -44,7 +44,7 @@ class Task extends BaseComponent{
 
         return (
             <Group title={'Вопрос #' + (taskIndex+1)}>
-                <Div>Выберите перевод слова {word}:</Div>
+                <Div>Выберите перевод слова {word}</Div>
                 <List>
                     {
                         variants.map(
