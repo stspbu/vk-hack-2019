@@ -32,7 +32,7 @@ def merge_translations(user_id: int, new_word: str, new_translations: dict, conn
         set_updated = set_before.union(set_new)
         if len(set_updated) > old_len:
             flag = True
-        translations[key] = list(set_updated)
+        translations[key] = list(set_updated).sort()
 
     conn.execute(words_t.update(words_t.c.user_id == user_id).where(words_t.c.word == new_word),
                  {'raw_data': json.dumps(raw_data)})
