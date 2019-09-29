@@ -24,7 +24,7 @@ class Words extends BaseComponent {
     render() {
         let search = this.props.search;
         let words = this.state.words;
-        words = words.filter(({word}) => word.toLowerCase().indexOf(search) > -1);
+        words = words.filter(({word}) => word.toLowerCase().indexOf(search.toLowerCase()) > -1);
 
         this.log('Search: ' + search);
         this.log('Words: ' + JSON.stringify(words));
