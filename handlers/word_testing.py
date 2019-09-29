@@ -10,6 +10,9 @@ import sqlalchemy as sa
 
 class RubbishTranslations:
     def __init__(self):
+        self._cashed_words = None
+
+    def _read_data(self):
         self._cashed_words = list()
         words_t = db.get_table('words')
         with db.get_connection() as conn:
@@ -27,6 +30,8 @@ class RubbishTranslations:
                 self._cashed_words.append((row['word'], translations))
 
     def get_random_word(self):
+        if not self._cashed_words:
+            self._read_data()
         word, translate = random.choice(self._cashed_words)
         return word, random.choice(translate)
 
