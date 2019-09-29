@@ -108,14 +108,14 @@ class MockPackageHanlder(tornado.web.RequestHandler):
                     'avatar': 'https://sun9-11.userapi.com/c840625/v840625258/76dcb/S_OqYN_jWO8.jpg',
                     'words': [
                         {'word': 'goose', 'translations': {'nouns': ["гусь"]}},
-                        {'word': 'Danila', 'translations': {'adjective': ["крутой"]}},
+                        {'word': 'Danila', 'translations': {'adjectives': ["крутой"]}},
                         {'word': 'wolf', 'translations': {'nouns': ["волк"]}},
                         {'word': 'fox', 'translations': {'nouns': ["лиса"]}},
-                        {'word': 'wonderful', 'translations': {'adjective': ["прекрасный"]}},
-                        {'word': 'goose', 'translations': {'verb': ["быть гусем"]}},
-                        {'word': 'crop', 'translations': {'verb': ["вырезать"]}},
-                        {'word': 'slightly', 'translations': {'adverb': ["незначительно"]}},
-                        {'word': 'clean', 'translations': {'verb': ["чистить"]}},
+                        {'word': 'wonderful', 'translations': {'adjectives': ["прекрасный"]}},
+                        {'word': 'goose', 'translations': {'verbs': ["быть гусем"]}},
+                        {'word': 'crop', 'translations': {'verbs': ["вырезать"]}},
+                        {'word': 'slightly', 'translations': {'adverbs': ["незначительно"]}},
+                        {'word': 'clean', 'translations': {'verbs': ["чистить"]}},
                     ]
                 }
             }

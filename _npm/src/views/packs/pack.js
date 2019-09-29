@@ -5,7 +5,7 @@ import connect from "@vkontakte/vk-connect"
 import {BaseComponent} from "../../base"
 import PacksListPanel from "./panels/pack-list";
 import PackPanel from "./panels/pack";
-import WordPanel from "../dict/dict";
+import WordPanel from "../dict/panels/word";
 
 
 class PackView extends BaseComponent {
@@ -52,19 +52,26 @@ class PackView extends BaseComponent {
     }
 
     onWordClicked(w) {
+        this.log('PackView: changing panel for pack = ' + JSON.stringify(w));
+
         this.setState({
             chosenWord: w
         });
-        this.goForward('pack_word_panel');
+        this.goForward('word_panel');
     }
 
     render() {
         return (
             <View id='pack_view' activePanel={this.state.activePanel}>
                 <PacksListPanel id='pack_list_panel' onPackClick={this.onPackClick.bind(this)} />
-                <PackPanel id='pack_panel' onWordClicked={this.onWordClicked.bind(this)} pack={this.state.chosenPack} />
+                <PackPanel
+                    id='pack_panel'
+                    onWordClicked={this.onWordClicked.bind(this)}
+                    goBack={this.goBack.bind(this)}
+                    pack={this.state.chosenPack}
+                />
                 <WordPanel
-                    id='pack_word_panel'
+                    id='word_panel'
                     data={this.state.chosenWord}
                     goBack={this.goBack.bind(this)}
                 />

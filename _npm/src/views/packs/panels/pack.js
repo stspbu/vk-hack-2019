@@ -1,11 +1,9 @@
 import React from 'react'
 import {BaseComponent, DataLoader} from "../../../base";
-import {CellButton, PanelHeader, Group, List, Panel, Div, Avatar} from "@vkontakte/vkui";
+import {CellButton, PanelHeader, Group, List, Panel, Div, HeaderButton} from "@vkontakte/vkui";
 
 
-import WordPanel from "../../dict/panels/dict"
-
-import Icon24Fullscreen from '@vkontakte/icons/dist/24/fullscreen';
+import Icon24Back from '@vkontakte/icons/dist/24/back';
 
 class PackLoaded extends BaseComponent {
     /**
@@ -46,8 +44,6 @@ class PackLoaded extends BaseComponent {
                     )}
                 </List>
             </Group>
-                // this.state.data.words.map(
-                // )
         )
     }
 }
@@ -70,14 +66,20 @@ class PackPanel extends BaseComponent {
         this.props.onWordClicked(w);
     }
 
+    goBack() {
+        this.props.goBack();
+    }
+
     render() {
         return (
             <Panel id='pack_panel'>
-                <PanelHeader>
+                <PanelHeader
+                    left={<HeaderButton onClick={this.goBack.bind(this)}><Icon24Back/></HeaderButton>}
+                >
                     Набор {this.state.pack.name}
                 </PanelHeader>
                 <DataLoader
-                    endpoint={'/packs/'+this.state.pack.id}
+                    endpoint={'/packs/' + this.state.pack.id + '/'}
                     loaded={
                         (data) =>
                             <PackLoaded

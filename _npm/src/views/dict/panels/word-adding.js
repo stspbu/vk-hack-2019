@@ -48,7 +48,8 @@ class TranslationAddingModal extends BaseComponent {
     }
 
     onAddTranslation() {
-        this.props.onAddTranslation(this.state.translation, this.state.speechPart);
+        let tr = this.state.translation;
+        this.props.onAddTranslation(tr.toLowerCase().trim(), this.state.speechPart);
     }
 
     onCloseModal() {
@@ -322,6 +323,9 @@ class WordAddingPanel extends BaseComponent {
                                 translations={data.translations}
                                 word={this.state.word}
                                 setupModal={this.setupModal.bind(this)} />
+                    }
+                    failed={
+                        (error) => <Div>Что-то пошло не так...</Div>
                     }
                     method="POST"
                     requestData={requestData} />

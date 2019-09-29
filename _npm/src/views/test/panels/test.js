@@ -56,7 +56,15 @@ class Task extends BaseComponent{
                                     onChange={this.onVariantChosen.bind(this)}>{variant}</Radio>
                         )
                     }
-                    <Button onClick={this.onAnswered.bind(this)}>Далее</Button>
+                    <Div style={{display: 'flex'}}>
+                        <Button
+                            onClick={this.onAnswered.bind(this)}
+                            size="l"
+                            stretched
+                        >
+                            Далее
+                        </Button>
+                    </Div>
                 </List>
             </Group>
         )

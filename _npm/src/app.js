@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import connect from '@vkontakte/vk-connect'
-import {Tabbar, Epic, TabbarItem, PanelHeader, Panel, View} from '@vkontakte/vkui'
+import {Tabbar, Epic, TabbarItem, PanelHeader, Panel, View, FixedLayout} from '@vkontakte/vkui'
 
 import {BaseComponent} from "./base";
 import DictView from './views/dict/dict'

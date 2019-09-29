@@ -1,6 +1,6 @@
 import * as React from "react";
 import {BaseComponent} from "../../../base";
-import {Panel, PanelHeader, HeaderButton, Input, Button, Div} from "@vkontakte/vkui";
+import {Panel, PanelHeader, HeaderButton, Input, Button, Div, FormLayout} from "@vkontakte/vkui";
 
 import Icon24Back from '@vkontakte/icons/dist/24/back';
 
@@ -18,7 +18,7 @@ class WordChoosingPanel extends BaseComponent {
     }
 
     onChange(e) {
-        let word = e.target.value;
+        let word = (e.target.value).toUpperCase().trim();
         this.log('On change, word = ' + word);
 
         this.setState({
@@ -27,24 +27,28 @@ class WordChoosingPanel extends BaseComponent {
     }
 
     onWordEnteredClick() {
-        this.props.onWordEnteredClick(this.state.word);
+        let word = this.state.word;
+        this.props.onWordEnteredClick(word.toLowerCase());
     }
 
     render() {
         return (
             <Panel id="word_choosing_panel">
                 <PanelHeader
-                    left={<HeaderButton onClick={this.goBack.bind(this)}><Icon24Back/></HeaderButton>}>
+                    left={<HeaderButton onClick={this.goBack.bind(this)}><Icon24Back/></HeaderButton>}
+                >
                     Добавление слова
                 </PanelHeader>
-                <Div>
-                    <Input value={this.state.word} onChange={this.onChange.bind(this)}/>
-                </Div>
-                <Div align="center">
-                    <Button onClick={this.onWordEnteredClick.bind(this)}>
+                <FormLayout>
+                    <Input alignment='center' onChange={this.onChange.bind(this)} value={this.state.word}/>
+                    <Button
+                        size='xl'
+                        stretched
+                        onClick={this.onWordEnteredClick.bind(this)}
+                    >
                         Продолжить
                     </Button>
-                </Div>
+                </FormLayout>
             </Panel>
         )
     }
