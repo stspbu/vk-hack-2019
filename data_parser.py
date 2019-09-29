@@ -1,4 +1,5 @@
 import json
+import random
 from utils.translator import Translator
 
 
@@ -62,4 +63,22 @@ if __name__ == '__main__':
     # main1('word_packs/wild_animals3.json', 'word_packs/wild_animals2.json')
     # main2('word_packs/wild_animals2.json', 'word_packs/wild_animals.json')
     # main3('word_packs/wild_animals.json')
-    main4('word_packs/birds.json', 'word_packs/birds.json')
+    # main4('word_packs/birds.json', 'word_packs/birds.json')
+    with open('dirty_words/all_words.json') as f_in:
+        data = json.load(f_in)
+    data = data['data']
+    random.shuffle(data)
+    tmp = list()
+    tr = Translator()
+    for word in data[:300]:
+        trans = tr.translate(word)
+        if not list(trans.items()):
+            continue
+        tmp.append({
+            'word': word,
+            'translation': tr.translate(word)
+        })
+    with open('dirty_words/translated_words.json', 'w+') as f_out:
+        json.dump(tmp, f_out)
+
+# todo lower case words

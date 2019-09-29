@@ -53,6 +53,12 @@ class AdminHandler(tornado.web.RequestHandler):
                              {'name': file_name[11:-5], 'avatar': data['avatar'], 'description': data['description'],
                               'words': json.dumps(data['data'])})
 
+            with open('dirty_words/translated_words.json') as f_in:
+                data = json.load(f_in)
+            for elem in data:
+                conn.execute(words_t.insert(),
+                             {'user_id': None, 'word': elem['word'], 'raw_data': json.dumps(elem['translation'])})
+
             conn.close()
             logging.warning("correct update db")
             self.write({'result': 'ok'})
