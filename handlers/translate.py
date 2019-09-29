@@ -24,7 +24,14 @@ class TranslateHandler(BaseHandler):
             self.write(json.dumps({'error': 'incorrect-format'}))
             return
 
-        translation = Translator().translate(word)
+        try:
+            translation = Translator().translate(word)
+        except RuntimeError:
+            logging.error(f"translation error")
+            self.write(json.dumps({
+                'error': 'translation-error'
+            }))
+            return
 
         logging.debug(f"get translation {translation} for word {data['word']}")
 

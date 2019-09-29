@@ -36,6 +36,7 @@ class WordsHandler(BaseHandler):
 
     def post(self):
         # todo delete translations
+        # todo check insert values
 
         try:
             data = json.loads(self.request.body)

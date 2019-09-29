@@ -1,16 +1,11 @@
 from handlers.base import BaseHandler
 import json
 import db
-from  sqlalchemy.sql.expression import func
-from utils.translator import Translator
+from sqlalchemy.sql.expression import func
 import random
-import requests
 import logging
 
 import sqlalchemy as sa
-
-
-url_with_words = 'https://www.randomlists.com/data/words.json'
 
 
 class RubbishTranslations:
