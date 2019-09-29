@@ -1,9 +1,11 @@
 import * as React from "react";
 import connect from "@vkontakte/vk-connect"
 
-import {ScreenSpinner, PanelHeader, Cell, Avatar, Div, Panel, FixedLayout, Link} from "@vkontakte/vkui";
+import {ScreenSpinner, PanelHeader, Cell, Avatar, Div, Panel, FixedLayout, Link, Button} from "@vkontakte/vkui";
 
 import {BaseComponent, DataLoader} from "../../../base";
+
+import Icon24Favorite from '@vkontakte/icons/dist/24/favorite';
 
 class ProfilePanel extends BaseComponent {
     constructor(props) {
@@ -88,11 +90,26 @@ class ProfilePanel extends BaseComponent {
         if (this.state.isLoaded) {
             if (!this.state.error) {
                 content = [
-                    <Cell><Avatar src={this.state.userData.avatar} size={80}/></Cell>,
-                    <Cell>{this.state.userData.name}</Cell>,
-                    <Cell>{this.state.stats.known_words}</Cell>,
-                    <Cell>{this.state.stats.all_words}</Cell>,
-                    <Cell>{this.state.stats.rating}</Cell>
+                    <Cell>
+                        <div align="center">
+                            <Avatar align="center" src={this.state.userData.avatar} size={80}/>
+                        </div>
+                    </Cell>,
+                    <Cell >
+                        <div align="center">
+                            {this.state.userData.name}
+                        </div>
+                    </Cell>,
+                    <Cell
+                        before={<Icon24Favorite/>}
+                        asideContent={this.state.stats.rating}>
+                        Рейтинг
+                    </Cell>,
+                    <Cell
+                        before={<Icon24Favorite/>}
+                        asideContent={<div> {this.state.stats.known_words} / {this.state.stats.all_words}</div>}>
+                        Слова
+                    </Cell>
                 ]
             } else {
                 content = <Div>Что-то пошло не так...</Div>
