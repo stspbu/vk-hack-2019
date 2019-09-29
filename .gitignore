@@ -3,8 +3,8 @@
 venv/
 *.pyc
 
-static/css/bundle.css
-static/js/bundle.js
+#static/css/bundle.css
+#static/js/bundle.js
 
 _npm/node_modules/
 _npm/dist/
