@@ -1,11 +1,10 @@
 import * as React from "react";
 import {Cell, View} from "@vkontakte/vkui";
-import connect from "@vkontakte/vk-connect"
 
 import {BaseComponent} from "../../base"
 import PacksListPanel from "./panels/pack-list";
 import PackPanel from "./panels/pack";
-import WordPanel from "../dict/panels/word";
+import WordPanel from "./panels/pack-word";
 
 
 class PackView extends BaseComponent {
@@ -26,18 +25,12 @@ class PackView extends BaseComponent {
         const history = [...this.state.history];
         history.pop();
         const activePanel = history[history.length - 1];
-        if (activePanel === 'pack_list_panel') {
-            connect.send('VKWebAppDisableSwipeBack');
-        }
         this.setState({ history, activePanel });
     }
 
     goForward(activePanel) {
         const history = [...this.state.history];
         history.push(activePanel);
-        if (this.state.activePanel === 'pack_list_panel') {
-            connect.send('VKWebAppEnableSwipeBack');
-        }
         this.setState({ history, activePanel });
     }
     /* end */
@@ -57,7 +50,7 @@ class PackView extends BaseComponent {
         this.setState({
             chosenWord: w
         });
-        this.goForward('word_panel');
+        this.goForward('pack_word_panel');
     }
 
     render() {
@@ -71,7 +64,7 @@ class PackView extends BaseComponent {
                     pack={this.state.chosenPack}
                 />
                 <WordPanel
-                    id='word_panel'
+                    id='pack_word_panel'
                     data={this.state.chosenWord}
                     goBack={this.goBack.bind(this)}
                 />

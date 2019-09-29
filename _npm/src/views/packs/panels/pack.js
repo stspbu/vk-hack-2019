@@ -1,11 +1,10 @@
 import React from 'react'
-import {BaseComponent, DataLoader, getRussianPluralText} from "../../../base";
 import {CellButton, PanelHeader, Group, List, Panel, Div, HeaderButton, Footer, Button} from "@vkontakte/vkui";
-import {Snackbar, Avatar} from "@vkontakte/vkui";
 
-
-import Icon16Done from '@vkontakte/icons/dist/16/done';
 import Icon24Back from '@vkontakte/icons/dist/24/back';
+
+import {BaseComponent, DataLoader, getRussianPluralText, InfoSnackbar} from "../../../base";
+
 
 class PackLoaded extends BaseComponent {
     /**
@@ -52,7 +51,9 @@ class PackLoaded extends BaseComponent {
                         )}
                     </List>
                 </Group>
-                <Footer>Всего {wordsCnt}</Footer>
+                <Footer>Всего {wordsCnt} {
+                    getRussianPluralText('слов', wordsCnt, '', 'о', 'а')
+                }</Footer>
                 <Button size='xl' onClick={this.onPackApplied.bind(this)}>Добавить в словарь</Button>
             </Div>
         )
@@ -84,21 +85,7 @@ class PackPanel extends BaseComponent {
             method: 'POST'
         });
         this.setState({
-            snackbar:
-                <Snackbar
-                    layout="vertical"
-                    onClose={() => this.setState({snackbar: null})}
-                    before={
-                        <Avatar
-                            size={24}
-                            style={{backgroundColor: 'var(--accent)'}}
-                        >
-                            <Icon16Done fill='#fff' width={14} height={14}/>
-                        </Avatar>
-                    }
-                >
-                    Слова успешно добавлены
-                </Snackbar>
+            snackbar: <InfoSnackbar message='Слова успешно добавлены'/>
         })
     }
 

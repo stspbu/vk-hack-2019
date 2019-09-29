@@ -1,5 +1,8 @@
 import React from "react";
-import {Div, ScreenSpinner, FixedLayout, Link} from "@vkontakte/vkui"
+
+import {Div, ScreenSpinner, Avatar, Link, Snackbar} from "@vkontakte/vkui"
+
+import Icon16Done from "@vkontakte/icons/dist/16/done";
 
 const MODE = 'dev';
 const baseUrl = 'https://vkhack19.com:11888';
@@ -21,15 +24,16 @@ function getSpeechPartTitle(speechPart, plural=true, capitalized=false) {
     return res;
 }
 
-function getRussianPluralText(root, number) {
+function getRussianPluralText(root, number, e05, e1, eo) {
     let lastNumber = number % 10;
+    let lastSndNumber = parseInt(number / 10) % 10;
 
-    if (lastNumber == 0 || lastNumber >= 5) {
-        return root + 'ов';
+    if (lastNumber == 0 || lastNumber >= 5 || lastSndNumber == 1) {
+        return root + e05;
     } else if (lastNumber == 1) {
-        return root;
+        return root + e1;
     } else {
-        return root + 'а';
+        return root + eo;
     }
 }
 
@@ -150,4 +154,33 @@ class YandexSign extends React.Component {
     }
 }
 
-export {BaseComponent, DataLoader, getSpeechPartTitle, possibleSpeechParts, getRussianPluralText, YandexSign};
+class InfoSnackbar extends BaseComponent {
+    render() {
+        return (
+            <Snackbar
+                layout="vertical"
+                onClose={() => this.setState({snackbar: null})}
+                before={
+                    <Avatar
+                        size={24}
+                        style={{backgroundColor: 'var(--accent)'}}
+                    >
+                        <Icon16Done fill='#fff' width={14} height={14}/>
+                    </Avatar>
+                }
+            >
+                {this.props.message}
+            </Snackbar>
+        )
+    }
+}
+
+export {
+    BaseComponent,
+    DataLoader,
+    getSpeechPartTitle,
+    possibleSpeechParts,
+    getRussianPluralText,
+    YandexSign,
+    InfoSnackbar
+};

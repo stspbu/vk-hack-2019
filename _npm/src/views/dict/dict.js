@@ -25,6 +25,10 @@ class DictView extends BaseComponent {
 
             selectedWord: null,
 
+            editMode: false,
+            editData: null,
+
+            snackbar: null,
             modal: null
         }
     }
@@ -34,19 +38,21 @@ class DictView extends BaseComponent {
         const history = [...this.state.history];
         history.pop();
         const activePanel = history[history.length - 1];
-        if (activePanel === 'dict_panel') {
-            connect.send('VKWebAppDisableSwipeBack');
-        }
         this.setState({ history, activePanel });
     }
 
     goForward(activePanel) {
         const history = [...this.state.history];
         history.push(activePanel);
-        if (this.state.activePanel === 'dict_panel') {
-            connect.send('VKWebAppEnableSwipeBack');
-        }
         this.setState({ history, activePanel });
+    }
+
+    navReset(withSnackbar) {
+        this.setState({
+            history: ['dict_panel'],
+            activePanel: 'dict_panel',
+            snackbar: withSnackbar || null
+        });
     }
     /* nav ends */
 
@@ -65,10 +71,22 @@ class DictView extends BaseComponent {
 
     onWordEnteredClick(word) {
         this.log('Entered word = ' + JSON.stringify(word));
+
         this.setState({
             selectedWord: word
         });
         this.goForward('word_adding_panel');
+    }
+
+    onWordEditingStart(wordData) {
+        this.log('Entered editing mode for word = ' + JSON.stringify(wordData));
+
+        this.setState({
+            selectedWord: wordData.word,
+            editMode: true,
+            editData: wordData,
+            activePanel: 'word_adding_panel'
+        });
     }
 
     setupModal(modal) {
@@ -87,10 +105,12 @@ class DictView extends BaseComponent {
                     onWordChoosingClick={this.onWordChoosingClick.bind(this)}
                     onWordClick={(word) => this.onWordClick(word)}
                     goBack={this.goBack.bind(this)}
+                    snackbar={this.state.snackbar}
                 />
                 <WordPanel
                     id='word_panel'
                     data={this.state.selectedWord}
+                    onWordEditingStart={(word) => this.onWordEditingStart(word)}
                     goBack={this.goBack.bind(this)}
                 />
                 <WordChoosingPanel
@@ -101,7 +121,10 @@ class DictView extends BaseComponent {
                 <WordAddingPanel
                     id='word_adding_panel'
                     data={this.state.selectedWord}
+                    editMode={this.state.editMode}
+                    editData={this.state.editData}
                     goBack={this.goBack.bind(this)}
+                    navReset={this.navReset.bind(this)}
                     setupModal={this.setupModal.bind(this)}
                 />
             </View>
