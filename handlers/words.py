@@ -8,12 +8,20 @@ import db
 
 class WordsHandler(BaseHandler):
     def get(self):
-        user_id = self._extract_user_id()
+        # todo sort russian words
+        try:
+            user_id = self._extract_user_id()
+        except ValueError:
+            logging.warning('incorrect user_id')
+            self.write(json.dumps({'error': 'incorrect-format'}))
+            return
+
         words_t = db.get_table('words')
 
         with db.get_connection() as conn:
 
-            words = conn.execute(select([words_t.c.id, words_t.c.word, words_t.c.raw_data]).where(words_t.c.user_id == user_id).order_by(words_t.c.word))
+            words = conn.execute(select([words_t.c.id, words_t.c.word, words_t.c.raw_data]).
+                                 where(words_t.c.user_id == user_id).order_by(words_t.c.word))
 
             data = [{
                 'id': word['id'],
@@ -21,21 +29,26 @@ class WordsHandler(BaseHandler):
                 'translations': json.loads(word['raw_data'])['translations']
             }for word in words]
 
-        self.write(json.dumps(
-            {
-                'result': 'ok',
-                'data': data
-            }
-        ))
+        self.write(json.dumps({
+            'result': 'ok',
+            'data': data
+        }))
 
     def post(self):
+        # todo delete translations
+
         try:
             data = json.loads(self.request.body)
         except json.JSONDecodeError:
             logging.warning(f"get incorrect body {self.request.body}")
             self.write(json.dumps({'error': 'incorrect-format'}))
             return
-        user_id = self._extract_user_id()
+        try:
+            user_id = self._extract_user_id()
+        except ValueError:
+            logging.warning('incorrect user_id')
+            self.write(json.dumps({'error': 'incorrect-format'}))
+            return
 
         if 'word' not in data or 'translations' not in data:
             logging.warning(f"get incorrect body, no fields 'word' and 'translations': {data}")

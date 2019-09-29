@@ -2,6 +2,8 @@ from handlers.base import BaseHandler
 import json
 import logging
 from sqlalchemy.sql import select
+from utils.validators import check_english_word, check_russian_word
+from utils.translate_storager import merge_translations
 
 import db
 
@@ -10,7 +12,12 @@ class PackHandler(BaseHandler):
     def get(self, pack_id=None):
         packs_t = db.get_table('word_package')
         if pack_id:
-            id = int(pack_id)
+            try:
+                id = int(pack_id)
+            except ValueError:
+                logging.warning(f"incorrect pack_id: {pack_id}")
+                self.write(json.dumps({'error': 'incorrect-format'}))
+                return
             with db.get_connection() as conn:
                 pack = conn.execute(packs_t.select(packs_t.c.id==id)).fetchone()
 
@@ -53,14 +60,20 @@ class PackHandler(BaseHandler):
             ))
 
     def post(self, pack_id=None):
-        if not pack_id:
-            logging.warning(f"get incorrect body {self.request.body}")
+        try:
+            pack_id = int(pack_id)
+        except ValueError:
+            logging.warning(f"get incorrect pack_id: {pack_id}")
             self.write(json.dumps({'error': 'incorrect-format'}))
             return
-        pack_id = int(pack_id)
-        user_id = self._extract_user_id()
+        try:
+            user_id = self._extract_user_id()
+        except ValueError:
+            logging.warning(f"get incorrect user_id")
+            self.write(json.dumps({'error': 'incorrect-format'}))
+            return
+
         packs_t = db.get_table('word_package')
-        words_t = db.get_table('words')
 
         # todo add transaction
 
@@ -69,32 +82,23 @@ class PackHandler(BaseHandler):
 
             new_words = json.loads(pack['words'])
 
+            flag = False
             for struct in new_words:
+                if not isinstance(struct['word'], str):
+                    continue
                 new_word = struct['word'].lower().strip()
                 new_translations = struct['translations']
 
-                try:
-                    raw_data = conn.execute(select([words_t.c.raw_data]).where(words_t.c.user_id == user_id).where(
-                        words_t.c.word == new_word)).next()[0]
-                    raw_data = json.loads(raw_data)
-                except:
-                    raw_data = {'translations': {}}
-                    conn.execute(words_t.insert(),
-                                 {'user_id': user_id, 'word': new_word, 'raw_data': json.dumps(raw_data)})
+                if merge_translations(user_id, new_word, new_translations, conn):
+                    flag = True
 
-                translations = raw_data['translations']
-                for key, value in new_translations.items():
-                    if key not in translations:
-                        translations[key] = []
-                    set_before = set(translations[key])
-                    set_new = set(value)
-                    set_updated = set_before.union(set_new)
-                    translations[key] = list(set_updated)
+        if flag:
+            self.write(json.dumps({
+                'result': 'ok'
+            }))
+        else:
+            self.write(json.dumps({
+                'error': 'incorrect-format'
+            }))
 
-                conn.execute(words_t.update(words_t.c.user_id == user_id).where(words_t.c.word == new_word),
-                             {'raw_data': json.dumps(raw_data)})
-
-        self.write(json.dumps({
-            'result': 'ok'
-        }))
 

@@ -95,6 +95,7 @@ class TestingHanlder(BaseHandler):
         return user_translations
 
     def get(self):
+        # todo add reverse tests
         logging.info(f"get test request for user {self._extract_user_id()}")
         used_words = list()
         user_words = self._get_random_user_words(max_count=10)
@@ -104,8 +105,8 @@ class TestingHanlder(BaseHandler):
         }
 
         def get_random_translation():
-            for word in all_user_translations:
-                yield word
+            for word_iter in all_user_translations:
+                yield word_iter
 
         rand_trans = get_random_translation()
 
@@ -146,7 +147,13 @@ class TestingHanlder(BaseHandler):
 
     def post(self):
         with db.get_connection() as conn:
-            data = json.loads(self.request.body)
+            try:
+                data = json.loads(self.request.body)
+            except json.JSONDecodeError:
+                logging.warning('incorrect request body')
+                logging.debug(self.request.body)
+                self.write(json.dumps({'error': 'incorrect-format'}))
+                return
             if 'test' not in data:
                 logging.warning('incorrect request body')
                 logging.debug(self.request.body)
@@ -154,7 +161,13 @@ class TestingHanlder(BaseHandler):
                 return
 
             results = data['test']
-            user_id = self._extract_user_id()
+            try:
+                user_id = self._extract_user_id()
+            except ValueError:
+                logging.warning('incorrect user_id')
+                self.write(json.dumps({'error': 'incorrect-format'}))
+                return
+
             correct_sum = 0
             wrong_sum = 0
 
