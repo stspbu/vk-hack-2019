@@ -126,7 +126,7 @@ class TestingHanlder(BaseHandler):
                 res['data'].append({
                     'answer': answer_id,
                     'variants': [variant[0] for variant in variants],
-                    'word': correct[0]
+                    'word': correct[1]
                 })
 
         res['result'] = 'ok'
