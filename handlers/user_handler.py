@@ -32,7 +32,7 @@ class UserHanlder(BaseHandler):
                 right_cnt = row[words_t.c.correct_tested]
                 cnt = row[words_t.c.correct_tested] + row[words_t.c.wrong_tested]
 
-                if right_cnt / cnt > 0.8:
+                if cnt > 0 and right_cnt / cnt > 0.8:
                     known_words_cnt += 1
 
 
