@@ -50,7 +50,7 @@ class AdminHandler(tornado.web.RequestHandler):
                 with open(file_name) as f_in:
                     data = json.load(f_in)
                 conn.execute(packs_t.insert(),
-                             {'name': file_name[11:-5], 'avatar': data['avatar'], 'description': data['description'],
+                             {'name': data['name'], 'avatar': data['avatar'], 'description': data['description'],
                               'words': json.dumps(data['data'])})
 
             with open('dirty_words/translated_words.json') as f_in:
