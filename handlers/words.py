@@ -69,6 +69,7 @@ class WordsHandler(BaseHandler):
             self.write(json.dumps({'error': 'incorrect-format'}))
             return
 
+        logging.warning(data)
         if 'translations' not in data or not data['translations']:
             conn.execute(words_t.delete().where(words_t.c.user_id == user_id).where(words_t.c.word == new_word))
         else:
@@ -81,18 +82,26 @@ class WordsHandler(BaseHandler):
                             filtered_translations[key] = list()
                         filtered_translations[key].append(elem)
             for key in filtered_translations.keys():
-                filtered_translations[key].sort()
+                if not filtered_translations[key]:
+                    filtered_translations.pop(key, None)
+                else:
+                    filtered_translations[key].sort()
 
             rows = conn.execute(select([words_t.c.raw_data]).where(words_t.c.user_id == user_id).
                                 where(words_t.c.word == new_word)).fetchall()
             if not rows:
-                conn.execute(words_t.insert(), {'user_id': user_id, 'word': new_word,
-                                                'raw_data': json.dumps({'translations': filtered_translations})})
+                if filtered_translations:
+                    conn.execute(words_t.insert(), {'user_id': user_id, 'word': new_word,
+                                                    'raw_data': json.dumps({'translations': filtered_translations})})
             else:
-                conn.execute(words_t.update(words_t.c.user_id == user_id).where(words_t.c.word == new_word),
-                             {'raw_data': json.dumps({'translations': filtered_translations})})
+                if filtered_translations:
+                    conn.execute(words_t.update(words_t.c.user_id == user_id).where(words_t.c.word == new_word),
+                                 {'raw_data': json.dumps({'translations': filtered_translations})})
+                else:
+                    conn.execute(words_t.delete().where(words_t.c.user_id == user_id).where(words_t.c.word == new_word))
 
-        words = conn.execute(select([words_t.c.id, words_t.c.word, words_t.c.raw_data]).where(words_t.c.user_id == user_id))
+        words = conn.execute(select([words_t.c.id, words_t.c.word, words_t.c.raw_data]).
+                             where(words_t.c.user_id == user_id))
         data = [{
             'id': word['id'],
             'word': word['word'],
