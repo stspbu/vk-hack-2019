@@ -34,6 +34,7 @@ class Packs extends BaseComponent {
                 <List>
                     {packs.map((pack) =>
                         <Cell
+                            onClick={() => this.onPackClick(pack)}
                             before={<Avatar type="image" src={pack.avatar}/>}
                             description={pack.description}
                             asideContent={
